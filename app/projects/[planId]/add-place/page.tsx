@@ -189,7 +189,7 @@ const AddPlanPage = () => {
     isLoading: isSearchLoading,
     isFetching: isSearchFetching,
     isError: isSearchError,
-  } = usePlaceSearch(searchableQuery, {
+  } = usePlaceSearch(searchableQuery, 400, {
     staleTime: 60_000,
   });
   const { mutate: createBlock, isPending: isCreatingBlock } =
