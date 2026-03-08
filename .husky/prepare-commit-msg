@@ -1,0 +1,24 @@
+#!/bin/bash
+
+MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# merge, squash 등 자동 생성 커밋은 건드리지 않음
+[ "$COMMIT_SOURCE" = "merge" ] && exit 0
+[ "$COMMIT_SOURCE" = "squash" ] && exit 0
+[ -z "$MSG_FILE" ] && exit 0
+
+# 현재 브랜치 이름 가져오기
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+# Jira 키 추출 (예: WAPO-104)
+JIRA_KEY=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+
+# Jira 키가 없으면 종료
+[ -z "$JIRA_KEY" ] && exit 0
+
+# 이미 커밋 메시지에 Jira 키가 포함되어 있으면 중복 방지
+grep -qF "[$JIRA_KEY]" "$MSG_FILE" && exit 0
+
+# 첫 줄 끝에 [JIRA_KEY] 추가 (macOS sed 호환)
+sed -i.bak "1s/$/ [$JIRA_KEY]/" "$MSG_FILE" && rm -f "${MSG_FILE}.bak"
