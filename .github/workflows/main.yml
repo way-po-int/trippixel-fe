@@ -13,22 +13,20 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'pnpm'
-
-    - name: Install pnpm
-      run: |
-        npm install -g pnpm
-        corepack enable
-        corepack prepare pnpm@latest --activate
-
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        
     - name: Install dependencies
       run: pnpm install
-      
+  
     - name: Create .env file
       run: |
         echo "NEXT_PUBLIC_IMAGE_DOMAINS=test" >> .env
