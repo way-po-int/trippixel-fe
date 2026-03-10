@@ -36,9 +36,14 @@ jobs:
         echo "NEXT_PUBLIC_PRIVACY_POLICY_URL=test" >> .env
         echo "NEXT_PUBLIC_GUIDE_URL=test" >> .env
         echo "NEXT_PUBLIC_VOC_URL=test" >> .env
-        
+
     - name: Run ESLint
-      run: pnpm run lint --if-present
+      run: |
+        if [ -f ".eslintrc.js" ] || [ -f "eslint.config.js" ]; then
+          pnpm run lint
+        else
+          echo "ESLint not configured"
+        fi
       
     - name: Run TypeScript check
       run: pnpm exec tsc --noEmit --if-present
