@@ -462,6 +462,7 @@
     border-radius: calc(var(--radius-3xl) * 2);
     corner-shape: squircle;
     z-index: -1;
+    transition: transform 0.3s ease;
   }
 
   .collection-card-stacked::before {
@@ -472,5 +473,10 @@
   .collection-card-stacked::after {
     background-color: var(--disabled);
     transform: translate(-2px, 2px) rotate(-3deg);
+  }
+
+  .collection-card-stacked:hover::before,
+  .collection-card-stacked:hover::after {
+    transform: translate(0, 0) rotate(0deg);
   }
 }
