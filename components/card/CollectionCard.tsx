@@ -29,7 +29,7 @@ const CollectionCard = ({
       {/* Main card */}
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-3xl border border-[#E2E2E2] bg-[#FAFAFA]",
+          "relative w-full overflow-hidden rounded-3xl squircle border border-border bg-background",
           "shadow-[0px_10px_15px_-3px_#0000001A,0px_4px_6px_-4px_#0000001A]",
           onClick && "cursor-pointer",
         )}
