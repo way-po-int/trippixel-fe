@@ -25,10 +25,7 @@ const CollectionCard = ({
   className,
 }: CollectionCardProps) => {
   return (
-    <div className={cn("relative w-full max-w-83.75 pb-2", className)}>
-      <div className="absolute inset-x-0 top-0 bottom-2 rotate-2 rounded-3xl bg-neutral-300" />
-      <div className="absolute inset-x-0 top-0 bottom-2 -rotate-3 rounded-3xl bg-neutral-200" />
-
+    <div className={cn("relative isolate w-full max-w-83.75 pb-2 collection-card-stacked", className)}>
       {/* Main card */}
       <div
         className={cn(

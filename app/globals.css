@@ -382,3 +382,23 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ============================================================
+   CollectionCard stacked background decoration
+   ============================================================ */
+@layer components {
+  .collection-card-stacked::before,
+  .collection-card-stacked::after {
+    content: "";
+    @apply absolute inset-x-0 top-0 bottom-2 rounded-3xl;
+    z-index: -1;
+  }
+
+  .collection-card-stacked::before {
+    @apply bg-neutral-300 rotate-2;
+  }
+
+  .collection-card-stacked::after {
+    @apply bg-neutral-200 -rotate-3;
+  }
+}
