@@ -390,15 +390,22 @@
   .collection-card-stacked::before,
   .collection-card-stacked::after {
     content: "";
-    @apply absolute inset-x-0 top-0 bottom-2 rounded-3xl;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0.5rem;
+    border-radius: 1.5rem;
     z-index: -1;
   }
 
   .collection-card-stacked::before {
-    @apply bg-neutral-300 rotate-2;
+    background-color: var(--input);
+    transform: translate(4px, 2px) rotate(4deg);
   }
 
   .collection-card-stacked::after {
-    @apply bg-neutral-200 -rotate-3;
+    background-color: var(--disabled);
+    transform: translate(-2px, 2px) rotate(-3deg);
   }
 }
