@@ -36,8 +36,10 @@ const CollectionCard = ({
         onClick={onClick}
       >
         {/* Image Area */}
-        <div className="relative aspect-335/152 w-full bg-white">
-          {imageSrc && <Image src={imageSrc} alt={title} fill className="object-cover" />}
+        <div className="relative aspect-22/10 w-full bg-white">
+          {imageSrc && (
+            <Image src={imageSrc} alt={title} fill className="object-cover" />
+          )}
         </div>
 
         {/* Text Area */}
