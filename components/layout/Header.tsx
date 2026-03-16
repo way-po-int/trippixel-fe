@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils/utils";
 import { useRouter } from "next/navigation";
 import HeaderBtn, { type HeaderBtnBgVariant } from "./HeaderBtn";
@@ -78,7 +80,22 @@ const Header = ({
         )}
 
         {variant === "logo" && (
-          <h1 className="text-foreground text-2xl leading-8 font-extrabold">TripPixel</h1>
+          <h1>
+            <Link
+              href="/"
+              className="flex items-center text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              aria-label="TripPixel 홈"
+            >
+              <Image
+                src="/logo.svg"
+                alt="TripPixel"
+                width={114}
+                height={28}
+                priority
+                className="h-7 w-auto"
+              />
+            </Link>
+          </h1>
         )}
       </div>
 

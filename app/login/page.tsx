@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -32,7 +33,16 @@ const LoginContent = () => {
   return (
     <div className="flex min-h-screen flex-col bg-white px-5">
       <div className="flex flex-1 items-center justify-center">
-        <h1 className="text-2xl font-extrabold">TripPixel</h1>
+        <h1>
+          <Image
+            src="/logo.svg"
+            alt="TripPixel"
+            width={180}
+            height={44}
+            priority
+            className="h-11 w-auto"
+          />
+        </h1>
       </div>
 
       <div className="flex flex-col gap-3 pb-[75px]">
