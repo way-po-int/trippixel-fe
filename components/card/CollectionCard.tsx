@@ -41,7 +41,7 @@ const CollectionCard = ({
         </div>
 
         {/* Text Area */}
-        <div className="flex items-center justify-between pt-2.5 pr-4 pb-4 pl-5">
+        <div className="flex items-center justify-between pt-3.5 pr-4 pb-4 pl-5">
           <div className="flex flex-col gap-1">
             <span className="typography-display-lg-bold text-foreground">{title}</span>
             {memberCount && (
