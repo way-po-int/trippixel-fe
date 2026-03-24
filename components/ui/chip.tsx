@@ -19,8 +19,7 @@ const chipVariants = cva(
   },
 );
 
-type ChipProps = React.ComponentProps<"button"> &
-  VariantProps<typeof chipVariants>;
+type ChipProps = React.ComponentProps<"button"> & VariantProps<typeof chipVariants>;
 
 function Chip({ className, variant = "primary", ...props }: ChipProps) {
   return (

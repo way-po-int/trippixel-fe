@@ -8,10 +8,7 @@ import NotiEmptyIllust from "@/public/illust/noti_empty_illust.svg";
 import { useCallback, useState } from "react";
 import { useIntersectionObserver } from "@/lib/hooks/use-intersection-observer";
 import { useNotificationDrawer } from "@/lib/context/notification-drawer-context";
-import {
-  type NotificationCategory,
-  getNotificationBadgeVariant,
-} from "@/types/notification";
+import { type NotificationCategory, getNotificationBadgeVariant } from "@/types/notification";
 
 const PAGE_SIZE = 20;
 
@@ -76,22 +73,13 @@ const BASE_MESSAGES: Omit<MockNotification, "id">[] = [
   },
 ];
 
-const ALL_MOCK_NOTIFICATIONS: MockNotification[] = Array.from(
-  { length: 40 },
-  (_, i) => ({
-    id: String(i + 1),
-    ...BASE_MESSAGES[i % BASE_MESSAGES.length],
-  }),
-);
+const ALL_MOCK_NOTIFICATIONS: MockNotification[] = Array.from({ length: 40 }, (_, i) => ({
+  id: String(i + 1),
+  ...BASE_MESSAGES[i % BASE_MESSAGES.length],
+}));
 
-const NotificationDrawerContent = ({
-  onClose,
-}: {
-  onClose: () => void;
-}) => {
-  const [allNotifications, setAllNotifications] = useState(
-    ALL_MOCK_NOTIFICATIONS,
-  );
+const NotificationDrawerContent = ({ onClose }: { onClose: () => void }) => {
+  const [allNotifications, setAllNotifications] = useState(ALL_MOCK_NOTIFICATIONS);
   const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
   const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false);
 
@@ -117,7 +105,7 @@ const NotificationDrawerContent = ({
   };
 
   return (
-    <div className="flex flex-1 flex-col min-h-0 bg-white">
+    <div className="flex min-h-0 flex-1 flex-col bg-white">
       <Header
         variant="center"
         title="알림"
@@ -126,7 +114,7 @@ const NotificationDrawerContent = ({
         onBack={onClose}
         rightContent={
           <button
-            className="h-10 px-1.5 py-2.5 rounded-2xl text-sm font-bold leading-5 text-[#757575] cursor-pointer disabled:cursor-not-allowed disabled:text-[#c4c4c4]"
+            className="h-10 cursor-pointer rounded-2xl px-1.5 py-2.5 text-sm leading-5 font-bold text-[#757575] disabled:cursor-not-allowed disabled:text-[#c4c4c4]"
             onClick={() => setIsDeleteAllOpen(true)}
             disabled={isEmpty}
           >
@@ -147,14 +135,14 @@ const NotificationDrawerContent = ({
       />
 
       {isEmpty ? (
-        <main className="flex-1 flex flex-col items-center justify-center">
+        <main className="flex flex-1 flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-5">
             <NotiEmptyIllust width={165} height={160} />
             <div className="flex flex-col items-center gap-2">
-              <p className="text-lg font-bold leading-7 text-center text-[#1C2024]">
+              <p className="text-center text-lg leading-7 font-bold text-[#1C2024]">
                 아직 도착한 알림이 없어요
               </p>
-              <p className="text-sm font-medium leading-5 text-center text-[#1C2024]">
+              <p className="text-center text-sm leading-5 font-medium text-[#1C2024]">
                 새로운 소식이 도착하면
                 <br />
                 알려드릴게요
@@ -163,8 +151,8 @@ const NotificationDrawerContent = ({
           </div>
         </main>
       ) : (
-        <div className="flex-1 relative overflow-hidden">
-          <main className="h-full overflow-y-auto flex flex-col px-5 pt-3 pb-10 gap-4">
+        <div className="relative flex-1 overflow-hidden">
+          <main className="flex h-full flex-col gap-4 overflow-y-auto px-5 pt-3 pb-10">
             {visibleNotifications.map((n) => (
               <NotificationItem
                 key={n.id}
@@ -178,10 +166,9 @@ const NotificationDrawerContent = ({
 
           {/* 하단 그라디언트 */}
           <div
-            className="absolute bottom-0 inset-x-0 h-12 pointer-events-none"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-12"
             style={{
-              background:
-                "linear-gradient(180deg, rgba(250, 250, 250, 0) 0%, #FAFAFA 90%)",
+              background: "linear-gradient(180deg, rgba(250, 250, 250, 0) 0%, #FAFAFA 90%)",
             }}
           />
         </div>
@@ -202,8 +189,8 @@ const NotificationDrawer = () => {
       }}
     >
       <DrawerPrimitive.Portal>
-        <DrawerPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <DrawerPrimitive.Content className="fixed inset-y-0 right-0 z-50 w-full bg-white flex flex-col">
+        <DrawerPrimitive.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/40" />
+        <DrawerPrimitive.Content className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white">
           <DrawerPrimitive.Title className="sr-only">알림</DrawerPrimitive.Title>
           <NotificationDrawerContent onClose={closeDrawer} />
         </DrawerPrimitive.Content>

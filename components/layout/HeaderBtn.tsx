@@ -1,12 +1,12 @@
 "use client";
 
-import { LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils/utils";
 
 type HeaderBtnBgVariant = "solid" | "glass" | "ghost";
 
-interface HeaderBtnProps {
+type HeaderBtnProps = {
   bgVariant?: HeaderBtnBgVariant;
   icon: LucideIcon;
   label: string;
@@ -15,7 +15,7 @@ interface HeaderBtnProps {
   className?: string;
   iconClassName?: string;
   onClick?: () => void;
-}
+};
 
 const HeaderBtn = ({
   bgVariant = "solid",
@@ -35,7 +35,7 @@ const HeaderBtn = ({
         onClick={onClick}
         disabled={disabled}
         className={cn(
-          "rounded-full size-11 p-2.5",
+          "size-11 rounded-full p-2.5",
           bgVariant === "solid" && "bg-[#FAFAFA]",
           bgVariant === "glass" && "bg-[#FAFAFA]/60 backdrop-blur-sm",
           bgVariant === "ghost" && "bg-transparent backdrop-blur-xl",
@@ -45,17 +45,11 @@ const HeaderBtn = ({
       >
         {Icon && (
           <Icon
-            className={cn(
-              "size-6 text-foreground",
-              disabled && "text-disabled",
-              iconClassName,
-            )}
+            className={cn("text-foreground size-6", disabled && "text-disabled", iconClassName)}
           />
         )}
       </Button>
-      {showDot && (
-        <div className="absolute top-2 right-2.5 size-1 rounded-full bg-[#0EA5E9]" />
-      )}
+      {showDot && <div className="absolute top-2 right-2.5 size-1 rounded-full bg-[#0EA5E9]" />}
     </div>
   );
 };

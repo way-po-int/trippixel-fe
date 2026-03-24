@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import { UserPlus } from "lucide-react";
-import { CollectionMember, PlanMember } from "@/types/member";
+import { type CollectionMember, type PlanMember } from "@/types/member";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/common/Divider";
 import MemberItem from "./MemberItem";
 
 const getMemberId = (member: CollectionMember | PlanMember): string =>
-  "collection_member_id" in member
-    ? member.collection_member_id
-    : member.plan_member_id;
+  "collection_member_id" in member ? member.collection_member_id : member.plan_member_id;
 
-interface MemberListSectionProps {
+type MemberListSectionProps = {
   members: (CollectionMember | PlanMember)[];
   isOwner?: boolean;
   meMemberId?: string;
@@ -18,7 +16,7 @@ interface MemberListSectionProps {
   onKick: (memberId: string) => void;
   onAssignOwner: (memberId: string) => void;
   onInviteClick?: () => void;
-}
+};
 
 const MemberListSection = ({
   members,
@@ -37,7 +35,7 @@ const MemberListSection = ({
 
   return (
     <div className="w-full rounded-2xl bg-[#f0f0f0]">
-      <div className="flex px-4 py-3 justify-between">
+      <div className="flex justify-between px-4 py-3">
         <p className="typography-action-base-bold">여행 멤버</p>
         {isOwner && !isManaging && (
           <button
@@ -48,7 +46,7 @@ const MemberListSection = ({
           </button>
         )}
       </div>
-      <div className="px-3 flex flex-col gap-3">
+      <div className="flex flex-col gap-3 px-3">
         <div className="flex flex-col gap-3">
           {members.map((member, i) => (
             <MemberItem
@@ -65,7 +63,7 @@ const MemberListSection = ({
         {isManaging ? (
           <Button
             variant="outline"
-            className="w-full bg-[#f0f0f0] mb-3 border-neutral-400"
+            className="mb-3 w-full border-neutral-400 bg-[#f0f0f0]"
             onClick={() => setIsManaging(false)}
           >
             <p className="typography-action-sm-reg">멤버 관리 끝내기</p>
@@ -76,7 +74,7 @@ const MemberListSection = ({
             <Button
               icon={<UserPlus size={18} className="opacity-40" />}
               variant="ghost"
-              className="rounded-2xl typography-action-sm-reg flex flex-row mb-2"
+              className="typography-action-sm-reg mb-2 flex flex-row rounded-2xl"
               onClick={onInviteClick}
             >
               새로운 멤버 초대하기

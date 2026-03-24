@@ -8,7 +8,7 @@ import MoreActionMenu from "../common/MoreActionMenu";
 
 const BASE_WIDTH = 335;
 
-interface PlanCardProps {
+type PlanCardProps = {
   title: string;
   memberCount?: number;
   dateRange?: string;
@@ -17,7 +17,7 @@ interface PlanCardProps {
   onEdit?: () => void;
   onDelete?: () => void;
   className?: string;
-}
+};
 
 const PlanCard = ({
   title,
@@ -46,11 +46,7 @@ const PlanCard = ({
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "w-full max-w-83.75",
-        onClick && "cursor-pointer",
-        className,
-      )}
+      className={cn("w-full max-w-83.75", onClick && "cursor-pointer", className)}
       onClick={onClick}
     >
       <div style={{ zoom: scale }}>
@@ -64,11 +60,9 @@ const PlanCard = ({
         >
           {/* Image Area – 16:9, extends behind info section */}
           <div className="relative aspect-video w-full bg-white">
-            {imageSrc && (
-              <Image src={imageSrc} alt={title} fill className="object-cover" />
-            )}
+            {imageSrc && <Image src={imageSrc} alt={title} fill className="object-cover" />}
             {dateRange && (
-              <span className="absolute bottom-[calc(6.25%+1.25rem)] left-4 rounded-full bg-[#1C202466] px-2.75 py-0.75 text-center typography-caption-xs-reg text-white backdrop-blur-lg">
+              <span className="typography-caption-xs-reg absolute bottom-[calc(6.25%+1.25rem)] left-4 rounded-full bg-[#1C202466] px-2.75 py-0.75 text-center text-white backdrop-blur-lg">
                 {dateRange}
               </span>
             )}
@@ -79,11 +73,9 @@ const PlanCard = ({
             {/* Info Section */}
             <div className="flex items-center justify-between rounded-tl-xl rounded-br-3xl bg-[#FAFAFA] pt-2.5 pr-4 pb-3.5 pl-5">
               <div className="flex flex-col gap-1">
-                <span className="typography-display-lg-bold text-foreground">
-                  {title}
-                </span>
+                <span className="typography-display-lg-bold text-foreground">{title}</span>
                 {memberCount !== undefined && (
-                  <span className="flex items-center gap-1 typography-body-sm-reg text-muted-foreground">
+                  <span className="typography-body-sm-reg text-muted-foreground flex items-center gap-1">
                     <UsersRound className="size-4" />
                     {memberCount}명 참여 중
                   </span>
@@ -123,8 +115,7 @@ const PlanCard = ({
                 <div
                   className="flex h-4 flex-col justify-between rounded-tl-lg rounded-bl-lg"
                   style={{
-                    background:
-                      "linear-gradient(90deg, #E3E3E3 0%, rgba(220, 220, 220, 0) 100%)",
+                    background: "linear-gradient(90deg, #E3E3E3 0%, rgba(220, 220, 220, 0) 100%)",
                   }}
                 >
                   {Array.from({ length: 6 }).map((_, i) => (

@@ -139,9 +139,9 @@ const typeConfigMap: Record<PlaceType, TypeConfig> = {
   },
 };
 
-interface PlaceTypeIconProps {
+type PlaceTypeIconProps = {
   type: PlaceType;
-}
+};
 
 const PlaceTypeIcon = ({ type }: PlaceTypeIconProps) => {
   const config = typeConfigMap[type] ?? typeConfigMap["기타"];
@@ -149,7 +149,7 @@ const PlaceTypeIcon = ({ type }: PlaceTypeIconProps) => {
 
   return (
     <div
-      className="size-6 rounded-full flex items-center justify-center border"
+      className="flex size-6 items-center justify-center rounded-full border"
       style={{ backgroundColor: config.bg, borderColor: config.border }}
     >
       <Icon className="size-3.5" style={{ color: config.iconColor }} />

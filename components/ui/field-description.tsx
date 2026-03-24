@@ -9,17 +9,13 @@ type FieldDescriptionProps = {
   error?: boolean;
 };
 
-function FieldDescription({
-  className,
-  children,
-  error,
-}: FieldDescriptionProps) {
+function FieldDescription({ className, children, error }: FieldDescriptionProps) {
   if (error) {
     return (
       <p
         data-slot="field-error"
         className={cn(
-          "inline-flex items-center gap-1 typography-body-sm-sb text-destructive",
+          "typography-body-sm-sb text-destructive inline-flex items-center gap-1",
           className,
         )}
       >

@@ -18,7 +18,7 @@ import CollectionIcon from "@/public/icons/collection.svg";
 import { useMemberManagement } from "./hooks/useMemberManagement";
 import MemberListSection from "./components/MemberListSection";
 import TravelPlanSection from "./components/TravelPlanSection";
-import HeaderBtn, { HeaderBtnBgVariant } from "@/components/layout/HeaderBtn";
+import HeaderBtn, { type HeaderBtnBgVariant } from "@/components/layout/HeaderBtn";
 import type { CollectionMember, MemberRole, PlanMember } from "@/types/member";
 import { usePlanMembers } from "@/lib/hooks/plan/use-plan-members";
 import { useCollectionMembers } from "@/lib/hooks/collection/use-collection-members";
@@ -29,7 +29,7 @@ import AppDialog from "@/components/common/AppDialog";
 import AppAlertDialog from "@/components/common/AppAlertDialog";
 import InviteDialog from "@/components/common/InviteDialog";
 
-interface MemberSideDrawerProps {
+type MemberSideDrawerProps = {
   title: string;
   placeCount?: number;
   dateRange?: string;
@@ -39,7 +39,7 @@ interface MemberSideDrawerProps {
   meRole?: MemberRole;
   collectionId?: string;
   planId?: string;
-}
+};
 
 const MemberSideDrawer = ({
   title,
@@ -63,14 +63,8 @@ const MemberSideDrawer = ({
     enabled: variant === "COLLECTION" && !!collectionId,
   });
 
-  const resolvedMembers =
-    variant === "PLAN" && planMembersData
-      ? planMembersData.members
-      : members;
-  const resolvedMeRole =
-    variant === "PLAN" && planMembersData
-      ? planMembersData.me?.role
-      : meRole;
+  const resolvedMembers = variant === "PLAN" && planMembersData ? planMembersData.members : members;
+  const resolvedMeRole = variant === "PLAN" && planMembersData ? planMembersData.me?.role : meRole;
   const meMemberId =
     variant === "PLAN" && planMembersData
       ? planMembersData.me?.plan_member_id
@@ -123,7 +117,7 @@ const MemberSideDrawer = ({
           <DrawerClose className="absolute top-3 right-3">
             <X size={24} />
           </DrawerClose>
-          <DrawerHeader className="flex flex-col gap-1 w-full justify-center items-center mt-10">
+          <DrawerHeader className="mt-10 flex w-full flex-col items-center justify-center gap-1">
             <DrawerTitle className="flex flex-row gap-1">
               <CollectionIcon color="#0ea5e9" />
               <p className="typography-display-xl">{title}</p>
@@ -132,7 +126,7 @@ const MemberSideDrawer = ({
               {variant === "PLAN" ? dateRange : `${placeCount}개의 장소`}
             </DrawerDescription>
           </DrawerHeader>
-          <main className="flex flex-col gap-3 mx-5 mt-10">
+          <main className="mx-5 mt-10 flex flex-col gap-3">
             <MemberListSection
               members={resolvedMembers}
               isOwner={isOwner}
@@ -144,12 +138,10 @@ const MemberSideDrawer = ({
             />
             {variant === "PLAN" ? (
               <Button
-                className="w-full flex justify-between py-1.5 px-3 bg-card text-foreground"
+                className="bg-card text-foreground flex w-full justify-between px-3 py-1.5"
                 onClick={() => router.push(`${pathname}/collection-manage`)}
               >
-                <p className="typography-action-sm-reg ">
-                  보관함 추가 혹은 삭제하기
-                </p>
+                <p className="typography-action-sm-reg">보관함 추가 혹은 삭제하기</p>
                 <ChevronRight size={20} strokeWidth={2} />
               </Button>
             ) : (
@@ -157,12 +149,14 @@ const MemberSideDrawer = ({
             )}
           </main>
           <DrawerFooter>
-            <Button variant="ghost" onClick={handleLeaveClick} disabled={isLeavingCollection || isLeavingPlan}>
+            <Button
+              variant="ghost"
+              onClick={handleLeaveClick}
+              disabled={isLeavingCollection || isLeavingPlan}
+            >
               <DoorClosed size={18} className="opacity-40" />
               <p className="typography-action-sm-reg">
-                {variant === "PLAN"
-                  ? "이 여행 계획에서 나가기"
-                  : "이 컬렉션에서 나가기"}
+                {variant === "PLAN" ? "이 여행 계획에서 나가기" : "이 컬렉션에서 나가기"}
               </p>
             </Button>
           </DrawerFooter>

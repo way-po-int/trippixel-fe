@@ -18,30 +18,20 @@ const VARIANT_CONFIG = {
   },
 } as const;
 
-interface NotificationBadgeProps {
+type NotificationBadgeProps = {
   variant?: NotificationBadgeVariant;
   className?: string;
-}
+};
 
-const NotificationBadge = ({
-  variant = "default",
-  className,
-}: NotificationBadgeProps) => {
+const NotificationBadge = ({ variant = "default", className }: NotificationBadgeProps) => {
   const { bg, iconColor, Icon, label } = VARIANT_CONFIG[variant];
 
   return (
     <div className={cn("flex items-center gap-1", className)}>
-      <div
-        className={cn(
-          "flex items-center justify-center size-5 rounded-full",
-          bg,
-        )}
-      >
+      <div className={cn("flex size-5 items-center justify-center rounded-full", bg)}>
         <Icon size={12} color={iconColor} strokeWidth={1.5} />
       </div>
-      <span className="text-xs font-normal leading-none text-[#757575]">
-        {label}
-      </span>
+      <span className="text-xs leading-none font-normal text-[#757575]">{label}</span>
     </div>
   );
 };

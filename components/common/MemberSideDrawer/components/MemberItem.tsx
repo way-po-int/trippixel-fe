@@ -1,22 +1,18 @@
 import Image from "next/image";
-import { CollectionMember, PlanMember } from "@/types/member";
-import MoreActionMenu, {
-  MoreActionItem,
-} from "@/components/common/MoreActionMenu";
+import { type CollectionMember, type PlanMember } from "@/types/member";
+import MoreActionMenu, { type MoreActionItem } from "@/components/common/MoreActionMenu";
 
-interface MemberItemProps {
+type MemberItemProps = {
   member: CollectionMember | PlanMember;
   isManaging: boolean;
   isMe?: boolean;
   variant?: "COLLECTION" | "PLAN";
   onKick: (memberId: string) => void;
   onAssignOwner: (memberId: string) => void;
-}
+};
 
 const getMemberId = (member: CollectionMember | PlanMember): string => {
-  return "collection_member_id" in member
-    ? member.collection_member_id
-    : member.plan_member_id;
+  return "collection_member_id" in member ? member.collection_member_id : member.plan_member_id;
 };
 
 const MemberItem = ({
@@ -42,17 +38,17 @@ const MemberItem = ({
   ];
 
   return (
-    <div className="p-2 flex flex-row gap-2 items-center">
+    <div className="flex flex-row items-center gap-2 p-2">
       {member.picture ? (
         <Image
           width={28}
           height={28}
           src={member.picture.replace(/^http:\/\//, "https://")}
           alt={member.nickname ?? ""}
-          className="rounded-full shrink-0"
+          className="shrink-0 rounded-full"
         />
       ) : (
-        <div className="w-7 h-7 rounded-full bg-gray-300 shrink-0" />
+        <div className="h-7 w-7 shrink-0 rounded-full bg-gray-300" />
       )}
       <p className="typography-action-sm-reg flex-1">{member.nickname}</p>
       {isManaging && !isMe && (

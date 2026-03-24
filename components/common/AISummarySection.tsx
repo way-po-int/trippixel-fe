@@ -25,26 +25,26 @@ const AISummarySection = ({
   title,
 }: AISummarySectionProps) => {
   return (
-    <div className="flex flex-col gap-3 w-full py-2">
-      <div className="flex items-center gap-1 w-full h-6">
+    <div className="flex w-full flex-col gap-3 py-2">
+      <div className="flex h-6 w-full items-center gap-1">
         {headerIcon}
         <span className="typography-label-base-bold text-foreground">{title}</span>
         <div className="flex-1" />
         <Badge
-          className="w-11.75 h-5.5 rounded-full py-0.75 px-2.75 text-white text-xs border-none"
+          className="h-5.5 w-11.75 rounded-full border-none px-2.75 py-0.75 text-xs text-white"
           style={{ background: "var(--semantic-accent-foreground, #1C2024)" }}
         >
           Beta
         </Badge>
       </div>
-      <div className="flex flex-col w-full p-4 rounded-xl bg-muted">
+      <div className="bg-muted flex w-full flex-col rounded-xl p-4">
         <p className="typography-body-sm-reg text-foreground">
           {isLoading ? "불러오는 중..." : summary || "요약 정보가 없습니다."}
         </p>
-        <hr className="my-4 border-border" />
+        <hr className="border-border my-4" />
         <div className="flex items-center justify-between pb-1">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center size-4 shrink-0">
+            <div className="flex size-4 shrink-0 items-center justify-center">
               <YoutubeIcon />
             </div>
             <span className="typography-caption-xs-reg text-muted-foreground">
@@ -58,7 +58,7 @@ const AISummarySection = ({
             className={sourceUrl ? "cursor-pointer" : "cursor-not-allowed"}
             aria-label="소셜 원문 링크 열기"
           >
-            <SquareArrowOutUpRight className="size-4.5 text-muted-foreground" />
+            <SquareArrowOutUpRight className="text-muted-foreground size-4.5" />
           </button>
         </div>
       </div>

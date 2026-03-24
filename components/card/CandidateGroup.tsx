@@ -10,20 +10,20 @@ import { cn } from "@/lib/utils/utils";
 
 // ─── Item types ──────────────────────────────────────────────────────────────
 
-interface Reactions {
+type Reactions = {
   good: number;
   normal: number;
   bad: number;
-}
+};
 
-export interface EditCandidateItem {
+export type EditCandidateItem = {
   id: string;
   placeType: PlaceType;
   placeName: string;
   blockId: string;
-}
+};
 
-export interface ViewCandidateItem {
+export type ViewCandidateItem = {
   id: string;
   placeType: PlaceType;
   placeName: string;
@@ -36,21 +36,21 @@ export interface ViewCandidateItem {
   onReactionClick?: (type: ReactionType) => void;
   onOpinionClick?: () => void;
   onCardClick?: () => void;
-}
+};
 
 // ─── Group props ─────────────────────────────────────────────────────────────
 
-interface CandidateGroupEditProps {
+type CandidateGroupEditProps = {
   mode: "edit";
   candidates: EditCandidateItem[];
   onCandidateMenuClick?: (candidateBlockId: string) => void;
-}
+};
 
-interface CandidateGroupViewProps {
+type CandidateGroupViewProps = {
   mode: "view";
   candidates: ViewCandidateItem[];
   onSelectCandidate?: () => void;
-}
+};
 
 type CandidateGroupProps = CandidateGroupEditProps | CandidateGroupViewProps;
 
@@ -67,9 +67,7 @@ const CandidateGroup = (props: CandidateGroupProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const visibleCandidates =
-    isCollapsible && !isExpanded
-      ? candidates.slice(0, COLLAPSED_SHOW_COUNT)
-      : candidates;
+    isCollapsible && !isExpanded ? candidates.slice(0, COLLAPSED_SHOW_COUNT) : candidates;
 
   const hiddenCount = candidates.length - COLLAPSED_SHOW_COUNT;
 
@@ -77,7 +75,7 @@ const CandidateGroup = (props: CandidateGroupProps) => {
     const { onCandidateMenuClick } = props as CandidateGroupEditProps;
 
     return (
-      <div className="flex flex-col gap-3 rounded-3xl border border-dashed border-border bg-card p-3">
+      <div className="border-border bg-card flex flex-col gap-3 rounded-3xl border border-dashed p-3">
         {(visibleCandidates as EditCandidateItem[]).map((item) => (
           <CandidateCard
             key={item.id}
@@ -90,7 +88,7 @@ const CandidateGroup = (props: CandidateGroupProps) => {
         {isCollapsible && (
           <button
             type="button"
-            className="flex items-center justify-center gap-1 typography-action-sm-reg text-foreground py-2.5 px-2 w-full"
+            className="typography-action-sm-reg text-foreground flex w-full items-center justify-center gap-1 px-2 py-2.5"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             {isExpanded ? "접기" : `+ ${hiddenCount}개 더 보기`}
@@ -108,7 +106,7 @@ const CandidateGroup = (props: CandidateGroupProps) => {
   const { onSelectCandidate } = props as CandidateGroupViewProps;
 
   return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-dashed border-border bg-card p-3">
+    <div className="border-border bg-card flex flex-col gap-3 rounded-3xl border border-dashed p-3">
       {(visibleCandidates as ViewCandidateItem[]).map((item) => (
         <CandidateCard
           key={item.id}
@@ -142,7 +140,7 @@ const CandidateGroup = (props: CandidateGroupProps) => {
         {isCollapsible && (
           <button
             type="button"
-            className="flex items-center gap-1 typography-action-sm-reg text-foreground py-2.5 px-2"
+            className="typography-action-sm-reg text-foreground flex items-center gap-1 px-2 py-2.5"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             {isExpanded ? "접기" : `+ ${hiddenCount}개 더 보기`}
@@ -157,7 +155,7 @@ const CandidateGroup = (props: CandidateGroupProps) => {
           variant="outline"
           size="M"
           className={cn(
-            "h-10 rounded-xl border border-border bg-background typography-action-sm-bold text-foreground",
+            "border-border bg-background typography-action-sm-bold text-foreground h-10 rounded-xl border",
             !isCollapsible ? "w-full" : "",
           )}
           onClick={onSelectCandidate}

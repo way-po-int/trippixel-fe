@@ -12,10 +12,7 @@ import {
   type OpinionCategoryKey,
   type OpinionState,
 } from "@/lib/opinion-bottom-sheet";
-import {
-  useUpdateBlockOpinion,
-  useDeleteBlockOpinion,
-} from "@/lib/hooks/use-block-opinion";
+import { useUpdateBlockOpinion, useDeleteBlockOpinion } from "@/lib/hooks/use-block-opinion";
 import { cn } from "@/lib/utils/utils";
 
 const CUSTOM_INPUT_REASON_ID = 0;
@@ -78,27 +75,19 @@ function PlaceOpinionBottomSheet({
   const closeListSheet = () => onOpenChange(false);
 
   // 수정
-  const [editingOpinion, setEditingOpinion] = useState<BlockOpinion | null>(
-    null,
-  );
-  const [editCurrentState, setEditCurrentState] =
-    useState<OpinionState>("POSITIVE");
-  const [editCurrentReasonIds, setEditCurrentReasonIds] =
-    useState<number[]>(EMPTY_REASON_IDS);
+  const [editingOpinion, setEditingOpinion] = useState<BlockOpinion | null>(null);
+  const [editCurrentState, setEditCurrentState] = useState<OpinionState>("POSITIVE");
+  const [editCurrentReasonIds, setEditCurrentReasonIds] = useState<number[]>(EMPTY_REASON_IDS);
   const [editCurrentCustomText, setEditCurrentCustomText] = useState("");
 
   // 삭제
-  const [deletingOpinion, setDeletingOpinion] = useState<BlockOpinion | null>(
-    null,
-  );
+  const [deletingOpinion, setDeletingOpinion] = useState<BlockOpinion | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const updateMutation = useUpdateBlockOpinion({ planId, blockId });
   const deleteMutation = useDeleteBlockOpinion({ planId, blockId });
 
-  const editEffectiveCustomText = editCurrentReasonIds.includes(
-    CUSTOM_INPUT_REASON_ID,
-  )
+  const editEffectiveCustomText = editCurrentReasonIds.includes(CUSTOM_INPUT_REASON_ID)
     ? editCurrentCustomText
     : "";
 
@@ -106,13 +95,10 @@ function PlaceOpinionBottomSheet({
     ? editCurrentState !== editingOpinion.type ||
       editEffectiveCustomText !== (editingOpinion.comment ?? "") ||
       JSON.stringify(
-        [
-          ...editCurrentReasonIds.filter((id) => id !== CUSTOM_INPUT_REASON_ID),
-        ].sort((a, b) => a - b),
-      ) !==
-        JSON.stringify(
-          [...editingOpinion.tag_ids.map(Number)].sort((a, b) => a - b),
-        )
+        [...editCurrentReasonIds.filter((id) => id !== CUSTOM_INPUT_REASON_ID)].sort(
+          (a, b) => a - b,
+        ),
+      ) !== JSON.stringify([...editingOpinion.tag_ids.map(Number)].sort((a, b) => a - b))
     : false;
 
   const handleOpenEditor = (opinion: BlockOpinion) => {
@@ -141,12 +127,8 @@ function PlaceOpinionBottomSheet({
   const handleConfirmUpdate = () => {
     if (!editingOpinion || updateMutation.isPending || !hasChanged) return;
 
-    const hasCustomInput = editCurrentReasonIds.includes(
-      CUSTOM_INPUT_REASON_ID,
-    );
-    const tagIds = editCurrentReasonIds
-      .filter((id) => id !== CUSTOM_INPUT_REASON_ID)
-      .map(String);
+    const hasCustomInput = editCurrentReasonIds.includes(CUSTOM_INPUT_REASON_ID);
+    const tagIds = editCurrentReasonIds.filter((id) => id !== CUSTOM_INPUT_REASON_ID).map(String);
 
     updateMutation.mutate(
       {
@@ -154,9 +136,7 @@ function PlaceOpinionBottomSheet({
         payload: {
           type: editCurrentState,
           tag_ids: tagIds,
-          ...(hasCustomInput
-            ? { comment: editCurrentCustomText.trim() }
-            : { comment: "" }),
+          ...(hasCustomInput ? { comment: editCurrentCustomText.trim() } : { comment: "" }),
         },
       },
       { onSuccess: closeEditor },
@@ -176,7 +156,7 @@ function PlaceOpinionBottomSheet({
         content={
           <div className="flex flex-col gap-4">
             {opinions.length === 0 ? (
-              <div className="flex h-32 items-center justify-center typography-body-sm-reg text-muted-foreground">
+              <div className="typography-body-sm-reg text-muted-foreground flex h-32 items-center justify-center">
                 의견이 없어요
               </div>
             ) : (
@@ -246,10 +226,7 @@ function PlaceOpinionBottomSheet({
           const target = deletingOpinion ?? editingOpinion;
           if (!target || deleteMutation.isPending) return;
           closeListSheet();
-          deleteMutation.mutate(
-            { opinionId: target.opinion_Id },
-            { onSuccess: closeEditor },
-          );
+          deleteMutation.mutate({ opinionId: target.opinion_Id }, { onSuccess: closeEditor });
         }}
       />
     </>

@@ -12,7 +12,7 @@ type DayNavItem = {
   disabled?: boolean;
 };
 
-interface DayNavProps {
+type DayNavProps = {
   /** 버튼 목록 */
   items: DayNavItem[];
   /** 선택값 (controlled) */
@@ -31,7 +31,7 @@ interface DayNavProps {
   inactiveItemClassName?: string;
 
   ariaLabel?: string;
-}
+};
 
 const DayNav = ({
   items,
@@ -95,7 +95,7 @@ const DayNav = ({
               "h-10 shrink-0 rounded-xl px-3",
               isActive
                 ? "bg-foreground text-primary-foreground typography-body-sm-bold"
-                : "bg-transparent border border-border typography-body-sm-reg",
+                : "border-border typography-body-sm-reg border bg-transparent",
               itemClassName,
               isActive ? activeItemClassName : inactiveItemClassName,
             )}

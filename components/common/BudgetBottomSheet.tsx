@@ -8,9 +8,9 @@ import AppAlertDialog from "@/components/common/AppAlertDialog";
 import BudgetInputField from "@/components/common/BudgetInputField";
 
 type BudgetBottomSheetMode =
-  | "add-expense"       // 지출 추가
-  | "edit-expense"      // 지출 수정/삭제
-  | "create-expense";   // 추가 지출 생성
+  | "add-expense" // 지출 추가
+  | "edit-expense" // 지출 수정/삭제
+  | "create-expense"; // 추가 지출 생성
 
 type ExpenseItem = {
   id: number;
@@ -44,9 +44,9 @@ type BudgetBottomSheetProps = {
 };
 
 const BUTTON_CONFIG = {
-  "add-expense":    { cancelLabel: "취소",    confirmLabel: "저장하기" },
-  "edit-expense":   { cancelLabel: "삭제하기", confirmLabel: "수정하기" },
-  "create-expense": { cancelLabel: "취소",    confirmLabel: "저장하기" },
+  "add-expense": { cancelLabel: "취소", confirmLabel: "저장하기" },
+  "edit-expense": { cancelLabel: "삭제하기", confirmLabel: "수정하기" },
+  "create-expense": { cancelLabel: "취소", confirmLabel: "저장하기" },
 } satisfies Record<BudgetBottomSheetMode, { cancelLabel: string; confirmLabel?: string }>;
 
 const formatAmount = (raw: string) => {
@@ -86,13 +86,11 @@ function BudgetBottomSheet({
   const [createAmount, setCreateAmount] = useState("0");
 
   const updateItem = (id: number, field: "name" | "amount", value: string) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
-    );
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
   const updateEditFormItem = (id: number, field: "name" | "amount", value: string) => {
     setEditFormItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     );
   };
 
@@ -120,31 +118,38 @@ function BudgetBottomSheet({
 
   const hasTitle = mode === "add-expense" || mode === "edit-expense";
   const { cancelLabel: defaultCancelLabel, confirmLabel } = BUTTON_CONFIG[mode];
-  const cancelLabel =
-    mode === "edit-expense" && isEditFormMode ? "취소" : defaultCancelLabel;
+  const cancelLabel = mode === "edit-expense" && isEditFormMode ? "취소" : defaultCancelLabel;
 
   const isAddExpenseValid = items.every(
-    (item) => item.name.trim() !== "" && Number(item.amount.replace(/,/g, "")) > 0
+    (item) => item.name.trim() !== "" && Number(item.amount.replace(/,/g, "")) > 0,
   );
   const isCreateExpenseValid =
     createName.trim() !== "" && Number(createAmount.replace(/,/g, "")) > 0;
   const isEditExpenseValid = editFormItems.every(
-    (item) => item.name.trim() !== "" && Number(item.amount.replace(/,/g, "")) > 0
+    (item) => item.name.trim() !== "" && Number(item.amount.replace(/,/g, "")) > 0,
   );
 
   const confirmDisabled =
-    mode === "add-expense" ? !isAddExpenseValid :
-    mode === "edit-expense" && isEditFormMode ? !isEditExpenseValid :
-    mode === "create-expense" ? !isCreateExpenseValid :
-    false;
+    mode === "add-expense"
+      ? !isAddExpenseValid
+      : mode === "edit-expense" && isEditFormMode
+        ? !isEditExpenseValid
+        : mode === "create-expense"
+          ? !isCreateExpenseValid
+          : false;
 
   const sheetHeight =
-    mode === "create-expense" ? "h-139" :
-    mode === "edit-expense" && isEditFormMode
-      ? editFormItems.length === 1 ? "h-168.75" : "h-183.25"
-      : mode === "edit-expense" ? "h-168.75" :
-    items.length === 1 ? "h-168.75" :
-    "h-183.25";
+    mode === "create-expense"
+      ? "h-139"
+      : mode === "edit-expense" && isEditFormMode
+        ? editFormItems.length === 1
+          ? "h-168.75"
+          : "h-183.25"
+        : mode === "edit-expense"
+          ? "h-168.75"
+          : items.length === 1
+            ? "h-168.75"
+            : "h-183.25";
 
   /* ── add-expense 콘텐츠 ── */
   const addExpenseContent = (
@@ -169,7 +174,7 @@ function BudgetBottomSheet({
                   <button
                     type="button"
                     onClick={() => removeItem(item.id)}
-                    className="flex size-9 items-center justify-center rounded-2xl p-1.25 hover:bg-accent"
+                    className="hover:bg-accent flex size-9 items-center justify-center rounded-2xl p-1.25"
                   >
                     <Trash2 className="size-4.5 text-[#1C2024]" strokeWidth={2} />
                   </button>
@@ -212,20 +217,18 @@ function BudgetBottomSheet({
           >
             {/* 지출 항목 */}
             <div className="flex flex-col gap-2">
-              <span className="font-sans text-sm font-semibold leading-5 text-[#1C2024]">
+              <span className="font-sans text-sm leading-5 font-semibold text-[#1C2024]">
                 지출 항목
               </span>
-              <span className="font-sans text-base font-normal leading-6 text-[#1C2024]">
+              <span className="font-sans text-base leading-6 font-normal text-[#1C2024]">
                 {item.name}
               </span>
             </div>
 
             {/* 금액 */}
             <div className="flex flex-col gap-2">
-              <span className="font-sans text-sm font-semibold leading-5 text-[#1C2024]">
-                금액
-              </span>
-              <span className="font-sans text-base font-normal leading-6 text-[#1C2024]">
+              <span className="font-sans text-sm leading-5 font-semibold text-[#1C2024]">금액</span>
+              <span className="font-sans text-base leading-6 font-normal text-[#1C2024]">
                 {item.cost.toLocaleString("ko-KR")} 원
               </span>
             </div>
@@ -257,7 +260,7 @@ function BudgetBottomSheet({
                   <button
                     type="button"
                     onClick={() => removeEditFormItem(item.id)}
-                    className="flex size-9 items-center justify-center rounded-2xl p-1.25 hover:bg-accent"
+                    className="hover:bg-accent flex size-9 items-center justify-center rounded-2xl p-1.25"
                   >
                     <Trash2 className="size-4.5 text-[#1C2024]" strokeWidth={2} />
                   </button>
@@ -314,7 +317,7 @@ function BudgetBottomSheet({
         className={sheetHeight}
         header={
           hasTitle ? (
-            <h2 className="mb-2 w-full text-center font-sans text-lg font-semibold leading-4 tracking-normal text-black">
+            <h2 className="mb-2 w-full text-center font-sans text-lg leading-4 font-semibold tracking-normal text-black">
               {placeName ?? ""}
             </h2>
           ) : undefined
@@ -340,7 +343,7 @@ function BudgetBottomSheet({
             ? () => {
                 if (!isEditFormMode) {
                   setEditFormItems(
-                    editItems.length > 0 ? editItems.map(createItemFromEdit) : [createItem()]
+                    editItems.length > 0 ? editItems.map(createItemFromEdit) : [createItem()],
                   );
                   setIsEditFormMode(true);
                   return;
@@ -351,7 +354,7 @@ function BudgetBottomSheet({
                     expense_item_id: i.expense_item_id,
                     name: i.name,
                     cost: Number(i.amount.replace(/,/g, "")),
-                  }))
+                  })),
                 );
                 onConfirm?.();
               }
@@ -362,12 +365,10 @@ function BudgetBottomSheet({
                     items.map((i) => ({
                       name: i.name,
                       cost: Number(i.amount.replace(/,/g, "")),
-                    }))
+                    })),
                   );
                 } else if (mode === "create-expense") {
-                  onSave?.([
-                    { name: createName, cost: Number(createAmount.replace(/,/g, "")) },
-                  ]);
+                  onSave?.([{ name: createName, cost: Number(createAmount.replace(/,/g, "")) }]);
                 }
                 onConfirm?.();
               }
@@ -376,7 +377,8 @@ function BudgetBottomSheet({
         content={
           <div>
             {mode === "add-expense" && addExpenseContent}
-            {mode === "edit-expense" && (isEditFormMode ? editExpenseFormContent : editExpenseContent)}
+            {mode === "edit-expense" &&
+              (isEditFormMode ? editExpenseFormContent : editExpenseContent)}
             {mode === "create-expense" && createExpenseContent}
           </div>
         }

@@ -26,11 +26,11 @@ function InputForm({
       data-error={error || undefined}
       aria-invalid={error || undefined}
       className={cn(
-        "flex items-center gap-2 h-11 w-full rounded-xl bg-muted px-3 py-2",
-        "outline-none border border-transparent",
+        "bg-muted flex h-11 w-full items-center gap-2 rounded-xl px-3 py-2",
+        "border border-transparent outline-none",
         "transition-all",
         "has-focus:border-sky-500 has-focus:ring-2 has-focus:ring-sky-500/25",
-        "has-disabled:cursor-not-allowed has-disabled:bg-border has-disabled:opacity-100",
+        "has-disabled:bg-border has-disabled:cursor-not-allowed has-disabled:opacity-100",
         "aria-invalid:border-destructive aria-invalid:ring-0",
         className,
       )}
@@ -46,23 +46,11 @@ function InputForm({
       />
       {!hideIcon &&
         (iconClick ? (
-          <button
-            type="button"
-            onClick={iconClick}
-            className="shrink-0"
-            aria-label="아이콘 버튼"
-          >
-            <Icon
-              className={cn("size-5 text-muted-foreground", iconClassName)}
-            />
+          <button type="button" onClick={iconClick} className="shrink-0" aria-label="아이콘 버튼">
+            <Icon className={cn("text-muted-foreground size-5", iconClassName)} />
           </button>
         ) : (
-          <Icon
-            className={cn(
-              "size-5 shrink-0 text-muted-foreground",
-              iconClassName,
-            )}
-          />
+          <Icon className={cn("text-muted-foreground size-5 shrink-0", iconClassName)} />
         ))}
     </div>
   );

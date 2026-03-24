@@ -10,7 +10,7 @@ import CheckBox from "../common/CheckBox";
 const BASE_WIDTH = 335;
 const SCALE_EPSILON = 0.01;
 
-interface PlanCardSelectionProps {
+type PlanCardSelectionProps = {
   title: string;
   address?: string;
   imageSrc?: string;
@@ -22,7 +22,7 @@ interface PlanCardSelectionProps {
   onSelected?: (selected: boolean) => void;
   selectionType?: "radio" | "check";
   className?: string;
-}
+};
 
 const PlanCardSelection = ({
   title,
@@ -75,21 +75,16 @@ const PlanCardSelection = ({
           {/* 이미지 영역 */}
           <div className="relative h-[152.27px] w-full overflow-hidden bg-white">
             {imageSrc ? (
-              <Image
-                src={imageSrc}
-                alt={imageAlt ?? title}
-                fill
-                className="object-cover"
-              />
+              <Image src={imageSrc} alt={imageAlt ?? title} fill className="object-cover" />
             ) : (
               <div className="h-full w-full bg-neutral-100" />
             )}
 
             {/* Pick / Pass 투표 현황 - 이미지 좌하단 */}
-            <div className="absolute bottom-0 left-0 flex w-full items-end justify-between pb-2.5 pr-2.5 pl-3.5">
+            <div className="absolute bottom-0 left-0 flex w-full items-end justify-between pr-2.5 pb-2.5 pl-3.5">
               {/* 투표 수 pill — w:122 h:36 px:16 py:8 gap:10 */}
               <div
-                className="flex h-9 w-30.5 items-center justify-between rounded-full px-4 py-2 gap-2.5 backdrop-blur"
+                className="flex h-9 w-30.5 items-center justify-between gap-2.5 rounded-full px-4 py-2 backdrop-blur"
                 style={{ background: "rgba(252, 252, 252, 0.6)" }}
               >
                 {/* Pick 버튼 — w:35 h:20 gap:6 */}
@@ -102,10 +97,7 @@ const PlanCardSelection = ({
                       fill: "none",
                     }}
                   />
-                  <span
-                    className="typography-body-sm-reg leading-5"
-                    style={{ color: "#757575" }}
-                  >
+                  <span className="typography-body-sm-reg leading-5" style={{ color: "#757575" }}>
                     {pickCount}
                   </span>
                 </div>
@@ -123,10 +115,7 @@ const PlanCardSelection = ({
                       fill: "none",
                     }}
                   />
-                  <span
-                    className="typography-body-sm-reg leading-5"
-                    style={{ color: "#757575" }}
-                  >
+                  <span className="typography-body-sm-reg leading-5" style={{ color: "#757575" }}>
                     {passCount}
                   </span>
                 </div>
@@ -137,24 +126,11 @@ const PlanCardSelection = ({
           {/* 선택 영역 */}
           <div className="flex items-start gap-2.5 rounded-br-3xl pt-3.5 pr-5 pb-5 pl-5">
             {/* Radio */}
-            <div
-              className="shrink-0 pt-0.75"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="shrink-0 pt-0.75" onClick={(e) => e.stopPropagation()}>
               {selectionType === "radio" ? (
-                <Radio
-                  id={id}
-                  name={name}
-                  selected={isSelected}
-                  onSelected={onSelected}
-                />
+                <Radio id={id} name={name} selected={isSelected} onSelected={onSelected} />
               ) : (
-                <CheckBox
-                  id={id}
-                  name={name}
-                  checked={isSelected}
-                  onCheckedChange={onSelected}
-                />
+                <CheckBox id={id} name={name} checked={isSelected} onCheckedChange={onSelected} />
               )}
             </div>
 
@@ -170,9 +146,7 @@ const PlanCardSelection = ({
                     strokeWidth={2}
                     style={{ stroke: "#525252" }}
                   />
-                  <span className="typography-body-sm-reg truncate text-[#525252]">
-                    {address}
-                  </span>
+                  <span className="typography-body-sm-reg truncate text-[#525252]">{address}</span>
                 </div>
               )}
             </div>

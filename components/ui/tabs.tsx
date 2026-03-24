@@ -56,29 +56,14 @@ const tabsTriggerVariants = cva(
   },
 );
 
-function Tabs({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      className={cn("w-full", className)}
-      {...props}
-    />
-  );
+function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Root>) {
+  return <TabsPrimitive.Root data-slot="tabs" className={cn("w-full", className)} {...props} />;
 }
 
 type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> &
   VariantProps<typeof tabsListVariants>;
 
-function TabsList({
-  className,
-  size,
-  fullWidth,
-  style,
-  ...props
-}: TabsListProps) {
+function TabsList({ className, size, fullWidth, style, ...props }: TabsListProps) {
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
@@ -121,15 +106,12 @@ function TabsTrigger({
   );
 }
 
-function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Content>) {
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
       className={cn(
-        "mt-3 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "focus-visible:ring-ring/50 mt-3 outline-none focus-visible:ring-[3px]",
         className,
       )}
       {...props}

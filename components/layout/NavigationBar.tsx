@@ -16,14 +16,14 @@ const NAV_ITEMS = [
 
 type NavigationBarVariant = "default" | "variant2" | "variant3";
 
-interface NavigationBarProps {
+type NavigationBarProps = {
   className?: string;
   variant?: NavigationBarVariant;
   activeMode?: "planMode" | "budget";
   onPlanModeClick?: () => void;
   onBudgetClick?: () => void;
   onAddPlaceClick?: () => void;
-}
+};
 
 const NavigationBar = ({
   className = "",
@@ -40,10 +40,9 @@ const NavigationBar = ({
   if (variant === "variant3") {
     return (
       <div
-        className={cn("relative w-full h-18", className)}
+        className={cn("relative h-18 w-full", className)}
         style={{
-          background:
-            "linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, #FCFCFC 78%)",
+          background: "linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, #FCFCFC 78%)",
         }}
       >
         {/* Bottom_nav floating pill */}
@@ -57,7 +56,7 @@ const NavigationBar = ({
         >
           {/* Overlay pill: PlanMode default + PlanMode variant2 (full width, equal halves) */}
           <div
-            className="flex flex-1 items-center gap-2 rounded-full p-1 h-10"
+            className="flex h-10 flex-1 items-center gap-2 rounded-full p-1"
             style={{ background: "rgba(214, 214, 214, 0.4)" }}
           >
             <PlanMode
@@ -82,10 +81,9 @@ const NavigationBar = ({
   if (variant === "variant2") {
     return (
       <div
-        className={cn("relative w-full h-18", className)}
+        className={cn("relative h-18 w-full", className)}
         style={{
-          background:
-            "linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, #FCFCFC 78%)",
+          background: "linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, #FCFCFC 78%)",
         }}
       >
         {/* Bottom_nav floating pill */}
@@ -99,32 +97,28 @@ const NavigationBar = ({
         >
           {/* Overlay pill: PlanMode default + PlanMode variant2 */}
           <div
-            className="flex flex-1 items-center gap-2 rounded-full p-1 h-10"
+            className="flex h-10 flex-1 items-center gap-2 rounded-full p-1"
             style={{ background: "rgba(214, 214, 214, 0.4)" }}
           >
             <PlanMode
               text="여행 일정"
               variant={activeMode === "planMode" ? "default" : "variant2"}
-              className="flex-122 min-w-0"
+              className="min-w-0 flex-122"
               onClick={onPlanModeClick}
             />
             <PlanMode
               text="예산"
               variant={activeMode === "budget" ? "default" : "variant2"}
-              className="flex-66 min-w-0"
+              className="min-w-0 flex-66"
               onClick={onBudgetClick}
             />
           </div>
 
           {/* Vertical divider */}
-          <div className="mx-2 w-px h-10 shrink-0 bg-[#E2E2E2]/50" />
+          <div className="mx-2 h-10 w-px shrink-0 bg-[#E2E2E2]/50" />
 
           {/* PlanAddPlace */}
-          <PlanAddPlace
-            text="장소 추가"
-            className="h-10"
-            onClick={onAddPlaceClick}
-          />
+          <PlanAddPlace text="장소 추가" className="h-10" onClick={onAddPlaceClick} />
         </div>
       </div>
     );
@@ -133,29 +127,26 @@ const NavigationBar = ({
   return (
     <nav
       className={cn(
-        "flex w-full h-18 items-start justify-around rounded-t-2xl px-4 bg-[#1c2024]",
+        "flex h-18 w-full items-start justify-around rounded-t-2xl bg-[#1c2024] px-4",
         className,
       )}
     >
       {NAV_ITEMS.map((item) => {
-        const isActive =
-          pathname === item.path || pathname.startsWith(item.path + "/");
+        const isActive = pathname === item.path || pathname.startsWith(item.path + "/");
         const Icon = item.Icon;
 
         return (
           <div
             key={item.path}
-            className="w-full h-13 flex items-end justify-center text-primary-foreground"
+            className="text-primary-foreground flex h-13 w-full items-end justify-center"
           >
             <button
               onClick={() => router.push(item.path)}
-              className="flex flex-col gap-0.5 items-center justify-center transition-colors"
+              className="flex flex-col items-center justify-center gap-0.5 transition-colors"
             >
               <Icon />
 
-              <span
-                className={`${isActive ? "typography-nav-xl-bold" : "typography-nav-xl-reg"}`}
-              >
+              <span className={`${isActive ? "typography-nav-xl-bold" : "typography-nav-xl-reg"}`}>
                 {item.label}
               </span>
             </button>

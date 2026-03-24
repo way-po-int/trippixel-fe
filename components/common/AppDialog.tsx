@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-interface AppDialogProps {
+type AppDialogProps = {
   /** 다이얼로그를 여는 트리거 요소 (선택 — controlled 모드에서는 생략 가능) */
   trigger?: React.ReactNode;
   /** controlled open 상태 */
@@ -32,7 +32,7 @@ interface AppDialogProps {
   onAction?: () => void;
   /** DialogContent에 추가할 className */
   contentClassName?: string;
-}
+};
 
 const AppDialog = ({
   open,
@@ -48,10 +48,7 @@ const AppDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-      <DialogContent
-        showCloseButton={false}
-        className={cn("px-0 pb-0 gap-0", contentClassName)}
-      >
+      <DialogContent showCloseButton={false} className={cn("gap-0 px-0 pb-0", contentClassName)}>
         {/* 우측 상단 X 버튼 */}
         <DialogClose className="absolute top-4 right-4">
           <X size={20} className="text-foreground" />
@@ -59,12 +56,10 @@ const AppDialog = ({
         </DialogClose>
 
         {/* 헤더 */}
-        <DialogHeader className="px-6 pt-2 pb-4 items-start">
-          <DialogTitle className="typography-display-lg-bold">
-            {title}
-          </DialogTitle>
+        <DialogHeader className="items-start px-6 pt-2 pb-4">
+          <DialogTitle className="typography-display-lg-bold">{title}</DialogTitle>
           {description && (
-            <DialogDescription className="typography-action-sm-leg text-[#71717a] whitespace-pre-line">
+            <DialogDescription className="typography-action-sm-leg whitespace-pre-line text-[#71717a]">
               {description}
             </DialogDescription>
           )}
@@ -77,7 +72,7 @@ const AppDialog = ({
         {actionLabel && (
           <div className="px-5 pb-5">
             <Button
-              className="w-full bg-[#0ea5e9] hover:bg-[#0ea5e9]/90 text-white typography-action-sm-bold"
+              className="typography-action-sm-bold w-full bg-[#0ea5e9] text-white hover:bg-[#0ea5e9]/90"
               onClick={onAction}
             >
               {actionLabel}

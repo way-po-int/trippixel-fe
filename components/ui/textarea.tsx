@@ -13,13 +13,13 @@ function Textarea({ className, error, ...props }: TextareaProps) {
         data-slot="textarea"
         aria-invalid={error || undefined}
         className={cn(
-          "flex w-full min-h-11 field-sizing-content rounded-xl bg-[#F0F0F0] px-3 py-3",
+          "flex field-sizing-content min-h-11 w-full rounded-xl bg-[#F0F0F0] px-3 py-3",
           "typography-body-sm-reg text-foreground",
           "placeholder:text-muted-foreground",
-          "outline-none border border-transparent",
-          "transition-all resize-y",
+          "border border-transparent outline-none",
+          "resize-y transition-all",
           "focus:border-sky-500 focus:ring-2 focus:ring-sky-500/25",
-          "disabled:cursor-not-allowed disabled:bg-border disabled:opacity-100",
+          "disabled:bg-border disabled:cursor-not-allowed disabled:opacity-100",
           "aria-invalid:border-destructive aria-invalid:ring-0",
           className,
         )}

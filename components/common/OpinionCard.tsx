@@ -33,9 +33,7 @@ const TYPE_ICON_COLOR: Record<OpinionState, string> = {
 
 function OpinionTypeLabel({ type }: { type: OpinionState }) {
   return (
-    <div
-      className="flex h-6 items-center gap-1 typography-body-sm-bold"
-    >
+    <div className="typography-body-sm-bold flex h-6 items-center gap-1">
       <span className={cn("inline-flex size-6 shrink-0 [&_svg]:size-6", TYPE_ICON_COLOR[type])}>
         {TYPE_ICON[type]}
       </span>
@@ -64,12 +62,7 @@ function OpinionCard({
   const hasComment = Boolean(opinion.comment);
 
   return (
-    <div
-      className={cn(
-        "flex w-full flex-col gap-1 rounded-xl bg-card p-3",
-        className,
-      )}
-    >
+    <div className={cn("bg-card flex w-full flex-col gap-1 rounded-xl p-3", className)}>
       {/* Inner frame */}
       <div className="flex flex-col gap-3">
         {/* 의견 유형 헤더 */}
@@ -78,7 +71,7 @@ function OpinionCard({
         </div>
 
         {/* 구분선 */}
-        <div className="h-px bg-border" />
+        <div className="bg-border h-px" />
 
         {/* 칩 + 코멘트 영역 */}
         <div className="flex flex-col gap-2">
@@ -89,7 +82,7 @@ function OpinionCard({
                 <Chip
                   key={id}
                   variant="primary"
-                  className="h-8 w-fit cursor-default gap-2.5 rounded-xl border-border bg-white px-3 py-1.5 typography-body-sm-reg hover:border-border hover:bg-white"
+                  className="border-border typography-body-sm-reg hover:border-border h-8 w-fit cursor-default gap-2.5 rounded-xl bg-white px-3 py-1.5 hover:bg-white"
                 >
                   {getTagText(categoryKey, opinion.type, id)}
                 </Chip>
@@ -99,13 +92,15 @@ function OpinionCard({
 
           {/* 태그와 직접 입력 코멘트 사이 구분선 */}
           {showDividerBetweenTagsAndComment && hasTags && hasComment && (
-            <div className="h-px bg-border" />
+            <div className="bg-border h-px" />
           )}
 
           {/* 직접 입력 코멘트 */}
           {hasComment && (
             <div className="flex w-full flex-col gap-2 rounded-xl bg-white px-3 py-2">
-              <p className="text-sm font-normal leading-5 text-foreground">&ldquo;{opinion.comment}&rdquo;</p>
+              <p className="text-foreground text-sm leading-5 font-normal">
+                &ldquo;{opinion.comment}&rdquo;
+              </p>
             </div>
           )}
         </div>

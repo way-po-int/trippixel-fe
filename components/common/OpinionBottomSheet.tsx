@@ -68,12 +68,16 @@ function OpinionBottomSheet({
   className,
 }: OpinionBottomSheetProps) {
   const [internalState, setInternalState] = useState<OpinionState>("POSITIVE");
-  const [internalSelectedReasonIdsByState, setInternalSelectedReasonIdsByState] = useState<Record<OpinionState, number[]>>({
+  const [internalSelectedReasonIdsByState, setInternalSelectedReasonIdsByState] = useState<
+    Record<OpinionState, number[]>
+  >({
     POSITIVE: [],
     NEUTRAL: [],
     NEGATIVE: [],
   });
-  const [internalCustomInputTextByState, setInternalCustomInputTextByState] = useState<Record<OpinionState, string>>({
+  const [internalCustomInputTextByState, setInternalCustomInputTextByState] = useState<
+    Record<OpinionState, string>
+  >({
     POSITIVE: "",
     NEUTRAL: "",
     NEGATIVE: "",
@@ -148,7 +152,7 @@ function OpinionBottomSheet({
                 value={customInputText}
                 onChange={handleCustomInputTextChange}
                 placeholder="의견을 직접 입력해 주세요"
-                className="min-h-11 w-full rounded-xl bg-[#F0F0F0] px-3 py-0.75 typography-body-sm-reg"
+                className="typography-body-sm-reg min-h-11 w-full rounded-xl bg-[#F0F0F0] px-3 py-0.75"
               />
             )}
           </div>
@@ -157,10 +161,10 @@ function OpinionBottomSheet({
       header={
         <div className="mb-5 flex w-full flex-col gap-5">
           <div className="flex h-19 flex-col gap-2">
-            <span className="h-7 w-full typography-display-lg-bold text-foreground">
+            <span className="typography-display-lg-bold text-foreground h-7 w-full">
               장소에 대한 의견을 남겨보세요
             </span>
-            <span className="h-10 w-40.75 typography-body-sm-reg text-muted-foreground">
+            <span className="typography-body-sm-reg text-muted-foreground h-10 w-40.75">
               의견을 함께 남기면 팀원들의 생각을 쉽게 이해할 수 있어요.
             </span>
           </div>
@@ -169,13 +173,7 @@ function OpinionBottomSheet({
           <Tabs value={state} onValueChange={handleStateChange} className="w-full">
             <TabsList style="underline" fullWidth className="w-full">
               {(["POSITIVE", "NEUTRAL", "NEGATIVE"] as const).map((s) => (
-                <TabsTrigger
-                  key={s}
-                  value={s}
-                  style="underline"
-                  fullWidth
-                  icon={STATE_ICONS[s]}
-                >
+                <TabsTrigger key={s} value={s} style="underline" fullWidth icon={STATE_ICONS[s]}>
                   {OPINION_STATE_LABEL[s]}
                 </TabsTrigger>
               ))}

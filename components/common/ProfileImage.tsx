@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-interface ProfileImageProps {
+type ProfileImageProps = {
   size?: "sm" | "md" | "lg";
   src: string;
   alt: string;
   isOutLine?: boolean;
   className?: string;
-}
+};
 
 const ProfileImage = ({
   size = "sm",
@@ -20,14 +20,14 @@ const ProfileImage = ({
     <Avatar
       className={cn(
         size === "sm" && "size-7",
-        size === "md" && "w-[60px] h-[60px]",
-        size === "lg" && "w-[86px] h-[86px]",
+        size === "md" && "h-[60px] w-[60px]",
+        size === "lg" && "h-[86px] w-[86px]",
         isOutLine && "ring-8 ring-[#f0f0f0]",
         className,
       )}
     >
       <AvatarImage src={src ? src.replace(/^http:\/\//, "https://") : undefined} alt={alt} />
-      <AvatarFallback className="bg-gray-300 typography-label-sm-sb text-foreground">
+      <AvatarFallback className="typography-label-sm-sb text-foreground bg-gray-300">
         {alt.slice(0, 2)}
       </AvatarFallback>
     </Avatar>

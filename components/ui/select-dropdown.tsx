@@ -30,7 +30,7 @@ function SelectDropdown({ className, items, ...props }: SelectDropdownProps) {
     <DropdownMenuContent
       align="end"
       className={cn(
-        "w-[148px] rounded-xl border border-border bg-background p-1",
+        "border-border bg-background w-[148px] rounded-xl border p-1",
         "shadow-[0px_2px_4px_-1px_#0000000F,0px_4px_6px_-1px_#0000001A]",
         className,
       )}
@@ -47,19 +47,19 @@ function SelectDropdown({ className, items, ...props }: SelectDropdownProps) {
               disabled={item.disabled}
               onSelect={item.onSelect}
               className={cn(
-                "flex w-full items-center gap-1.5 rounded-lg bg-background px-2.5 py-1.5 text-left",
+                "bg-background flex w-full items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-left",
                 "hover:bg-accent disabled:pointer-events-none disabled:opacity-50",
                 hasDescription ? "min-h-8" : "h-8",
               )}
             >
               {item.icon && (
-                <span className="shrink-0 text-foreground [&_svg]:size-4 [&_svg]:opacity-100">
+                <span className="text-foreground shrink-0 [&_svg]:size-4 [&_svg]:opacity-100">
                   {item.icon}
                 </span>
               )}
 
               <span className="min-w-0 flex-1">
-                <span className="block truncate typography-select-sm-reg text-foreground">
+                <span className="typography-select-sm-reg text-foreground block truncate">
                   {item.label}
                 </span>
               </span>

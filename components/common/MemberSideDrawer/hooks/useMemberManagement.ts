@@ -3,11 +3,11 @@ import { useKickCollectionMember } from "@/lib/hooks/collection/use-kick-collect
 import { useChangePlanOwner } from "@/lib/hooks/plan/use-change-plan-owner";
 import { useKickPlanMember } from "@/lib/hooks/plan/use-kick-plan-member";
 
-interface UseMemberManagementProps {
+type UseMemberManagementProps = {
   variant: "COLLECTION" | "PLAN";
   collectionId?: string;
   planId?: string;
-}
+};
 
 export const useMemberManagement = ({
   variant,

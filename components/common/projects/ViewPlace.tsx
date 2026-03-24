@@ -1,22 +1,18 @@
 "use client";
 
-import CandidateGroup, {
-  ViewCandidateItem,
-} from "@/components/card/CandidateGroup";
-import { ReactionType } from "@/components/card/PlaceReactionItem";
-import { PlaceType } from "@/components/card/PlaceTypeIcon";
+import CandidateGroup, { type ViewCandidateItem } from "@/components/card/CandidateGroup";
+import { type ReactionType } from "@/components/card/PlaceReactionItem";
+import { type PlaceType } from "@/components/card/PlaceTypeIcon";
 import PlanPlaceCard from "@/components/card/PlanPlaceCard";
-import { BlockStatus, TimeBlockType } from "@/lib/api/block";
-import { OpinionCategoryKey } from "@/lib/opinion-bottom-sheet";
+import { type BlockStatus, type TimeBlockType } from "@/lib/api/block";
+import { type OpinionCategoryKey } from "@/lib/opinion-bottom-sheet";
 import { cn } from "@/lib/utils/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PlaceOpinionBottomSheet from "../PlaceOpinionBottomSheet";
 import { useBlockDetail } from "@/lib/hooks/use-block-detail";
 
-const resolveOpinionCategoryKey = (
-  placeType: PlaceType,
-): OpinionCategoryKey => {
+const resolveOpinionCategoryKey = (placeType: PlaceType): OpinionCategoryKey => {
   switch (placeType) {
     case "식당":
     case "주점":
@@ -71,7 +67,7 @@ type SingleCandidateCard = {
   activeReaction?: ReactionType;
 };
 
-interface ViewPlaceProps {
+type ViewPlaceProps = {
   planId: string;
   timeBlockId: string;
   blockStatus: BlockStatus;
@@ -83,7 +79,7 @@ interface ViewPlaceProps {
   candidates: ViewCandidateItem[];
   isLast?: boolean;
   className?: string;
-}
+};
 
 const ViewPlace = ({
   planId,
@@ -98,12 +94,10 @@ const ViewPlace = ({
   const router = useRouter();
 
   const [opinionOpen, setOpinionOpen] = useState(false);
-  const [opinionBlockId, setOpinionBlockId] = useState<string | undefined>(
+  const [opinionBlockId, setOpinionBlockId] = useState<string | undefined>(undefined);
+  const [opinionCategoryKey, setOpinionCategoryKey] = useState<OpinionCategoryKey | undefined>(
     undefined,
   );
-  const [opinionCategoryKey, setOpinionCategoryKey] = useState<
-    OpinionCategoryKey | undefined
-  >(undefined);
 
   const { data: blockDetail } = useBlockDetail({
     planId,
@@ -125,12 +119,12 @@ const ViewPlace = ({
   return (
     <div
       className={cn(
-        "flex items-center ml-0.75 border-l",
+        "ml-0.75 flex items-center border-l",
         isLast ? "border-transparent" : "border-[#D9D9D9]",
         className,
       )}
     >
-      <div className="pl-6 pt-2 pb-4 flex-1 min-w-0">
+      <div className="min-w-0 flex-1 pt-2 pb-4 pl-6">
         {blockStatus === "FIXED" ? (
           // 후보지 확정 상태 카드
           <PlanPlaceCard
@@ -149,12 +143,8 @@ const ViewPlace = ({
             onReselectCandidate={() => {
               // TODO: 추후 후보지 변경 페이지로 이동
             }}
-            onOpinionClick={() =>
-              openOpinions(singleCard.blockId, singleCard.placeType)
-            }
-            onDetailClick={() =>
-              router.push(`/projects/${planId}/block/${singleCard.blockId}`)
-            }
+            onOpinionClick={() => openOpinions(singleCard.blockId, singleCard.placeType)}
+            onDetailClick={() => router.push(`/projects/${planId}/block/${singleCard.blockId}`)}
           />
         ) : isMultiCandidate ? (
           // 후보 2개 이상이면 CandidateGroup
@@ -163,13 +153,10 @@ const ViewPlace = ({
             candidates={candidates.map((c) => ({
               ...c,
               onOpinionClick: () => openOpinions(c.id, c.placeType),
-              onCardClick: () =>
-                router.push(`/projects/${planId}/block/${c.id}`),
+              onCardClick: () => router.push(`/projects/${planId}/block/${c.id}`),
             }))}
             onSelectCandidate={() =>
-              router.push(
-                `/projects/${planId}/select-candidate/${timeBlockId}`,
-              )
+              router.push(`/projects/${planId}/select-candidate/${timeBlockId}`)
             }
           />
         ) : blockType === "FREE" ? (
@@ -182,11 +169,7 @@ const ViewPlace = ({
             memo={singleCard.memo}
             isView={false}
             isFree
-            onFreeClick={() =>
-              router.push(
-                `/projects/${planId}/block/${singleCard.blockId}/free`,
-              )
-            }
+            onFreeClick={() => router.push(`/projects/${planId}/block/${singleCard.blockId}/free`)}
           />
         ) : (
           // 후보 1개일 경우
@@ -200,12 +183,8 @@ const ViewPlace = ({
             reactions={singleCard.reactions}
             opinionCount={singleCard.opinionCount}
             activeReaction={singleCard.activeReaction}
-            onOpinionClick={() =>
-              openOpinions(singleCard.blockId, singleCard.placeType)
-            }
-            onDetailClick={() =>
-              router.push(`/projects/${planId}/block/${singleCard.blockId}`)
-            }
+            onOpinionClick={() => openOpinions(singleCard.blockId, singleCard.placeType)}
+            onDetailClick={() => router.push(`/projects/${planId}/block/${singleCard.blockId}`)}
             isView
           />
         )}

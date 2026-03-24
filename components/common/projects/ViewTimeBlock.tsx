@@ -1,13 +1,13 @@
 "use client";
 
-import { BlockStatus, TimeBlockType } from "@/lib/api/block";
+import { type BlockStatus, type TimeBlockType } from "@/lib/api/block";
 import PlanTime from "./PlanTime";
-import { PlaceType } from "@/components/card/PlaceTypeIcon";
-import { ViewCandidateItem } from "@/components/card/CandidateGroup";
+import { type PlaceType } from "@/components/card/PlaceTypeIcon";
+import { type ViewCandidateItem } from "@/components/card/CandidateGroup";
 import ViewPlace from "./ViewPlace";
-import { ReactionType } from "@/components/card/PlaceReactionItem";
+import { type ReactionType } from "@/components/card/PlaceReactionItem";
 
-interface ViewTimeBlockProps {
+type ViewTimeBlockProps = {
   planId: string;
   timeBlockId: string;
   blockType: TimeBlockType;
@@ -36,7 +36,7 @@ interface ViewTimeBlockProps {
     activeReaction?: ReactionType;
   };
   candidates: ViewCandidateItem[];
-}
+};
 
 const ViewTimeBlock = ({
   planId,

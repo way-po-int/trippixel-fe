@@ -6,14 +6,14 @@ import { Pencil, Settings } from "lucide-react";
 import HeaderBtn from "./HeaderBtn";
 import { useRouter } from "next/navigation";
 
-interface PlanHeaderProps {
+type PlanHeaderProps = {
   title: string;
   day: number;
   isEditing?: boolean;
   href?: string;
   isEditBudget?: boolean;
   className?: string;
-}
+};
 
 const PlanHeader = ({
   title,
@@ -33,25 +33,18 @@ const PlanHeader = ({
   };
 
   return (
-    <div
-      className={cn(
-        "w-full flex items-center justify-between gap-3",
-        className,
-      )}
-    >
-      <div className="flex flex-col items-start gap-1 flex-1 min-w-0">
+    <div className={cn("flex w-full items-center justify-between gap-3", className)}>
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-1">
         <h2
           className={cn(
             "typography-display-2xl text-foreground",
-            "min-w-0 w-full overflow-hidden text-ellipsis whitespace-nowrap",
+            "w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap",
           )}
         >
           {title}
         </h2>
         <p className="text-muted-foreground typography-body-sm-sb">
-          {safeDay === 1
-            ? "당일치기 여행"
-            : `${safeDay - 1}박 ${safeDay}일 여행`}
+          {safeDay === 1 ? "당일치기 여행" : `${safeDay - 1}박 ${safeDay}일 여행`}
         </p>
       </div>
 
@@ -70,9 +63,9 @@ const PlanHeader = ({
           <Button
             variant="default"
             onClick={handleToggleMode}
-            className="h-10 px-4 py-2.5 gap-1 rounded-xl typography-action-sm-bold shrink-0"
+            className="typography-action-sm-bold h-10 shrink-0 gap-1 rounded-xl px-4 py-2.5"
           >
-            <Pencil className="w-4.5 h-4.5 opacity-40 text-black stroke-3" />
+            <Pencil className="h-4.5 w-4.5 stroke-3 text-black opacity-40" />
             편집하기
           </Button>
         ))}

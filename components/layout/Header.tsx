@@ -2,12 +2,12 @@
 
 import { cn } from "@/lib/utils/utils";
 import { useRouter } from "next/navigation";
-import HeaderBtn, { HeaderBtnBgVariant } from "./HeaderBtn";
+import HeaderBtn, { type HeaderBtnBgVariant } from "./HeaderBtn";
 import { ArrowLeft, Bell, X } from "lucide-react";
 import MemberSideDrawer from "../common/MemberSideDrawer";
 import { useNotificationDrawer } from "@/lib/context/notification-drawer-context";
 
-interface HeaderProps {
+type HeaderProps = {
   // 헤더 레이아웃 타입
   variant?: "left" | "center" | "logo";
   // 타이틀 텍스트
@@ -29,7 +29,7 @@ interface HeaderProps {
   leftBtnBgVariant?: HeaderBtnBgVariant;
   rightBtnBgVariant?: HeaderBtnBgVariant;
   className?: string;
-}
+};
 
 const Header = ({
   variant = "left",
@@ -57,13 +57,12 @@ const Header = ({
   const handleClose = () => (onClose ? onClose() : router.back());
 
   // 기본 알림 핸들러
-  const handleNotification = () =>
-    onNotification ? onNotification() : openDrawer();
+  const handleNotification = () => (onNotification ? onNotification() : openDrawer());
 
   return (
     <header
       className={cn(
-        "grid grid-cols-[1fr_auto_1fr] gap-2 w-full h-15 items-center justify-between px-2.5 pt-3.5 pb-0.5 bg-transparent",
+        "grid h-15 w-full grid-cols-[1fr_auto_1fr] items-center justify-between gap-2 bg-transparent px-2.5 pt-3.5 pb-0.5",
         className,
       )}
     >
@@ -79,18 +78,14 @@ const Header = ({
         )}
 
         {variant === "logo" && (
-          <h1 className="text-2xl font-extrabold leading-8 text-foreground">
-            TripPixel
-          </h1>
+          <h1 className="text-foreground text-2xl leading-8 font-extrabold">TripPixel</h1>
         )}
       </div>
 
       {/* 중앙 타이틀 (center variant) */}
       <div className="min-w-0">
         {variant === "center" && title ? (
-          <h1 className="text-center typography-display-xl text-foreground truncate">
-            {title}
-          </h1>
+          <h1 className="typography-display-xl text-foreground truncate text-center">{title}</h1>
         ) : null}
       </div>
 
@@ -109,12 +104,7 @@ const Header = ({
         )}
 
         {showCloseButton && (
-          <HeaderBtn
-            bgVariant={rightBtnBgVariant}
-            icon={X}
-            onClick={handleClose}
-            label="닫기"
-          />
+          <HeaderBtn bgVariant={rightBtnBgVariant} icon={X} onClick={handleClose} label="닫기" />
         )}
 
         {showMenuButton && (

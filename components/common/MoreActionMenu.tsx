@@ -1,9 +1,9 @@
 "use client";
 
 import { Ellipsis } from "lucide-react";
-import HeaderBtn, { HeaderBtnBgVariant } from "../layout/HeaderBtn";
-import { SelectDropdown, SelectDropdownItem } from "../ui/select-dropdown";
-import { BottomSheet, BottomSheetItem } from "../ui/bottom-sheet";
+import HeaderBtn, { type HeaderBtnBgVariant } from "../layout/HeaderBtn";
+import { SelectDropdown, type SelectDropdownItem } from "../ui/select-dropdown";
+import { BottomSheet, type BottomSheetItem } from "../ui/bottom-sheet";
 import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
 import { useEffect, useMemo, useState } from "react";
@@ -19,7 +19,7 @@ export type MoreActionItem = {
   onSelect?: () => void;
 };
 
-interface MoreActionMenuProps {
+type MoreActionMenuProps = {
   headerBtnBgVariant?: HeaderBtnBgVariant;
   headerBtnClassName?: string;
   label: string;
@@ -29,7 +29,7 @@ interface MoreActionMenuProps {
   cancelLabel?: React.ReactNode;
   onCancel?: () => void;
   mobileQuery?: string;
-}
+};
 
 const MoreActionMenu = ({
   headerBtnBgVariant = "ghost",

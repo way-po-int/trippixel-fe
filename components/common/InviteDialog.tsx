@@ -7,19 +7,23 @@ import AppDialog from "@/components/common/AppDialog";
 import { useCreateCollectionInvitation } from "@/lib/hooks/collection/use-create-collection-invitation";
 import { useCreatePlanInvitation } from "@/lib/hooks/plan/use-create-plan-invitation";
 
-interface InviteDialogProps {
+type InviteDialogProps = {
   variant: "COLLECTION" | "PLAN";
   id: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
+};
 
 const InviteDialog = ({ variant, id, open, onOpenChange }: InviteDialogProps) => {
   const collectionInvitation = useCreateCollectionInvitation();
   const planInvitation = useCreatePlanInvitation();
 
-  const { mutate: generateInvitation, data: invitation, isPending, reset } =
-    variant === "COLLECTION" ? collectionInvitation : planInvitation;
+  const {
+    mutate: generateInvitation,
+    data: invitation,
+    isPending,
+    reset,
+  } = variant === "COLLECTION" ? collectionInvitation : planInvitation;
 
   useEffect(() => {
     if (open) {
@@ -53,7 +57,7 @@ const InviteDialog = ({ variant, id, open, onOpenChange }: InviteDialogProps) =>
           <UserPlus className="text-foreground size-21" strokeWidth={1} />
         )}
 
-        <p className="typography-action-sm-reg text-center text-foreground break-all">
+        <p className="typography-action-sm-reg text-foreground text-center break-all">
           {isPending
             ? "링크를 생성하는 중이에요..."
             : (invitation?.url ?? "링크 생성에 실패했어요.")}
