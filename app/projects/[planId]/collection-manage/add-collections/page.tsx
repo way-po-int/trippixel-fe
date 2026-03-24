@@ -41,17 +41,14 @@ const AddCollectionsPage = () => {
   const error = collectionsError ?? planCollectionsError;
 
   // 플랜에 컬렉션 추가
-  const { mutate: addPlanCollections, isPending: isAdding } =
-    useAddPlanCollections({
-      onSuccess: () => {
-        router.back();
-      },
-      onError: (err) => {
-        toast.error(
-          err.response?.data?.detail ?? "보관함을 추가하지 못했어요.",
-        );
-      },
-    });
+  const { mutate: addPlanCollections, isPending: isAdding } = useAddPlanCollections({
+    onSuccess: () => {
+      router.back();
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail ?? "보관함을 추가하지 못했어요.");
+    },
+  });
 
   // 이미 연결된 컬렉션들
   const addedIdSet = useMemo(() => {
@@ -94,31 +91,29 @@ const AddCollectionsPage = () => {
   };
 
   return (
-    <div className="flex flex-col pt-20 gap-2.5">
+    <div className="flex flex-col gap-2.5 pt-20">
       <Header
         variant="center"
         title="보관함 불러오기"
         showBackButton
         leftBtnBgVariant="ghost"
-        className="fixed top-0 inset-x-0 bg-background z-50"
+        className="bg-background fixed inset-x-0 top-0 z-50"
       />
 
-      <main className="flex flex-1 flex-col px-5 pt-3 pb-3.5 gap-3.5 mb-13">
+      <main className="mb-13 flex flex-1 flex-col gap-3.5 px-5 pt-3 pb-3.5">
         {isLoading ? (
-          <div className="fixed inset-0 flex items-center justify-center text-muted-foreground">
+          <div className="text-muted-foreground fixed inset-0 flex items-center justify-center">
             보관함 불러오는 중...
           </div>
         ) : isError ? (
-          <div className="fixed inset-0 flex items-center justify-center text-destructive">
+          <div className="text-destructive fixed inset-0 flex items-center justify-center">
             {error?.response?.data.detail ?? "알 수 없는 오류"}
           </div>
         ) : collections.length === 0 ? (
-          <div className="fixed top-15 inset-0 flex flex-col gap-5 items-center justify-center -mt-15">
+          <div className="fixed inset-0 top-15 -mt-15 flex flex-col items-center justify-center gap-5">
             <CollectionEmptyIllust />
-            <div className="flex flex-col gap-2 items-center justify-center">
-              <h2 className="typography-display-lg-bold">
-                아직 보관함이 없어요
-              </h2>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <h2 className="typography-display-lg-bold">아직 보관함이 없어요</h2>
               <span className="typography-body-sm-md text-center">
                 가고 싶은 여행 장소를 담아 <br />
                 보관함을 만들어보세요
@@ -144,9 +139,7 @@ const AddCollectionsPage = () => {
                 iconClassName="w-4 h-4"
                 description={`${c.member_count}명 참여 중`}
                 checked={selectedIds.includes(c.collection_id)}
-                onCheckedChange={(checked) =>
-                  toggleId(c.collection_id, checked)
-                }
+                onCheckedChange={(checked) => toggleId(c.collection_id, checked)}
               />
             ))}
             <div ref={loadMoreRef} className="h-10" />
@@ -155,14 +148,12 @@ const AddCollectionsPage = () => {
       </main>
 
       {/* 하단 고정 버튼 */}
-      <footer className="fixed bottom-0 inset-x-0 flex flex-col">
-        <div className="w-full h-12 bg-[linear-gradient(180deg,rgba(252,252,252,0)_0%,rgba(252,252,252,1)_100%)] -mb-px" />
-        <div className="w-full h-22.75 px-5 pt-4 pb-5 bg-background drop-shadow-[0px_-0.75px_0px_0px_#DEDEDE]">
+      <footer className="fixed inset-x-0 bottom-0 flex flex-col">
+        <div className="-mb-px h-12 w-full bg-[linear-gradient(180deg,rgba(252,252,252,0)_0%,rgba(252,252,252,1)_100%)]" />
+        <div className="bg-background h-22.75 w-full px-5 pt-4 pb-5 drop-shadow-[0px_-0.75px_0px_0px_#DEDEDE]">
           <Button
             variant="default"
-            disabled={
-              isLoading || isError || isAdding || selectedIds.length === 0
-            }
+            disabled={isLoading || isError || isAdding || selectedIds.length === 0}
             className="w-full"
             onClick={handleAdd}
           >

@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils/utils";
 
 type Align = "start" | "center" | "end";
 
-interface DropdownProps {
+type DropdownProps = {
   /** 버튼 안에 표시될 라벨(텍스트/JSX) */
   label: React.ReactNode;
   /** DropdownMenuContent 내부 구성 (Item/Divider) */
@@ -19,18 +19,18 @@ interface DropdownProps {
   align?: Align;
   contentClassName?: string;
   widthClassName?: string;
-}
+};
 
-interface DropdownItemProps {
+type DropdownItemProps = {
   onClick?: () => void;
   isActive?: boolean;
   className?: string;
   children: React.ReactNode;
-}
+};
 
-interface DropdownDividerProps {
+type DropdownDividerProps = {
   className?: string;
-}
+};
 
 const Dropdown = ({
   label,
@@ -45,19 +45,19 @@ const Dropdown = ({
         <button
           type="button"
           className={cn(
-            "h-11 px-3 py-2 typography-body-sm-md flex items-center justify-between bg-popover rounded-[12px] border-[1px] border-border",
+            "typography-body-sm-md bg-popover border-border flex h-11 items-center justify-between rounded-[12px] border-[1px] px-3 py-2",
             widthClassName,
           )}
         >
           {label}
-          <ChevronDown size={16} className="ml-2 shrink-0 text-foreground" />
+          <ChevronDown size={16} className="text-foreground ml-2 shrink-0" />
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align={align}
         className={cn(
-          "rounded-[12px] mt-1 [&_[data-slot='dropdown-menu-item']]:rounded-[6px]",
+          "mt-1 rounded-[12px] [&_[data-slot='dropdown-menu-item']]:rounded-[6px]",
           widthClassName,
           contentClassName,
         )}
@@ -68,12 +68,7 @@ const Dropdown = ({
   );
 };
 
-const DropdownItem = ({
-  onClick,
-  isActive,
-  className,
-  children,
-}: DropdownItemProps) => {
+const DropdownItem = ({ onClick, isActive, className, children }: DropdownItemProps) => {
   return (
     <DropdownMenuItem
       onClick={onClick}
@@ -88,7 +83,7 @@ const DropdownItem = ({
 };
 
 const DropdownDivider = ({ className }: DropdownDividerProps) => {
-  return <div className={cn("h-px bg-border mx-2 my-1", className)} />;
+  return <div className={cn("bg-border mx-2 my-1 h-px", className)} />;
 };
 
 export default Dropdown;

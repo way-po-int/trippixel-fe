@@ -4,11 +4,7 @@ import { useMemo, useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { ko } from "date-fns/locale";
 import { validatePlanTitle } from "@/lib/utils/validate-plan-title";
-import {
-  formatDateRangeText,
-  getToday,
-  isSameDateRange,
-} from "@/lib/utils/date";
+import { formatDateRangeText, getToday, isSameDateRange } from "@/lib/utils/date";
 
 type UseProjectFormParams = {
   initialTitle?: string;
@@ -37,12 +33,8 @@ export const useProjectForm = ({
 
   // calendar ui
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [calendarMonth, setCalendarMonth] = useState<Date>(
-    initialRange?.from ?? getToday(),
-  );
-  const [draftRange, setDraftRange] = useState<DateRange | undefined>(
-    initialRange,
-  );
+  const [calendarMonth, setCalendarMonth] = useState<Date>(initialRange?.from ?? getToday());
+  const [draftRange, setDraftRange] = useState<DateRange | undefined>(initialRange);
 
   const dateText = formatDateRangeText(range, dateTextPattern, " ~ ", ko);
 

@@ -3,22 +3,19 @@ import { Laugh, Smile, Angry, type LucideProps } from "lucide-react";
 
 type ReactionType = "good" | "normal" | "bad";
 
-const reactionIconMap: Record<
-  ReactionType,
-  React.ComponentType<LucideProps>
-> = {
+const reactionIconMap: Record<ReactionType, React.ComponentType<LucideProps>> = {
   good: Laugh,
   normal: Smile,
   bad: Angry,
 };
 
-interface PlaceReactionItemProps {
+type PlaceReactionItemProps = {
   type: ReactionType;
   count: number;
   active?: boolean;
   variant?: "default" | "ghost";
   onClick?: () => void;
-}
+};
 
 const PlaceReactionItem = ({
   type,

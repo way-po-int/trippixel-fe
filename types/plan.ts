@@ -1,3 +1,5 @@
+import type { PlaceResponse } from "@/types/place";
+
 /**
  * 플랜 생성 요청
  * POST /plans
@@ -192,7 +194,7 @@ export type CandidateExpenseItem = {
 export type CandidateItem = {
   block_id: string;
   memo: string;
-  place: import("@/types/place").PlaceResponse;
+  place: PlaceResponse;
   selected: boolean;
   added_by: PlanAddedBy;
   opinion_summary: CandidateOpinionSummary;

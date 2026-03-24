@@ -6,36 +6,33 @@ import BudgetPlaceCard, { type ExpenseItem } from "@/components/card/BudgetPlace
 import { type PlaceType } from "@/components/card/PlaceTypeIcon";
 import { Button } from "@/components/ui/button";
 
-
 // ─── Item type ────────────────────────────────────────────────────────────────
 
-interface CardItem {
+type CardItem = {
   placeName: string;
   expenseId?: string;
   items: ExpenseItem[];
   placeType: PlaceType;
-}
+};
 
 // ─── Group props ──────────────────────────────────────────────────────────────
 
-interface BudgetCandidateGroupEditProps {
+type BudgetCandidateGroupEditProps = {
   mode: "edit";
   cards: CardItem[];
   onCardClick?: (card: CardItem) => void;
   className?: string;
-}
+};
 
-interface BudgetCandidateGroupViewProps {
+type BudgetCandidateGroupViewProps = {
   mode: "view";
   cards: CardItem[];
   onSelectCandidates?: () => void;
   onCardClick?: (card: CardItem) => void;
   className?: string;
-}
+};
 
-type BudgetCandidateGroupProps =
-  | BudgetCandidateGroupEditProps
-  | BudgetCandidateGroupViewProps;
+type BudgetCandidateGroupProps = BudgetCandidateGroupEditProps | BudgetCandidateGroupViewProps;
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -49,15 +46,14 @@ const BudgetCandidateGroup = (props: BudgetCandidateGroupProps) => {
   const isCollapsible = cards.length >= COLLAPSE_THRESHOLD;
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const visibleCards =
-    isCollapsible && !isExpanded ? cards.slice(0, COLLAPSED_SHOW_COUNT) : cards;
+  const visibleCards = isCollapsible && !isExpanded ? cards.slice(0, COLLAPSED_SHOW_COUNT) : cards;
 
   const hiddenCount = cards.length - COLLAPSED_SHOW_COUNT;
 
   if (mode === "edit") {
     return (
       <div
-        className={`flex flex-col gap-3 rounded-3xl border border-dashed border-border bg-card p-3 ${className ?? ""}`}
+        className={`border-border bg-card flex flex-col gap-3 rounded-3xl border border-dashed p-3 ${className ?? ""}`}
       >
         {visibleCards.map((card, index) => (
           <BudgetPlaceCard
@@ -71,7 +67,7 @@ const BudgetCandidateGroup = (props: BudgetCandidateGroupProps) => {
         {isCollapsible && (
           <button
             type="button"
-            className="flex w-full items-center justify-center gap-1 px-2 py-2.5 typography-action-sm-reg text-foreground"
+            className="typography-action-sm-reg text-foreground flex w-full items-center justify-center gap-1 px-2 py-2.5"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             {isExpanded ? "접기" : `+ ${hiddenCount}개 더 보기`}
@@ -90,7 +86,7 @@ const BudgetCandidateGroup = (props: BudgetCandidateGroupProps) => {
 
   return (
     <div
-      className={`flex flex-col gap-3 rounded-3xl border border-dashed border-border bg-card p-3 ${className ?? ""}`}
+      className={`border-border bg-card flex flex-col gap-3 rounded-3xl border border-dashed p-3 ${className ?? ""}`}
     >
       {visibleCards.map((card, index) => (
         <BudgetPlaceCard
@@ -116,7 +112,7 @@ const BudgetCandidateGroup = (props: BudgetCandidateGroupProps) => {
         <div className="flex items-center justify-between">
           <button
             type="button"
-            className="flex items-center gap-1 px-2 py-2.5 typography-action-sm-reg text-foreground"
+            className="typography-action-sm-reg text-foreground flex items-center gap-1 px-2 py-2.5"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             {isExpanded ? "접기" : `+ ${hiddenCount}개 더 보기`}
@@ -128,7 +124,7 @@ const BudgetCandidateGroup = (props: BudgetCandidateGroupProps) => {
           </button>
           <Button
             variant="outline"
-            className="rounded-xl border border-border bg-background px-4 py-2.5 typography-action-sm-bold text-foreground"
+            className="border-border bg-background typography-action-sm-bold text-foreground rounded-xl border px-4 py-2.5"
             onClick={onSelectCandidates}
           >
             후보지 선택하기
@@ -137,7 +133,7 @@ const BudgetCandidateGroup = (props: BudgetCandidateGroupProps) => {
       ) : (
         <Button
           variant="outline"
-          className="w-full rounded-xl border border-border bg-background px-4 py-2.5 typography-action-sm-bold text-foreground"
+          className="border-border bg-background typography-action-sm-bold text-foreground w-full rounded-xl border px-4 py-2.5"
           onClick={onSelectCandidates}
         >
           후보지 선택하기

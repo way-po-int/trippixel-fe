@@ -1,34 +1,35 @@
-declare module '*.svg' {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare module "*.svg" {
   const content: any;
   export default content;
 }
 
-declare module '*.jpg' {
+declare module "*.jpg" {
   const content: any;
   export default content;
 }
 
-declare module '*.jpeg' {
+declare module "*.jpeg" {
   const content: any;
   export default content;
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const content: any;
   export default content;
 }
 
-declare module '*.gif' {
+declare module "*.gif" {
   const content: any;
   export default content;
 }
 
-declare module '*.webp' {
+declare module "*.webp" {
   const content: any;
   export default content;
 }
 
-declare module '*.ico' {
+declare module "*.ico" {
   const content: any;
   export default content;
 }

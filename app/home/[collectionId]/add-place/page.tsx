@@ -16,12 +16,7 @@ import { useAddExtractionJobPlaces } from "@/lib/hooks/collection/use-add-extrac
 import { deleteExtractionJob } from "@/lib/api/collection";
 import type { FailureCode, FromUrlStatus } from "@/types/extraction-job";
 import SearchAiIllust from "@/public/illust/search-ai.svg";
-import {
-  ArrowLeft,
-  MapPinIcon,
-  SearchIcon,
-  SquareArrowOutUpRight,
-} from "lucide-react";
+import { ArrowLeft, MapPinIcon, SearchIcon, SquareArrowOutUpRight } from "lucide-react";
 import ColorYoutubeIcon from "@/public/icons/colorYoutubeIcon.svg";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -58,17 +53,16 @@ const AddPlacePage = () => {
   const queryClient = useQueryClient();
   const jobRef = useRef<{ collectionId: string; jobId: string } | null>(null);
   const { data } = usePlaceSearch(query);
-  const { mutate: createJob, isPending: isCreatingJob } =
-    useCreateExtractionJob({
-      onSuccess: () => setIsJobActive(true),
-      onError: (error) => {
-        if (error.response?.data?.code === "JOB_IN_PROGRESS") {
-          setIsJobActive(true);
-        } else {
-          toast.error("장소 추출 요청에 실패했어요.");
-        }
-      },
-    });
+  const { mutate: createJob, isPending: isCreatingJob } = useCreateExtractionJob({
+    onSuccess: () => setIsJobActive(true),
+    onError: (error) => {
+      if (error.response?.data?.code === "JOB_IN_PROGRESS") {
+        setIsJobActive(true);
+      } else {
+        toast.error("장소 추출 요청에 실패했어요.");
+      }
+    },
+  });
   const { data: jobData } = useLatestExtractionJob(collectionId, {
     enabled: isJobActive,
   });
@@ -132,16 +126,13 @@ const AddPlacePage = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      selectedPlaceId &&
-      !places.some((p) => p.place_id === selectedPlaceId)
-    ) {
+    if (selectedPlaceId && !places.some((p) => p.place_id === selectedPlaceId)) {
       setSelectedPlaceId(null);
     }
   }, [places]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header
         showBackButton
         leftBtnBgVariant="ghost"
@@ -149,10 +140,7 @@ const AddPlacePage = () => {
         title="장소 찾기"
         className="fixed top-0 z-10"
       />
-      <Tabs
-        defaultValue="search"
-        className="flex flex-col flex-1 pt-15 px-5 gap-5"
-      >
+      <Tabs defaultValue="search" className="flex flex-1 flex-col gap-5 px-5 pt-15">
         <TabsList style="underline" fullWidth>
           <TabsTrigger value="search" style="underline" fullWidth>
             장소 검색하기
@@ -161,7 +149,7 @@ const AddPlacePage = () => {
             AI로 장소 찾기
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="search" className="flex flex-col flex-1 mt-0">
+        <TabsContent value="search" className="mt-0 flex flex-1 flex-col">
           <InputForm
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -175,26 +163,20 @@ const AddPlacePage = () => {
                   <button
                     key={place.place_id}
                     type="button"
-                    className={`w-full text-left rounded-2xl bg-[#f5f5f5] px-5 py-4 ${
-                      isSelected
-                        ? "border-2 border-sky-500"
-                        : "border-2 border-transparent"
+                    className={`w-full rounded-2xl bg-[#f5f5f5] px-5 py-4 text-left ${
+                      isSelected ? "border-2 border-sky-500" : "border-2 border-transparent"
                     }`}
-                    onClick={() =>
-                      setSelectedPlaceId(isSelected ? null : place.place_id)
-                    }
+                    onClick={() => setSelectedPlaceId(isSelected ? null : place.place_id)}
                   >
                     <p className="typography-action-base-bold">{place.name}</p>
-                    <p className="typography-body-sm-reg text-neutral-500 mt-1">
-                      {place.address}
-                    </p>
+                    <p className="typography-body-sm-reg mt-1 text-neutral-500">{place.address}</p>
                   </button>
                 );
               })}
               {query.trim().length > 0 && (
                 <Button
                   variant="ghost"
-                  className="w-full typography-action-sm-reg text-neutral-500"
+                  className="typography-action-sm-reg w-full text-neutral-500"
                   onClick={() => router.push(`${pathname}/manual`)}
                 >
                   장소를 찾지 못하시겠나요?
@@ -202,9 +184,9 @@ const AddPlacePage = () => {
               )}
             </div>
           </div>
-          <div className="fixed bottom-0 inset-x-0 px-5 py-4 bg-white">
+          <div className="fixed inset-x-0 bottom-0 bg-white px-5 py-4">
             <Button
-              className="w-full bg-sky-500 typography-action-base-bold disabled:opacity-40"
+              className="typography-action-base-bold w-full bg-sky-500 disabled:opacity-40"
               disabled={!selectedPlaceId || isPending}
               onClick={() => {
                 if (selectedPlaceId) {
@@ -216,16 +198,14 @@ const AddPlacePage = () => {
             </Button>
           </div>
         </TabsContent>
-        <TabsContent value="ai" className="flex flex-col flex-1 mt-0">
-          {isJobActive &&
-          jobData?.status === "COMPLETED" &&
-          jobData.result.places.length === 0 ? (
+        <TabsContent value="ai" className="mt-0 flex flex-1 flex-col">
+          {isJobActive && jobData?.status === "COMPLETED" && jobData.result.places.length === 0 ? (
             <>
-              <div className="flex flex-col flex-1 mt-5 items-center pb-24">
+              <div className="mt-5 flex flex-1 flex-col items-center pb-24">
                 <h1 className="typography-display-lg-bold self-center">
                   AI를 통해 장소를 찾아보세요!
                 </h1>
-                <div className="mt-3 flex flex-col gap-3 rounded-3xl bg-[#f5f5f5] px-5 py-6 items-center w-full">
+                <div className="mt-3 flex w-full flex-col items-center gap-3 rounded-3xl bg-[#f5f5f5] px-5 py-6">
                   <p className="typography-action-base-bold text-center">
                     {FAILURE_LABEL["NO_PLACE_EXTRACTED"]}
                   </p>
@@ -247,14 +227,14 @@ const AddPlacePage = () => {
           ) : isJobActive && jobData?.status === "COMPLETED" ? (
             <>
               <div className="fixed inset-x-5 top-[104px] bottom-19 overflow-y-auto">
-                <div className="flex flex-col gap-5 pb-5 pt-5">
+                <div className="flex flex-col gap-5 pt-5 pb-5">
                   <div className="flex flex-col gap-3">
                     <h1 className="typography-display-lg-bold">
                       콘텐츠에서 장소 정보를 추출했어요.
                     </h1>
 
                     {/* 요약 박스 */}
-                    <div className="rounded-xl bg-card p-3 pb-0 flex flex-col gap-3">
+                    <div className="bg-card flex flex-col gap-3 rounded-xl p-3 pb-0">
                       <p className="typography-action-sm-reg text-foreground">
                         {jobData.result.summary}
                       </p>
@@ -262,25 +242,24 @@ const AddPlacePage = () => {
                         href={jobData.result.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between py-3 border-t border-border"
+                        className="border-border flex items-center justify-between border-t py-3"
                       >
-                        <div className="flex items-center gap-1 min-w-0">
+                        <div className="flex min-w-0 items-center gap-1">
                           <ColorYoutubeIcon className="shrink-0" />
                           <p className="typography-caption-xs-reg text-muted-foreground truncate">
-                            {jobData.result.author_name} -{" "}
-                            {jobData.result.title}
+                            {jobData.result.author_name} - {jobData.result.title}
                           </p>
                         </div>
                         <SquareArrowOutUpRight
                           size={18}
-                          className="shrink-0 text-muted-foreground"
+                          className="text-muted-foreground shrink-0"
                         />
                       </Link>
                     </div>
                   </div>
 
                   {/* 장소 목록 헤더 */}
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <p className="typography-display-lg-bold">추출된 장소</p>
                     <p className="typography-display-base-reg">
                       ({jobData.result.places.length}개)
@@ -290,21 +269,16 @@ const AddPlacePage = () => {
                   <div className="flex items-center gap-2.5">
                     <CheckBox
                       checked={
-                        selectedPlaceIds.length ===
-                          jobData.result.places.length &&
+                        selectedPlaceIds.length === jobData.result.places.length &&
                         jobData.result.places.length > 0
                       }
                       onCheckedChange={(checked) =>
                         setSelectedPlaceIds(
-                          checked
-                            ? jobData.result.places.map((p) => p.place_id)
-                            : [],
+                          checked ? jobData.result.places.map((p) => p.place_id) : [],
                         )
                       }
                     />
-                    <p className="typography-action-base-reg text-[#020628]">
-                      전체 선택
-                    </p>
+                    <p className="typography-action-base-reg text-[#020628]">전체 선택</p>
                   </div>
 
                   {/* 장소 아이템 */}
@@ -313,7 +287,7 @@ const AddPlacePage = () => {
                     return (
                       <div
                         key={place.place_id}
-                        className="w-full text-left rounded-2xl bg-[#f5f5f5] px-5 py-3 flex items-center gap-3"
+                        className="flex w-full items-center gap-3 rounded-2xl bg-[#f5f5f5] px-5 py-3 text-left"
                         onClick={() =>
                           setSelectedPlaceIds((prev) =>
                             isChecked
@@ -323,11 +297,9 @@ const AddPlacePage = () => {
                         }
                       >
                         <CheckBox checked={isChecked} />
-                        <div className="flex flex-col gap-1 min-w-0">
-                          <p className="typography-label-base-sb truncate">
-                            {place.name}
-                          </p>
-                          <p className="typography-body-sm-reg text-neutral-500 truncate flex gap-1">
+                        <div className="flex min-w-0 flex-col gap-1">
+                          <p className="typography-label-base-sb truncate">{place.name}</p>
+                          <p className="typography-body-sm-reg flex gap-1 truncate text-neutral-500">
                             <MapPinIcon size={18} />
                             {place.address}
                           </p>
@@ -337,10 +309,10 @@ const AddPlacePage = () => {
                   })}
                 </div>
               </div>
-              <div className="fixed bottom-0 inset-x-0 px-5 py-4 flex items-center gap-1">
+              <div className="fixed inset-x-0 bottom-0 flex items-center gap-1 px-5 py-4">
                 <button
                   type="button"
-                  className="size-11 shrink-0 flex items-center justify-center"
+                  className="flex size-11 shrink-0 items-center justify-center"
                   onClick={() => {
                     if (jobData?.job_id) {
                       deleteJob({ collectionId, jobId: jobData.job_id });
@@ -352,10 +324,8 @@ const AddPlacePage = () => {
                   <ArrowLeft size={24} />
                 </button>
                 <Button
-                  className="flex-1 typography-action-base-bold disabled:opacity-40 text-primary-foreground"
-                  disabled={
-                    selectedPlaceIds.length === 0 || isAddingExtractionPlaces
-                  }
+                  className="typography-action-base-bold text-primary-foreground flex-1 disabled:opacity-40"
+                  disabled={selectedPlaceIds.length === 0 || isAddingExtractionPlaces}
                   onClick={() => {
                     if (jobData?.job_id) {
                       addExtractionPlaces({
@@ -372,12 +342,10 @@ const AddPlacePage = () => {
             </>
           ) : (
             <>
-              <div className="flex flex-col flex-1 mt-5 items-center pb-24">
-                <h1 className="typography-display-lg-bold">
-                  AI를 통해 장소를 찾아보세요!
-                </h1>
+              <div className="mt-5 flex flex-1 flex-col items-center pb-24">
+                <h1 className="typography-display-lg-bold">AI를 통해 장소를 찾아보세요!</h1>
                 {isJobActive && jobData ? (
-                  <div className="mt-3 flex flex-col gap-3 rounded-3xl bg-[#f5f5f5] px-5 py-6 items-center w-full">
+                  <div className="mt-3 flex w-full flex-col items-center gap-3 rounded-3xl bg-[#f5f5f5] px-5 py-6">
                     <p className="typography-action-base-bold text-center">
                       {jobData.status === "FAILED" && jobData.failure_code
                         ? FAILURE_LABEL[jobData.failure_code]
@@ -386,16 +354,14 @@ const AddPlacePage = () => {
                     {jobData.status === "FAILED" && (
                       <Button
                         className="typography-action-sm-reg"
-                        onClick={() =>
-                          deleteJob({ collectionId, jobId: jobData.job_id })
-                        }
+                        onClick={() => deleteJob({ collectionId, jobId: jobData.job_id })}
                       >
                         다시 요청하기
                       </Button>
                     )}
                   </div>
                 ) : (
-                  <div className="mt-3 flex flex-col gap-4 rounded-3xl bg-[#f5f5f5] px-5 pt-4 pb-5 items-center w-full">
+                  <div className="mt-3 flex w-full flex-col items-center gap-4 rounded-3xl bg-[#f5f5f5] px-5 pt-4 pb-5">
                     <SearchAiIllust />
                     <div className="space-y-2">
                       <div className="space-y-1">
@@ -406,7 +372,7 @@ const AddPlacePage = () => {
                           장소를 AI가 일괄적으로 모아올 수 있어요!
                         </p>
                       </div>
-                      <div className="flex flex-row gap-1 text-neutral-500 typography-action-sm-reg items-center">
+                      <div className="typography-action-sm-reg flex flex-row items-center gap-1 text-neutral-500">
                         <p>Youtube 롱/숏폼을 통해 분석이 가능해요!</p>
                       </div>
                     </div>
@@ -414,7 +380,7 @@ const AddPlacePage = () => {
                 )}
               </div>
               <div className="fixed inset-x-5 bottom-24 h-px bg-[#e2e2e2]" />
-              <div className="fixed bottom-0 inset-x-0 px-5 py-4 bg-white">
+              <div className="fixed inset-x-0 bottom-0 bg-white px-5 py-4">
                 <div className="flex items-center gap-4">
                   <InputForm
                     hideIcon
@@ -426,7 +392,7 @@ const AddPlacePage = () => {
                   <button
                     type="button"
                     disabled={!url.trim() || isCreatingJob}
-                    className="size-11 shrink-0 flex items-center justify-center rounded-xl bg-sky-500 disabled:opacity-40"
+                    className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-sky-500 disabled:opacity-40"
                     onClick={() => createJob({ collectionId, url })}
                   >
                     <SearchIcon size={20} color="#000" />

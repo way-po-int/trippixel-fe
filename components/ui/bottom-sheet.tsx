@@ -4,12 +4,7 @@ import * as React from "react";
 import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils/utils";
 
 type Description = React.ReactNode | React.ReactNode[];
@@ -104,7 +99,7 @@ function BottomSheet({
       <DrawerContent
         showHandle={false}
         className={cn(
-          "mx-auto w-full data-[vaul-drawer-direction=bottom]:rounded-t-3xl border-none bg-background p-0",
+          "bg-background mx-auto w-full border-none p-0 data-[vaul-drawer-direction=bottom]:rounded-t-3xl",
           "shadow-[0_-2px_10px_0_#0000001A]",
           className,
         )}
@@ -115,16 +110,14 @@ function BottomSheet({
           <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-6 pb-2">
             {header}
             {showTitle && (
-              <h2 className="mb-2 h-7 w-fit whitespace-nowrap typography-title-lg-sb text-black">
+              <h2 className="typography-title-lg-sb mb-2 h-7 w-fit whitespace-nowrap text-black">
                 {title}
               </h2>
             )}
             {content ?? (
               <div className="flex flex-col gap-2.5 pb-3.5">
                 {items.map((item) => {
-                  const descriptionLines = normalizeDescription(
-                    item.description,
-                  );
+                  const descriptionLines = normalizeDescription(item.description);
                   const hasDescription = descriptionLines.length > 0;
 
                   return (
@@ -137,34 +130,29 @@ function BottomSheet({
                       onClick={() => handleSelect(item.onSelect)}
                       icon={
                         item.icon ? (
-                          <span className="text-foreground/40 [&_svg]:size-6">
-                            {item.icon}
-                          </span>
+                          <span className="text-foreground/40 [&_svg]:size-6">{item.icon}</span>
                         ) : undefined
                       }
                       className={cn(
-                        "w-full justify-start gap-2 text-foreground",
+                        "text-foreground w-full justify-start gap-2",
                         itemVariant === "member"
-                          ? "h-11 rounded-sm px-2 typography-label-base-reg hover:bg-accent"
-                          : "rounded-full px-1 pr-8 hover:bg-accent",
+                          ? "typography-label-base-reg hover:bg-accent h-11 rounded-sm px-2"
+                          : "hover:bg-accent rounded-full px-1 pr-8",
                         itemVariant === "default" &&
                           (hasDescription
-                            ? "h-auto min-h-11 py-2 typography-label-base-reg"
-                            : "h-11 typography-label-base-sb"),
+                            ? "typography-label-base-reg h-auto min-h-11 py-2"
+                            : "typography-label-base-sb h-11"),
                         item.className,
                       )}
                     >
                       <span
-                        className={cn(
-                          "min-w-0 text-left",
-                          itemVariant === "member" && "w-fit",
-                        )}
+                        className={cn("min-w-0 text-left", itemVariant === "member" && "w-fit")}
                       >
                         <span
                           className={cn(
                             "block",
                             itemVariant === "member"
-                              ? "w-fit typography-label-base-reg text-[#09090B]"
+                              ? "typography-label-base-reg w-fit text-[#09090B]"
                               : "truncate",
                           )}
                         >
@@ -178,14 +166,13 @@ function BottomSheet({
             )}
           </div>
 
-          {showDivider && <div className="mx-5 h-px bg-border" />}
+          {showDivider && <div className="bg-border mx-5 h-px" />}
 
           {showBottomGradient && (
             <div
-              className="pointer-events-none absolute bottom-0 left-0 right-0 h-35"
+              className="pointer-events-none absolute right-0 bottom-0 left-0 h-35"
               style={{
-                background:
-                  "linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, #FCFCFC 60%)",
+                background: "linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, #FCFCFC 60%)",
               }}
             />
           )}
@@ -215,9 +202,7 @@ function BottomSheet({
                     <span
                       className={cn(
                         "typography-label-base-sb",
-                        cancelVariant === "outline"
-                          ? "text-[#1C2024]"
-                          : "text-white",
+                        cancelVariant === "outline" ? "text-[#1C2024]" : "text-white",
                       )}
                     >
                       {cancelLabel}
@@ -246,9 +231,7 @@ function BottomSheet({
                   <span
                     className={cn(
                       "typography-label-base-sb",
-                      cancelVariant === "outline"
-                        ? "text-[#1C2024]"
-                        : "text-white",
+                      cancelVariant === "outline" ? "text-[#1C2024]" : "text-white",
                     )}
                   >
                     {cancelLabel}

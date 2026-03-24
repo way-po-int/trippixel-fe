@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { deleteTimeBlock } from "@/lib/api/block";
 import type { ProblemDetail } from "@/types/problem-detail";

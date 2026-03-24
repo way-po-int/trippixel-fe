@@ -9,22 +9,12 @@ import { getPlan } from "@/lib/api/plan";
 type PlanQueryKey = readonly ["plan", { planId: string }];
 
 type Options = Omit<
-  UseQueryOptions<
-    PlanResponse,
-    AxiosError<ProblemDetail>,
-    PlanResponse,
-    PlanQueryKey
-  >,
+  UseQueryOptions<PlanResponse, AxiosError<ProblemDetail>, PlanResponse, PlanQueryKey>,
   "queryKey" | "queryFn"
 >;
 
 export const usePlan = (planId: GetPlanParams["planId"], options?: Options) => {
-  return useQuery<
-    PlanResponse,
-    AxiosError<ProblemDetail>,
-    PlanResponse,
-    PlanQueryKey
-  >({
+  return useQuery<PlanResponse, AxiosError<ProblemDetail>, PlanResponse, PlanQueryKey>({
     queryKey: ["plan", { planId }] as const,
     queryFn: () => getPlan(planId),
     enabled: !!planId,

@@ -87,10 +87,7 @@ export const updateExpense = async (
   expenseId: string,
   body: UpdateExpenseRequest,
 ) => {
-  const res = await apiClient.put<ExpenseResponse>(
-    `/plans/${planId}/expenses/${expenseId}`,
-    body,
-  );
+  const res = await apiClient.put<ExpenseResponse>(`/plans/${planId}/expenses/${expenseId}`, body);
   return res.data;
 };
 

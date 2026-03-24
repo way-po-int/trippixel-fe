@@ -1,21 +1,19 @@
 import Image from "next/image";
 import PlaceTypeIcon, { type PlaceType } from "@/components/card/PlaceTypeIcon";
 import Writer from "@/components/card/Writer";
-import PlaceReactionItem, {
-  type ReactionType,
-} from "@/components/card/PlaceReactionItem";
+import PlaceReactionItem, { type ReactionType } from "@/components/card/PlaceReactionItem";
 import OpinionBtn from "@/components/card/OpinionBtn";
 import { cn } from "@/lib/utils/utils";
 import HeaderBtn from "../layout/HeaderBtn";
 import { ChevronRight, CircleCheck, Ellipsis } from "lucide-react";
 
-interface Reactions {
+type Reactions = {
   good: number;
   normal: number;
   bad: number;
-}
+};
 
-interface PlanPlaceCardProps {
+type PlanPlaceCardProps = {
   placeType: PlaceType;
   placeName: string;
   writerNickname: string;
@@ -36,7 +34,7 @@ interface PlanPlaceCardProps {
   onDetailClick?: () => void;
   onFreeClick?: () => void;
   className?: string;
-}
+};
 
 const REACTION_TYPES: ReactionType[] = ["good", "normal", "bad"];
 
@@ -66,7 +64,7 @@ const PlanPlaceCard = ({
     <div
       onClick={onFreeClick}
       className={cn(
-        "w-full flex flex-col rounded-2xl border border-border bg-background shadow-xs",
+        "border-border bg-background flex w-full flex-col rounded-2xl border shadow-xs",
         isFree && "cursor-pointer",
         className,
       )}
@@ -90,10 +88,7 @@ const PlanPlaceCard = ({
           </span>
         </div>
         <div className="shrink-0">
-          <Writer
-            nickname={writerNickname}
-            profileImageUrl={writerProfileImageUrl}
-          />
+          <Writer nickname={writerNickname} profileImageUrl={writerProfileImageUrl} />
         </div>
       </div>
 
@@ -101,17 +96,12 @@ const PlanPlaceCard = ({
       {isView && (
         <div
           onClick={onDetailClick}
-          className="relative w-full aspect-8/5 bg-[#f0f0f0] cursor-pointer"
+          className="relative aspect-8/5 w-full cursor-pointer bg-[#f0f0f0]"
         >
           {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={placeName}
-              fill
-              className="object-cover"
-            />
+            <Image src={imageUrl} alt={placeName} fill className="object-cover" />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground typography-body-sm-reg">
+            <div className="text-muted-foreground typography-body-sm-reg absolute inset-0 flex items-center justify-center">
               사진 없음
             </div>
           )}
@@ -121,15 +111,13 @@ const PlanPlaceCard = ({
       {/* Memo / Memo + MenuButton */}
       <div
         className={cn(
-          !isView
-            ? "flex pl-4 pr-3 pb-3.5 items-center justify-between"
-            : "px-5 pt-3 pb-3 ",
+          !isView ? "flex items-center justify-between pr-3 pb-3.5 pl-4" : "px-5 pt-3 pb-3",
         )}
       >
         {!isView && !isFree ? (
           <>
             {/* memo가 없어도 자리 차지 */}
-            <p className="typography-body-sm-reg text-muted-foreground flex-1 min-w-0 break-all">
+            <p className="typography-body-sm-reg text-muted-foreground min-w-0 flex-1 break-all">
               {memo ?? ""}
             </p>
             <HeaderBtn
@@ -142,16 +130,14 @@ const PlanPlaceCard = ({
           </>
         ) : (
           memo && (
-            <p className="typography-body-sm-reg text-muted-foreground min-w-0 break-all">
-              {memo}
-            </p>
+            <p className="typography-body-sm-reg text-muted-foreground min-w-0 break-all">{memo}</p>
           )
         )}
       </div>
 
       {/* Footer */}
       {isView && (
-        <div className="flex items-center justify-between pl-3 pr-4 pt-3 pb-3.5 border-t border-dashed border-border">
+        <div className="border-border flex items-center justify-between border-t border-dashed pt-3 pr-4 pb-3.5 pl-3">
           <div className="flex items-center">
             {REACTION_TYPES.map((type) => (
               <PlaceReactionItem
@@ -170,19 +156,17 @@ const PlanPlaceCard = ({
         <div
           className={cn(
             "flex items-center justify-between px-4 pb-3.5",
-            !isView && "pt-3 border-t border-dashed border-border",
+            !isView && "border-border border-t border-dashed pt-3",
           )}
         >
           <button
             type="button"
-            className="flex w-full items-center gap-1 bg-[#f0f0f0] py-2 px-2.5 rounded-lg typography-nav-xl-reg text-muted-foreground justify-center"
+            className="typography-nav-xl-reg text-muted-foreground flex w-full items-center justify-center gap-1 rounded-lg bg-[#f0f0f0] px-2.5 py-2"
             onClick={onReselectCandidate}
           >
             <CircleCheck className="size-4 shrink-0 text-sky-500" />
-            <span className="text-foreground">
-              총 {candidateCount}개의 후보지 중 다시 선택하기
-            </span>
-            <ChevronRight className="size-4 shrink-0 opacity-40 stroke-3" />
+            <span className="text-foreground">총 {candidateCount}개의 후보지 중 다시 선택하기</span>
+            <ChevronRight className="size-4 shrink-0 stroke-3 opacity-40" />
           </button>
         </div>
       )}

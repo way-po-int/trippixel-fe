@@ -6,7 +6,7 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { ProblemDetail } from "@/types/problem-detail";
+import { type ProblemDetail } from "@/types/problem-detail";
 import type { GetPlansParams, PlanListResponse } from "@/types/plan";
 import { getPlans } from "@/lib/api/plan";
 
@@ -23,10 +23,7 @@ type Options = Omit<
   "queryKey" | "queryFn" | "initialPageParam" | "getNextPageParam"
 >;
 
-export const usePlans = (
-  params?: Omit<GetPlansParams, "page">,
-  options?: Options,
-) => {
+export const usePlans = (params?: Omit<GetPlansParams, "page">, options?: Options) => {
   const size = params?.size ?? 10;
 
   return useInfiniteQuery<
@@ -39,8 +36,7 @@ export const usePlans = (
     queryKey: ["plans", { size }] as const,
     queryFn: ({ pageParam = 0 }) => getPlans({ page: pageParam, size }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.has_next ? lastPage.page + 1 : undefined,
+    getNextPageParam: (lastPage) => (lastPage.has_next ? lastPage.page + 1 : undefined),
     ...options,
   });
 };

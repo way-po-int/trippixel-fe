@@ -60,38 +60,37 @@ const DayExpenses = ({ planId, day }: { planId: string; day: number }) => {
               onCardClick={(data) =>
                 setBottomSheet({
                   ...data,
-                  mode:
-                    data.items.length === 0 ? "add-expense" : "edit-expense",
+                  mode: data.items.length === 0 ? "add-expense" : "edit-expense",
                 })
               }
             />
             {idx < expenses.length - 1 ? (
               <div className="flex flex-col items-center">
-                <div className="w-px h-2.5 bg-border" />
+                <div className="bg-border h-2.5 w-px" />
                 <button
-                  className="w-7 h-7 rounded-4xl bg-secondary flex items-center justify-center"
+                  className="bg-secondary flex h-7 w-7 items-center justify-center rounded-4xl"
                   onClick={() =>
                     setCreateSheet({
                       prevExpenseId: expenses[idx].selected?.expense_id,
                     })
                   }
                 >
-                  <Plus className="w-3 h-3 text-slate-50" strokeWidth={2} />
+                  <Plus className="h-3 w-3 text-slate-50" strokeWidth={2} />
                 </button>
-                <div className="w-px h-2.5 bg-border" />
+                <div className="bg-border h-2.5 w-px" />
               </div>
             ) : (
               <div className="flex flex-col items-center">
-                <div className="w-px h-2.5 bg-border" />
+                <div className="bg-border h-2.5 w-px" />
                 <button
-                  className="w-7 h-7 rounded-4xl bg-secondary flex items-center justify-center"
+                  className="bg-secondary flex h-7 w-7 items-center justify-center rounded-4xl"
                   onClick={() =>
                     setCreateSheet({
                       prevExpenseId: expenses[idx].selected?.expense_id,
                     })
                   }
                 >
-                  <Plus className="w-3 h-3 text-slate-50" strokeWidth={2} />
+                  <Plus className="h-3 w-3 text-slate-50" strokeWidth={2} />
                 </button>
               </div>
             )}
@@ -210,8 +209,7 @@ const PlanEditPage = () => {
   const expensesByDay = useQueries({
     queries: days.map((day) => ({
       queryKey: ["expenses", { planId, day }] as const,
-      queryFn: () =>
-        import("@/lib/api/budget").then((m) => m.getExpenses(planId, day)),
+      queryFn: () => import("@/lib/api/budget").then((m) => m.getExpenses(planId, day)),
       enabled: !!planId && days.length > 0,
     })),
   });
@@ -227,16 +225,14 @@ const PlanEditPage = () => {
   // 초기 데이터 로딩 상태
   if (isInitialLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="typography-body-body-reg text-muted-foreground">
-          일정을 불러오는 중...
-        </div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="typography-body-body-reg text-muted-foreground">일정을 불러오는 중...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       {/* 헤더 - sticky */}
       <div className="sticky top-0 z-20">
         {activeMode === "budget" ? (
@@ -246,7 +242,7 @@ const PlanEditPage = () => {
             showCalendarButton
             isCalendarVisible={isCalendarVisible}
             onCalendar={() => setIsCalendarVisible((prev) => !prev)}
-            className="backdrop-blur-md bg-background/60"
+            className="bg-background/60 backdrop-blur-md"
           />
         ) : (
           <ProjectHeader
@@ -259,7 +255,7 @@ const PlanEditPage = () => {
             showCalendarButton
             isCalendarVisible={isCalendarVisible}
             onCalendar={() => setIsCalendarVisible((prev) => !prev)}
-            className="backdrop-blur-md bg-background/60"
+            className="bg-background/60 backdrop-blur-md"
           />
         )}
       </div>
@@ -299,7 +295,7 @@ const PlanEditPage = () => {
             className={cn(
               "sticky z-10 overflow-hidden",
               isDayNavStuck
-                ? "border-t border-border backdrop-blur-xl bg-background/60"
+                ? "border-border bg-background/60 border-t backdrop-blur-xl"
                 : "bg-background",
             )}
             style={{
@@ -316,8 +312,7 @@ const PlanEditPage = () => {
                   const day = Number(value);
                   const idx = day - 1;
                   const q = dayQueries[idx];
-                  const isDayEmpty =
-                    !!q?.data && (q.data.contents?.length ?? 0) === 0;
+                  const isDayEmpty = !!q?.data && (q.data.contents?.length ?? 0) === 0;
 
                   // 접혀 있고 비어있지 않으면 펼침
                   if (!isDayEmpty) {
@@ -333,8 +328,7 @@ const PlanEditPage = () => {
                     // const mapHeight = shouldShowMap ? 180 : 0;
                     const mapHeight = 0;
                     const offset = 64 + mapHeight + 56; // header + map + DayNav(h-14)
-                    const top =
-                      el.getBoundingClientRect().top + window.scrollY - offset;
+                    const top = el.getBoundingClientRect().top + window.scrollY - offset;
                     window.scrollTo({ top, behavior: "smooth" });
                     // smooth scroll 종료 후 억제 해제 (약 600ms)
                     setTimeout(() => {
@@ -343,14 +337,12 @@ const PlanEditPage = () => {
                   };
 
                   // 펼침 애니메이션 후 DOM 확정 시점에 스크롤
-                  requestAnimationFrame(() =>
-                    requestAnimationFrame(scrollToDay),
-                  );
+                  requestAnimationFrame(() => requestAnimationFrame(scrollToDay));
                 }}
-                className="gap-2.25 py-3 h-14"
+                className="h-14 gap-2.25 py-3"
                 itemClassName="h-8 py-1.5"
               />
-              <div className="pointer-events-none absolute top-0 -right-1.25 w-14 h-14 bg-[linear-gradient(90deg,rgba(252,252,252,0)_0%,rgba(252,252,252,1)_100%)]" />
+              <div className="pointer-events-none absolute top-0 -right-1.25 h-14 w-14 bg-[linear-gradient(90deg,rgba(252,252,252,0)_0%,rgba(252,252,252,1)_100%)]" />
             </div>
           </div>
         </>
@@ -373,9 +365,7 @@ const PlanEditPage = () => {
             mode="edit"
             totalBudget={budgetData.total_budget ?? 0}
             usedAmount={budgetData.total_cost}
-            perDayAmount={
-              totalDays > 0 ? Math.round(budgetData.total_cost / totalDays) : 0
-            }
+            perDayAmount={totalDays > 0 ? Math.round(budgetData.total_cost / totalDays) : 0}
             perPersonAmount={budgetData.cost_per_person}
             showHint={hasPendingBlocks}
             className="pt-3"
@@ -402,9 +392,7 @@ const PlanEditPage = () => {
           const q = dayQueries[idx];
           const isEmpty = !!q?.data && (q.data.contents?.length ?? 0) === 0;
           const isOpen = openByDay[day] ?? !isEmpty;
-          const dateText = q?.data
-            ? formatDayInfoText(q.data.date, q.data.dayOfWeek)
-            : "";
+          const dateText = q?.data ? formatDayInfoText(q.data.date, q.data.dayOfWeek) : "";
 
           return (
             <div key={day} id={`day-section-${day}`}>
@@ -413,19 +401,12 @@ const PlanEditPage = () => {
                 day={day}
                 date={dateText}
                 open={isOpen}
-                onOpenChange={(next) =>
-                  setOpenByDay((prev) => ({ ...prev, [day]: next }))
-                }
+                onOpenChange={(next) => setOpenByDay((prev) => ({ ...prev, [day]: next }))}
                 disabled={q?.data ? isEmpty : false}
               >
                 {activeMode === "planMode" ? (
                   // Plan
-                  <DayTimeBlocks
-                    planId={planId}
-                    day={day}
-                    data={q?.data}
-                    isEdit
-                  />
+                  <DayTimeBlocks planId={planId} day={day} data={q?.data} isEdit />
                 ) : (
                   // Budget
                   <DayExpenses planId={planId} day={day} />

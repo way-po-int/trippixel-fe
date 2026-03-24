@@ -2,23 +2,17 @@
 
 import { cn } from "@/lib/utils/utils";
 
-interface RadioProps {
+type RadioProps = {
   id: string;
   name?: string;
   selected?: boolean;
   onSelected?: (selected: boolean) => void;
   className?: string;
-}
+};
 
-const Radio = ({
-  id,
-  name,
-  selected = false,
-  onSelected,
-  className = "",
-}: RadioProps) => {
+const Radio = ({ id, name, selected = false, onSelected, className = "" }: RadioProps) => {
   return (
-    <label htmlFor={id} className={cn("cursor-pointer size-6", className)}>
+    <label htmlFor={id} className={cn("size-6 cursor-pointer", className)}>
       <input
         id={id}
         name={name}
@@ -29,8 +23,8 @@ const Radio = ({
       />
       <span
         className={cn(
-          "flex items-center justify-center rounded-full size-6 bg-neutral-300 transition",
-          "peer-checked:border-7 peer-checked:border-primary peer-checked:bg-input",
+          "flex size-6 items-center justify-center rounded-full bg-neutral-300 transition",
+          "peer-checked:border-primary peer-checked:bg-input peer-checked:border-7",
           "peer-focus-visible:border-primary peer-focus-visible:ring-ring/50 peer-focus-visible:ring-[3px]",
         )}
       ></span>

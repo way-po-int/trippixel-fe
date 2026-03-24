@@ -4,13 +4,13 @@ import { Trash2 } from "lucide-react";
 import ProfileImage from "./ProfileImage";
 import { cn } from "@/lib/utils/utils";
 
-interface CollectionManageItemProps {
+type CollectionManageItemProps = {
   title: string;
   nickname: string;
   src: string;
   onClick?: () => void;
   className?: string;
-}
+};
 
 const CollectionManageItem = ({
   title,
@@ -22,17 +22,17 @@ const CollectionManageItem = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-1.75 pl-5 pr-3.5 py-3 bg-checkbox rounded-4xl w-full",
+        "bg-checkbox flex w-full items-center justify-between gap-1.75 rounded-4xl py-3 pr-3.5 pl-5",
         className,
       )}
     >
-      <div className="flex flex-col flex-1 gap-1.75 min-w-0 w-full items-start text-start">
-        <span className="typography-label-base-sb truncate w-full min-w-0 text-foreground">
+      <div className="flex w-full min-w-0 flex-1 flex-col items-start gap-1.75 text-start">
+        <span className="typography-label-base-sb text-foreground w-full min-w-0 truncate">
           {title}
         </span>
-        <div className="flex items-center min-w-0 w-full gap-1">
+        <div className="flex w-full min-w-0 items-center gap-1">
           <ProfileImage src={src} alt={nickname} className="size-4" />
-          <span className="typography-body-sm-reg truncate w-full min-w-0 text-[#09090B]">
+          <span className="typography-body-sm-reg w-full min-w-0 truncate text-[#09090B]">
             {nickname}
           </span>
         </div>

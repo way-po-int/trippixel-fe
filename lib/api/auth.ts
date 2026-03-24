@@ -1,30 +1,30 @@
-import axios from "axios"
-import { apiClient } from "@/lib/api/client"
+import axios from "axios";
+import { apiClient } from "@/lib/api/client";
 
-export type LoginProvider = "GOOGLE" | "KAKAO" | "NAVER"
+export type LoginProvider = "GOOGLE" | "KAKAO" | "NAVER";
 
 export type DevLoginRequest = {
-  provider: LoginProvider
-  provider_id: string
-  nickname: string
-  picture?: string
-  email?: string
-}
+  provider: LoginProvider;
+  provider_id: string;
+  nickname: string;
+  picture?: string;
+  email?: string;
+};
 
 export type DevLoginResponse = {
-  access_token: string
-  expires_in: string
-}
+  access_token: string;
+  expires_in: string;
+};
 
-export type SocialLoginProvider = Lowercase<LoginProvider>
+export type SocialLoginProvider = Lowercase<LoginProvider>;
 
 export async function socialLogin(provider: SocialLoginProvider) {
-  window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}oauth2/authorization/${provider}`
+  window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}oauth2/authorization/${provider}`;
 }
 
 export async function devLogin(payload: DevLoginRequest) {
-  const { data } = await apiClient.post<DevLoginResponse>("/dev/auth/login", payload)
-  return data
+  const { data } = await apiClient.post<DevLoginResponse>("/dev/auth/login", payload);
+  return data;
 }
 
 export async function reissue() {
@@ -32,10 +32,10 @@ export async function reissue() {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}auth/reissue`,
     null,
     { withCredentials: true },
-  )
-  return data
+  );
+  return data;
 }
 
 export async function logout() {
-  await apiClient.post("/auth/logout")
+  await apiClient.post("/auth/logout");
 }

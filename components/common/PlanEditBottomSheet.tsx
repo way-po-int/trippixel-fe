@@ -20,11 +20,7 @@ const toCursorPosition = (digitIndex: number) => {
   return digitIndex + 1;
 };
 
-const replaceTimeDigit = (
-  value: string,
-  digitIndex: number,
-  nextDigit: string,
-) => {
+const replaceTimeDigit = (value: string, digitIndex: number, nextDigit: string) => {
   const chars = value.split("");
   const valueIndex = digitIndex >= 2 ? digitIndex + 1 : digitIndex;
   chars[valueIndex] = nextDigit;
@@ -47,20 +43,16 @@ const toMinutes = (value: string) => {
   return hour * 60 + minute;
 };
 
-interface PlanEditBottomSheetProps {
+type PlanEditBottomSheetProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 
-  onSubmit?: (payload: {
-    day?: number;
-    startTime?: string;
-    endTime?: string;
-  }) => void;
+  onSubmit?: (payload: { day?: number; startTime?: string; endTime?: string }) => void;
 
   defaultDay?: string;
   defaultStartTime?: string;
   defaultEndTime?: string;
-}
+};
 
 const PlanEditBottomSheet = ({
   open,
@@ -81,9 +73,7 @@ const PlanEditBottomSheet = ({
   const isStartTimeValid = isValidTime(startTime);
   const isEndTimeValid = isValidTime(endTime);
   const isStartNotAfterEnd =
-    isStartTimeValid && isEndTimeValid
-      ? toMinutes(startTime) <= toMinutes(endTime)
-      : false;
+    isStartTimeValid && isEndTimeValid ? toMinutes(startTime) <= toMinutes(endTime) : false;
 
   const isStartTimeProvided = startTime !== DEFAULT_TIME;
   const isEndTimeProvided = endTime !== DEFAULT_TIME;
@@ -105,8 +95,7 @@ const PlanEditBottomSheet = ({
   const defaultDayDigits = useMemo(() => digitsOnly(defaultDay), [defaultDay]);
   const currentDayDigits = useMemo(() => digitsOnly(day), [day]);
 
-  const isDayDirty =
-    currentDayDigits.length > 0 && currentDayDigits !== defaultDayDigits;
+  const isDayDirty = currentDayDigits.length > 0 && currentDayDigits !== defaultDayDigits;
   const isStartDirty = startTime !== defaultStartTime;
   const isEndDirty = endTime !== defaultEndTime;
 
@@ -116,8 +105,7 @@ const PlanEditBottomSheet = ({
   // - 날짜만 유효하거나
   // - (날짜 없어도) 시간 범위가 유효하거나
   // - 둘 다 유효하면 true
-  const canSubmit =
-    isAnythingDirty && (isDayValid || isTimeRangeValid) && !showTimeError;
+  const canSubmit = isAnythingDirty && (isDayValid || isTimeRangeValid) && !showTimeError;
 
   const handleTimeKeyDown = (
     e: KeyboardEvent<HTMLInputElement>,
@@ -220,9 +208,7 @@ const PlanEditBottomSheet = ({
         <div className="flex flex-col gap-8 pb-3.5">
           <div className="flex flex-col gap-2">
             <Label htmlFor="edit-day">
-              <span className="typography-label-sm-sb text-foreground">
-                날짜
-              </span>
+              <span className="typography-label-sm-sb text-foreground">날짜</span>
             </Label>
             <InputForm
               id="edit-day"
@@ -235,9 +221,7 @@ const PlanEditBottomSheet = ({
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="edit-start-time">
-              <span className="typography-label-sm-sb text-foreground">
-                시작 시간
-              </span>
+              <span className="typography-label-sm-sb text-foreground">시작 시간</span>
             </Label>
             <InputForm
               id="edit-start-time"
@@ -249,17 +233,13 @@ const PlanEditBottomSheet = ({
               onKeyDown={(e) => handleTimeKeyDown(e, startTime, setStartTime)}
               onFocus={(e) => setCaret(e.currentTarget, 0)}
               onChange={() => {}}
-              error={
-                showTimeError && (!isStartTimeValid || !isStartNotAfterEnd)
-              }
+              error={showTimeError && (!isStartTimeValid || !isStartNotAfterEnd)}
             />
           </div>
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="edit-end-time">
-              <span className="typography-label-sm-sb text-foreground">
-                종료 시간
-              </span>
+              <span className="typography-label-sm-sb text-foreground">종료 시간</span>
             </Label>
             <InputForm
               id="edit-end-time"
@@ -275,13 +255,9 @@ const PlanEditBottomSheet = ({
             />
             {showTimeError ? (
               !isStartTimeProvided || !isEndTimeProvided ? (
-                <FieldDescription error>
-                  시작/종료 시간을 모두 입력해 주세요.
-                </FieldDescription>
+                <FieldDescription error>시작/종료 시간을 모두 입력해 주세요.</FieldDescription>
               ) : isStartTimeValid && isEndTimeValid && !isStartNotAfterEnd ? (
-                <FieldDescription error>
-                  종료 시간은 시작 시간보다 빠를 수 없어요.
-                </FieldDescription>
+                <FieldDescription error>종료 시간은 시작 시간보다 빠를 수 없어요.</FieldDescription>
               ) : null
             ) : null}
           </div>

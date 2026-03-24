@@ -1,12 +1,12 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import HeaderBtn, { HeaderBtnBgVariant } from "./HeaderBtn";
+import HeaderBtn, { type HeaderBtnBgVariant } from "./HeaderBtn";
 import { cn } from "@/lib/utils/utils";
 import { ArrowLeft, Calendar, Map } from "lucide-react";
 import MemberSideDrawer from "@/components/common/MemberSideDrawer";
 
-interface ProjectHeaderProps {
+type ProjectHeaderProps = {
   // 헤더 레이아웃 타입
   variant?: "view" | "edit";
   // 타이틀 텍스트
@@ -27,7 +27,7 @@ interface ProjectHeaderProps {
   leftBtnBgVariant?: HeaderBtnBgVariant;
   rightBtnBgVariant?: HeaderBtnBgVariant;
   className?: string;
-}
+};
 
 const ProjectHeader = ({
   variant = "view",
@@ -63,7 +63,7 @@ const ProjectHeader = ({
   return (
     <header
       className={cn(
-        "grid grid-cols-[1fr_auto_1fr] items-center justify-between w-full gap-2 h-16 px-2.5 pt-3.5 pb-0.5 bg-white/10 backdrop-blur-md",
+        "grid h-16 w-full grid-cols-[1fr_auto_1fr] items-center justify-between gap-2 bg-white/10 px-2.5 pt-3.5 pb-0.5 backdrop-blur-md",
         className,
       )}
     >
@@ -81,7 +81,7 @@ const ProjectHeader = ({
           <button
             aria-label="뒤로가기"
             onClick={handleEditBack}
-            className="text-muted-foreground typography-action-sm-bold flex px-1.5 py-2.5 items-center justify-center gap-1 rounded-lg hover:bg-accent"
+            className="text-muted-foreground typography-action-sm-bold hover:bg-accent flex items-center justify-center gap-1 rounded-lg px-1.5 py-2.5"
           >
             <ArrowLeft />
             편집종료
@@ -92,9 +92,7 @@ const ProjectHeader = ({
       {/* 중앙 타이틀 */}
       <div className="min-w-0">
         {title ? (
-          <h1 className="text-center typography-display-xl text-foreground truncate">
-            {title}
-          </h1>
+          <h1 className="typography-display-xl text-foreground truncate text-center">{title}</h1>
         ) : null}
       </div>
 
@@ -107,9 +105,7 @@ const ProjectHeader = ({
             onClick={onMap}
             disabled={mapDisabled}
             label="지도"
-            iconClassName={cn(
-              isMapVisible && !mapDisabled ? "text-primary" : "",
-            )}
+            iconClassName={cn(isMapVisible && !mapDisabled ? "text-primary" : "")}
           />
         )}
 

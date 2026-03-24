@@ -78,9 +78,7 @@ const ProjectForm = ({
             onChange={(e) => onTitleChange(e.target.value)}
             onBlur={onTitleBlur}
           />
-          {titleErrorMessage && (
-            <FieldDescription error>{titleErrorMessage}</FieldDescription>
-          )}
+          {titleErrorMessage && <FieldDescription error>{titleErrorMessage}</FieldDescription>}
         </div>
       </div>
 
@@ -99,9 +97,7 @@ const ProjectForm = ({
               value={dateText}
               readOnly
             />
-            {dateErrorMessage && (
-              <FieldDescription error>{dateErrorMessage}</FieldDescription>
-            )}
+            {dateErrorMessage && <FieldDescription error>{dateErrorMessage}</FieldDescription>}
           </div>
 
           <DialogContent className="rounded-3xl">
@@ -122,7 +118,7 @@ const ProjectForm = ({
               disabled={{ before: getToday() }}
               month={calendarMonth}
               onMonthChange={onMonthChange}
-              className="w-full border-border border rounded-xl"
+              className="border-border w-full rounded-xl border"
             />
             <DialogFooter>
               <Button
@@ -130,7 +126,7 @@ const ProjectForm = ({
                 type="button"
                 onClick={onCompleteCalendar}
                 disabled={!draftRange?.from || !draftRange?.to}
-                className="w-full typography-body-sm-sb"
+                className="typography-body-sm-sb w-full"
               >
                 선택 완료
               </Button>

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useMutation,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import type { ProblemDetail } from "@/types/problem-detail";
 import { addExtractionJobPlaces } from "@/lib/api/collection";
@@ -14,10 +11,7 @@ type Variables = {
   place_ids: string[];
 };
 
-type Options = Omit<
-  UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>,
-  "mutationFn"
->;
+type Options = Omit<UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>, "mutationFn">;
 
 export const useAddExtractionJobPlaces = (options?: Options) => {
   return useMutation<void, AxiosError<ProblemDetail>, Variables>({

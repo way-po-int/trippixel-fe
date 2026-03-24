@@ -37,7 +37,7 @@ function OpinionProfile({
             onClick={onDelete}
             className="flex size-10 items-center justify-center rounded-2xl px-2 py-2.5 no-underline hover:no-underline"
           >
-            <Trash2 className="size-6 text-foreground opacity-40" strokeWidth={2} />
+            <Trash2 className="text-foreground size-6 opacity-40" strokeWidth={2} />
           </Button>
           <Button
             type="button"

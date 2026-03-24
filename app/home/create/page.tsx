@@ -47,25 +47,19 @@ const CollectionCreatePage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-[#fafafa]">
       {/* 헤더(뒤로가기) */}
-      <Header
-        showBackButton
-        leftBtnBgVariant="ghost"
-        className="fixed top-0 z-10 inset-x-0"
-      />
+      <Header showBackButton leftBtnBgVariant="ghost" className="fixed inset-x-0 top-0 z-10" />
 
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleCreate();
         }}
-        className="flex flex-col flex-1 justify-between px-5 py-18.75"
+        className="flex flex-1 flex-col justify-between px-5 py-18.75"
       >
         <div className="flex flex-col gap-10 pt-4">
           {/* 타이틀 + 설명 */}
-          <div className="flex flex-col gap-5 text-start pt-16">
-            <h2 className="typography-display-2xl">
-              어떤 여행을 꿈꾸고 계신가요?
-            </h2>
+          <div className="flex flex-col gap-5 pt-16 text-start">
+            <h2 className="typography-display-2xl">어떤 여행을 꿈꾸고 계신가요?</h2>
             <p className="typography-body-base text-muted-foreground">
               보관함 이름을 입력하고,
               <br />
@@ -91,19 +85,13 @@ const CollectionCreatePage = () => {
                   if (!v.ok) setErrorMessage(v.message);
                 }}
               />
-              {errorMessage && (
-                <FieldDescription error>{errorMessage}</FieldDescription>
-              )}
+              {errorMessage && <FieldDescription error>{errorMessage}</FieldDescription>}
             </div>
           </div>
         </div>
 
         {/* 컬렉션 생성 버튼 */}
-        <Button
-          type="submit"
-          disabled={isPending || !title.trim()}
-          className="w-full"
-        >
+        <Button type="submit" disabled={isPending || !title.trim()} className="w-full">
           보관함 만들기
         </Button>
       </form>

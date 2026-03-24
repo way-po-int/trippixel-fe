@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { FieldDescription } from "@/components/ui/field-description";
 
-interface BudgetInputFieldProps {
+type BudgetInputFieldProps = {
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -14,7 +14,7 @@ interface BudgetInputFieldProps {
   labelAction?: React.ReactNode;
   error?: boolean;
   errorMessage?: string;
-}
+};
 
 const BudgetInputField = ({
   label,
@@ -48,7 +48,7 @@ const BudgetInputField = ({
         {labelAction}
       </div>
       <div
-        className={`flex h-11 items-center gap-2 rounded-xl bg-[#F0F0F0] px-3 py-2 outline-none border transition-all ${
+        className={`flex h-11 items-center gap-2 rounded-xl border bg-[#F0F0F0] px-3 py-2 transition-all outline-none ${
           error
             ? "border-destructive"
             : "border-transparent has-focus:border-sky-500 has-focus:ring-2 has-focus:ring-sky-500/25"
@@ -62,17 +62,13 @@ const BudgetInputField = ({
           onChange={(e) => onChange(e.target.value)}
           onFocus={handleFocus}
           placeholder={placeholder}
-          className="w-full bg-transparent outline-none typography-body-base text-foreground placeholder:text-muted-foreground"
+          className="typography-body-base text-foreground placeholder:text-muted-foreground w-full bg-transparent outline-none"
         />
         {unit && !isEmpty && (
-          <span className="typography-action-base-bold shrink-0 text-muted-foreground">
-            {unit}
-          </span>
+          <span className="typography-action-base-bold text-muted-foreground shrink-0">{unit}</span>
         )}
       </div>
-      {error && errorMessage && (
-        <FieldDescription error>{errorMessage}</FieldDescription>
-      )}
+      {error && errorMessage && <FieldDescription error>{errorMessage}</FieldDescription>}
     </div>
   );
 };

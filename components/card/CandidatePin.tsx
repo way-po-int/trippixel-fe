@@ -1,15 +1,13 @@
-interface CandidatePinProps {
+type CandidatePinProps = {
   index: number;
-}
+};
 
 const CandidatePin = ({ index }: CandidatePinProps) => {
   return (
     <div className="inline-flex flex-col items-center">
       {/* 본체 - 검은 원 + 흰 테두리 */}
-      <div className="size-8 rounded-full bg-black border-3 border-white flex items-center justify-center shadow-lg">
-        <span className="typography-body-sm-bold text-white leading-none">
-          {index}
-        </span>
+      <div className="flex size-8 items-center justify-center rounded-full border-3 border-white bg-black shadow-lg">
+        <span className="typography-body-sm-bold leading-none text-white">{index}</span>
       </div>
 
       {/* 꼬리 - 흰색 삼각형 */}

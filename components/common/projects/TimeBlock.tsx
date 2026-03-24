@@ -1,26 +1,22 @@
 "use client";
 
 import PlanTime from "./PlanTime";
-import { EditCandidateItem } from "@/components/card/CandidateGroup";
-import { PlaceType } from "@/components/card/PlaceTypeIcon";
+import { type EditCandidateItem } from "@/components/card/CandidateGroup";
+import { type PlaceType } from "@/components/card/PlaceTypeIcon";
 import EditPlace from "./EditPlace";
 import { Pencil, Trash2, Vote } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { useUpdateBlock } from "@/lib/hooks/use-block-detail";
-import {
-  BlockStatus,
-  TimeBlockType,
-  UpdateBlockRequest,
-} from "@/lib/api/block";
+import { type BlockStatus, type TimeBlockType, type UpdateBlockRequest } from "@/lib/api/block";
 import PlanEditBottomSheet from "../PlanEditBottomSheet";
 import { toast } from "sonner";
-import { ProblemDetail } from "@/types/problem-detail";
-import { AxiosError } from "axios";
+import { type ProblemDetail } from "@/types/problem-detail";
+import { type AxiosError } from "axios";
 import { useDeleteTimeBlock } from "@/lib/hooks/use-delete-time-block";
 
-interface TimeBlockProps {
+type TimeBlockProps = {
   planId: string;
   day: number;
   timeBlockId: string;
@@ -45,7 +41,7 @@ interface TimeBlockProps {
     onMenuClick?: () => void;
   };
   candidates: EditCandidateItem[];
-}
+};
 
 const TimeBlock = ({
   planId,
@@ -116,11 +112,7 @@ const TimeBlock = ({
     },
   });
 
-  const handleSubmitEdit = (payload: {
-    day?: number;
-    startTime?: string;
-    endTime?: string;
-  }) => {
+  const handleSubmitEdit = (payload: { day?: number; startTime?: string; endTime?: string }) => {
     if (!targetBlockId) return;
 
     const req: UpdateBlockRequest = {};

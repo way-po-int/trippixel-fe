@@ -5,10 +5,7 @@ import type { AxiosError } from "axios";
 import { leaveCollection } from "@/lib/api/collection";
 import type { ProblemDetail } from "@/types/problem-detail";
 
-type Options = Omit<
-  UseMutationOptions<void, AxiosError<ProblemDetail>, string>,
-  "mutationFn"
->;
+type Options = Omit<UseMutationOptions<void, AxiosError<ProblemDetail>, string>, "mutationFn">;
 
 export const useLeaveCollection = (options?: Options) => {
   const queryClient = useQueryClient();

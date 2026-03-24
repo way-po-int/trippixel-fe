@@ -13,9 +13,7 @@ const ENV_VARS = {
 if (typeof window === "undefined") {
   const requiredEnvVars = Object.values(ENV_VARS);
 
-  const missingVars = requiredEnvVars.filter(
-    (varName) => !process.env[varName],
-  );
+  const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 
   if (missingVars.length > 0) {
     throw new Error(
@@ -42,8 +40,7 @@ const getRequiredEnv = (envVar: string, errorMessage: string): string => {
 };
 
 // 에러 메시지 생성 헬퍼 함수
-const createEnvError = (envVar: string) =>
-  `${envVar} 환경변수가 설정되지 않았습니다.`;
+const createEnvError = (envVar: string) => `${envVar} 환경변수가 설정되지 않았습니다.`;
 
 // 용도별로 그룹화된 환경변수
 export const env = {
@@ -57,19 +54,13 @@ export const env = {
       ENV_VARS.PRIVACY_POLICY_URL,
       createEnvError(ENV_VARS.PRIVACY_POLICY_URL),
     ),
-    guide: getRequiredUrl(
-      ENV_VARS.GUIDE_URL,
-      createEnvError(ENV_VARS.GUIDE_URL),
-    ),
+    guide: getRequiredUrl(ENV_VARS.GUIDE_URL, createEnvError(ENV_VARS.GUIDE_URL)),
     voc: getRequiredUrl(ENV_VARS.VOC_URL, createEnvError(ENV_VARS.VOC_URL)),
   },
 
   // API 설정
   api: {
-    baseUrl: getRequiredUrl(
-      ENV_VARS.API_BASE_URL,
-      createEnvError(ENV_VARS.API_BASE_URL),
-    ),
+    baseUrl: getRequiredUrl(ENV_VARS.API_BASE_URL, createEnvError(ENV_VARS.API_BASE_URL)),
     googleMapsKey: getRequiredEnv(
       ENV_VARS.GOOGLE_MAPS_API_KEY,
       createEnvError(ENV_VARS.GOOGLE_MAPS_API_KEY),
@@ -78,9 +69,6 @@ export const env = {
 
   // 이미지 최적화
   images: {
-    domains: getRequiredEnv(
-      ENV_VARS.IMAGE_DOMAINS,
-      createEnvError(ENV_VARS.IMAGE_DOMAINS),
-    ),
+    domains: getRequiredEnv(ENV_VARS.IMAGE_DOMAINS, createEnvError(ENV_VARS.IMAGE_DOMAINS)),
   },
 } as const;

@@ -6,10 +6,7 @@ import type { CollectionMembersResponse } from "@/types/member";
 import { getCollectionMembers } from "@/lib/api/collection";
 import type { ProblemDetail } from "@/types/problem-detail";
 
-type CollectionMembersQueryKey = readonly [
-  "collectionMembers",
-  { collectionId: string },
-];
+type CollectionMembersQueryKey = readonly ["collectionMembers", { collectionId: string }];
 
 type Options = Omit<
   UseQueryOptions<
@@ -21,10 +18,7 @@ type Options = Omit<
   "queryKey" | "queryFn"
 >;
 
-export const useCollectionMembers = (
-  collectionId: string,
-  options?: Options,
-) => {
+export const useCollectionMembers = (collectionId: string, options?: Options) => {
   return useQuery<
     CollectionMembersResponse,
     AxiosError<ProblemDetail>,

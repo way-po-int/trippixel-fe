@@ -4,7 +4,7 @@ import * as React from "react";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils/utils";
 
-interface DayHeaderProps {
+type DayHeaderProps = {
   /** Controlled */
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -22,7 +22,7 @@ interface DayHeaderProps {
   contentClassName?: string;
   /** 접근성 */
   id?: string; // content id(없으면 자동 생성)
-}
+};
 
 export const DayHeader = ({
   open,
@@ -68,19 +68,17 @@ export const DayHeader = ({
         disabled={disabled}
         onClick={toggle}
         className={cn(
-          "w-full cursor-pointer h-20.5 flex justify-between items-center gap-3 px-5 py-4 border-b-[0.67px] border-border/60",
+          "border-border/60 flex h-20.5 w-full cursor-pointer items-center justify-between gap-3 border-b-[0.67px] px-5 py-4",
           disabled ? "cursor-not-allowed" : "cursor-pointer",
         )}
       >
         <div className="flex items-center gap-4">
-          <span className="w-12 h-12 rounded-[18px] bg-primary/10 flex items-center justify-center typography-display-xl text-primary">
+          <span className="bg-primary/10 typography-display-xl text-primary flex h-12 w-12 items-center justify-center rounded-[18px]">
             {day}
           </span>
-          <div className="flex flex-col gap-0.5 items-start">
+          <div className="flex flex-col items-start gap-0.5">
             <h3 className="typography-display-xl text-foreground">DAY {day}</h3>
-            <p className="typography-body-sm-reg text-muted-foreground">
-              {date}
-            </p>
+            <p className="typography-body-sm-reg text-muted-foreground">{date}</p>
           </div>
         </div>
 

@@ -4,9 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
-import GoogleMap, {
-  type OverlayMarkerItem,
-} from "@/components/common/GoogleMap";
+import GoogleMap, { type OverlayMarkerItem } from "@/components/common/GoogleMap";
 import CandidatePin from "@/components/card/CandidatePin";
 import CandidateSelectCard from "@/components/card/CandidateSelectCard";
 import { useCandidates } from "@/lib/hooks/plan/use-candidates";
@@ -14,10 +12,7 @@ import { useSelectCandidate } from "@/lib/hooks/plan/use-select-candidate";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AppAlertDialog from "@/components/common/AppAlertDialog";
-import type {
-  OpinionCategoryKey,
-  BlockOpinion,
-} from "@/lib/opinion-bottom-sheet";
+import type { OpinionCategoryKey, BlockOpinion } from "@/lib/opinion-bottom-sheet";
 
 const toCategoryKey = (level2Name?: string): OpinionCategoryKey => {
   switch (level2Name) {
@@ -78,9 +73,7 @@ const SelectCandidatePage = () => {
   const params = useParams<{ planId: string; timeBlockId: string }>();
   const router = useRouter();
 
-  const planId = Array.isArray(params.planId)
-    ? params.planId[0]
-    : params.planId;
+  const planId = Array.isArray(params.planId) ? params.planId[0] : params.planId;
   const timeBlockId = Array.isArray(params.timeBlockId)
     ? params.timeBlockId[0]
     : params.timeBlockId;
@@ -136,23 +129,23 @@ const SelectCandidatePage = () => {
   const fitPositions = overlayMarkers.map((m) => m.position);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header
         variant="center"
         title="후보지 선택"
         showBackButton
         onBack={() => router.back()}
-        className="fixed inset-x-0 top-0 z-10 bg-background"
+        className="bg-background fixed inset-x-0 top-0 z-10"
       />
 
       {/* 지도 영역 - 헤더 바로 아래 */}
-      <div className="fixed top-15 z-10 left-0 right-0">
+      <div className="fixed top-15 right-0 left-0 z-10">
         <GoogleMap
           center={mapCenter}
           zoom={14}
           overlayMarkers={overlayMarkers}
           fitPositions={fitPositions}
-          className="w-full h-52 rounded-none"
+          className="h-52 w-full rounded-none"
           showZoomControls
         />
       </div>
@@ -160,32 +153,25 @@ const SelectCandidatePage = () => {
       <main className="flex flex-1 flex-col px-5 pt-72">
         {isLoading && (
           <div className="flex flex-1 items-center justify-center">
-            <p className="typography-body-sm-reg text-muted-foreground">
-              불러오는 중...
-            </p>
+            <p className="typography-body-sm-reg text-muted-foreground">불러오는 중...</p>
           </div>
         )}
         {data && (
           <div className="flex flex-col gap-5">
-            <div className="flex flex-col py-0.5 border-b-2 gap-3">
-              <div className="flex gap-1.5 items-center">
+            <div className="flex flex-col gap-3 border-b-2 py-0.5">
+              <div className="flex items-center gap-1.5">
                 <p className="typography-display-lg-bold">{data.title}</p>
                 <p className="typography-body-sm-sb">·</p>
-                <p className="typography-body-sm-sb">
-                  후보지 {data.candidate_count}개
-                </p>
+                <p className="typography-body-sm-sb">후보지 {data.candidate_count}개</p>
               </div>
-              <div className="flex pb-3 items-center justify-between">
-                <div className="flex gap-2 items-center">
+              <div className="flex items-center justify-between pb-3">
+                <div className="flex items-center gap-2">
                   <CalendarIcon color="#0ea5e9" className="size-6" />
-                  <p className="typography-body-sm-sb">
-                    {data.day_info.day}일차
-                  </p>
+                  <p className="typography-body-sm-sb">{data.day_info.day}일차</p>
                   <p className="typography-body-sm-reg">
                     {data.day_info.date.replace(
                       /^(\d{4})-(\d{2})-(\d{2})$/,
-                      (_, y, m, d) =>
-                        `${y}년 ${parseInt(m)}월 ${parseInt(d)}일`,
+                      (_, y, m, d) => `${y}년 ${parseInt(m)}월 ${parseInt(d)}일`,
                     )}
                   </p>
                 </div>
@@ -205,16 +191,11 @@ const SelectCandidatePage = () => {
                   categoryKey={toCategoryKey(c.place.category.level2?.name)}
                   imageUrl={c.place.photos?.[0]}
                   memo={c.memo}
-                  amount={
-                    c.expense_items.reduce((sum, item) => sum + item.cost, 0) ||
-                    undefined
-                  }
+                  amount={c.expense_items.reduce((sum, item) => sum + item.cost, 0) || undefined}
                   opinions={toOpinions(c.opinion_summary.distribution)}
                   isSelected={selectedBlockId === c.block_id}
                   onSelect={() =>
-                    setSelectedBlockId((prev) =>
-                      prev === c.block_id ? null : c.block_id,
-                    )
+                    setSelectedBlockId((prev) => (prev === c.block_id ? null : c.block_id))
                   }
                 />
               ))}
@@ -223,9 +204,9 @@ const SelectCandidatePage = () => {
         )}
       </main>
 
-      <div className="fixed bottom-0 inset-x-0 px-5 bg-background py-3">
+      <div className="bg-background fixed inset-x-0 bottom-0 px-5 py-3">
         <Button
-          className="w-full h-11 rounded-2xl typography-action-sm-bold"
+          className="typography-action-sm-bold h-11 w-full rounded-2xl"
           disabled={!selectedBlockId}
           onClick={() => setConfirmOpen(true)}
         >

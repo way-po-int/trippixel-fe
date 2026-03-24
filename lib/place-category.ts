@@ -122,12 +122,12 @@ const PLACE_TYPE_TO_MIDDLE_CATEGORY: Record<string, string> = {
   bicycle_store: "자전거매장",
   furniture_store: "가구매장",
   pet_store: "펫숍",
-}
+};
 
-const hasKorean = (value: string) => /[ㄱ-ㅎ가-힣]/.test(value)
+const hasKorean = (value: string) => /[ㄱ-ㅎ가-힣]/.test(value);
 
 export const resolveMiddleCategory = (rawCategory: string) => {
-  if (!rawCategory) return ""
-  if (hasKorean(rawCategory)) return rawCategory
-  return PLACE_TYPE_TO_MIDDLE_CATEGORY[rawCategory] ?? rawCategory
-}
+  if (!rawCategory) return "";
+  if (hasKorean(rawCategory)) return rawCategory;
+  return PLACE_TYPE_TO_MIDDLE_CATEGORY[rawCategory] ?? rawCategory;
+};

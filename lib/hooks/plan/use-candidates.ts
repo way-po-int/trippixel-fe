@@ -11,11 +11,7 @@ type Options = Omit<
   "queryKey" | "queryFn"
 >;
 
-export const useCandidates = (
-  planId: string,
-  timeBlockId: string,
-  options?: Options,
-) => {
+export const useCandidates = (planId: string, timeBlockId: string, options?: Options) => {
   return useQuery<CandidatesResponse, AxiosError<ProblemDetail>>({
     queryKey: ["candidates", { planId, timeBlockId }],
     queryFn: () => getCandidates(planId, timeBlockId),

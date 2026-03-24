@@ -16,12 +16,7 @@ import { useUpdateMe } from "@/lib/hooks/use-update-me";
 import { useUpdatePicture } from "@/lib/hooks/use-update-picture";
 import { useDeletePicture } from "@/lib/hooks/use-delete-profile-picture";
 import { useDeleteMe } from "@/lib/hooks/use-delete-me";
-import {
-  CheckIcon,
-  DoorClosedIcon,
-  PencilIcon,
-  UploadIcon,
-} from "lucide-react";
+import { CheckIcon, DoorClosedIcon, PencilIcon, UploadIcon } from "lucide-react";
 
 const WITHDRAWAL_REASONS = [
   "자주 쓰지 않게 돼요",
@@ -37,18 +32,16 @@ const EditMyInformationPage = () => {
   const { mutate: updateMe, isPending: isUpdating } = useUpdateMe({
     onSuccess: () => setIsEditing(false),
   });
-  const { mutate: updatePicture, isPending: isUploadingPicture } =
-    useUpdatePicture({
-      onSuccess: () => {
-        setPictureVersion((v) => v + 1);
-        setIsProfileImageOpen(false);
-      },
-    });
-  const { mutate: deletePicture, isPending: isDeletingPicture } =
-    useDeletePicture({
-      onSuccess: () => setIsProfileImageOpen(false),
-    });
-  const { mutate: deleteMe, isPending: isDeletingMe } = useDeleteMe({
+  const { mutate: updatePicture, isPending: isUploadingPicture } = useUpdatePicture({
+    onSuccess: () => {
+      setPictureVersion((v) => v + 1);
+      setIsProfileImageOpen(false);
+    },
+  });
+  const { mutate: deletePicture, isPending: isDeletingPicture } = useDeletePicture({
+    onSuccess: () => setIsProfileImageOpen(false),
+  });
+  const { mutate: deleteMe, isPending: _isDeletingMe } = useDeleteMe({
     onSuccess: () => router.replace("/login"),
   });
 
@@ -83,28 +76,13 @@ const EditMyInformationPage = () => {
   }, [nickname, isEditing]);
 
   return (
-    <div className="h-[calc(100vh-60px)] flex flex-col">
-      <div className="flex-1 w-full mt-20 rounded-t-3xl bg-[#f0f0f0] flex flex-col items-center gap-2.5 px-5 pb-18">
-        <button
-          type="button"
-          className="-mt-[43px]"
-          onClick={() => setIsProfileImageOpen(true)}
-        >
-          <ProfileImage
-            src={picture}
-            alt={nickname || "프로필 이미지"}
-            size="lg"
-            isOutLine
-          />
+    <div className="flex h-[calc(100vh-60px)] flex-col">
+      <div className="mt-20 flex w-full flex-1 flex-col items-center gap-2.5 rounded-t-3xl bg-[#f0f0f0] px-5 pb-18">
+        <button type="button" className="-mt-[43px]" onClick={() => setIsProfileImageOpen(true)}>
+          <ProfileImage src={picture} alt={nickname || "프로필 이미지"} size="lg" isOutLine />
         </button>
-        <Button
-          variant="ghost"
-          className="pt-[11.5px]"
-          onClick={() => setIsProfileImageOpen(true)}
-        >
-          <p className="typography-action-sm-reg text-[#757575]">
-            프로필 사진 수정
-          </p>
+        <Button variant="ghost" className="pt-[11.5px]" onClick={() => setIsProfileImageOpen(true)}>
+          <p className="typography-action-sm-reg text-[#757575]">프로필 사진 수정</p>
           <PencilIcon size={16} className="opacity-40" />
         </Button>
 
@@ -129,7 +107,7 @@ const EditMyInformationPage = () => {
         >
           <div className="flex flex-col gap-4">
             <Button
-              className="bg-sky-500 hover:bg-sky-500/90 typography-action-base-bold"
+              className="typography-action-base-bold bg-sky-500 hover:bg-sky-500/90"
               disabled={isUploadingPicture}
               onClick={() => fileInputRef.current?.click()}
               icon={<UploadIcon className="size-6 opacity-40" />}
@@ -149,7 +127,7 @@ const EditMyInformationPage = () => {
           </div>
         </AppDialog>
 
-        <div className="w-full flex-1 rounded-2xl pt-4 flex flex-col justify-between">
+        <div className="flex w-full flex-1 flex-col justify-between rounded-2xl pt-4">
           <div className="flex flex-col gap-5">
             <Label className="typography-action-base-bold">나의 이름</Label>
             <div className="flex flex-col gap-1">
@@ -161,7 +139,7 @@ const EditMyInformationPage = () => {
                     onChange={(e) => setEditNickname(e.target.value)}
                   />
                 ) : (
-                  <p className="flex-1 typography-body-base">{nickname}</p>
+                  <p className="typography-body-base flex-1">{nickname}</p>
                 )}
                 <Button
                   type="button"
@@ -170,37 +148,22 @@ const EditMyInformationPage = () => {
                   disabled={isUpdating}
                   onClick={() => {
                     if (isEditing) {
-                      if (
-                        isNicknameEmpty ||
-                        isNicknameTooLong ||
-                        hasNicknameError
-                      )
-                        return;
+                      if (isNicknameEmpty || isNicknameTooLong || hasNicknameError) return;
                       updateMe({ nickname: editNickname });
                     } else {
                       setIsEditing(true);
                     }
                   }}
                 >
-                  {isEditing ? (
-                    <CheckIcon className="size-6" />
-                  ) : (
-                    <PencilIcon className="size-6" />
-                  )}
+                  {isEditing ? <CheckIcon className="size-6" /> : <PencilIcon className="size-6" />}
                 </Button>
               </div>
-              {isNicknameEmpty && (
-                <FieldDescription error>이름을 입력해 주세요.</FieldDescription>
-              )}
+              {isNicknameEmpty && <FieldDescription error>이름을 입력해 주세요.</FieldDescription>}
               {isEditing && isNicknameTooLong && (
-                <FieldDescription error>
-                  이름은 10자 이하로 입력해 주세요.
-                </FieldDescription>
+                <FieldDescription error>이름은 10자 이하로 입력해 주세요.</FieldDescription>
               )}
               {isEditing && hasNicknameError && (
-                <FieldDescription error>
-                  특수문자와 공백은 사용할 수 없습니다.
-                </FieldDescription>
+                <FieldDescription error>특수문자와 공백은 사용할 수 없습니다.</FieldDescription>
               )}
             </div>
           </div>
@@ -210,9 +173,7 @@ const EditMyInformationPage = () => {
                 variant="ghost"
                 icon={<DoorClosedIcon color="#D93d42" className="opacity-40" />}
               >
-                <p className="typography-action-sm-reg text-[#757575]">
-                  회원 탈퇴하기
-                </p>
+                <p className="typography-action-sm-reg text-[#757575]">회원 탈퇴하기</p>
               </Button>
             }
             title="회원 탈퇴"
@@ -227,7 +188,7 @@ const EditMyInformationPage = () => {
             <div className="flex flex-col gap-3">
               {WITHDRAWAL_REASONS.map((reason) => (
                 <div key={reason} className="flex flex-col gap-2">
-                  <label className="flex items-center gap-3 cursor-pointer">
+                  <label className="flex cursor-pointer items-center gap-3">
                     <CheckBox
                       checked={selectedReason === reason}
                       onCheckedChange={() => toggleReason(reason)}

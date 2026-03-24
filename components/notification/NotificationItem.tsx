@@ -2,12 +2,12 @@ import { X } from "lucide-react";
 import NotificationBadge from "./NotificationBadge";
 import { type NotificationBadgeVariant } from "./NotificationBadge";
 
-interface NotificationItemProps {
+type NotificationItemProps = {
   message: string;
   badgeVariant?: NotificationBadgeVariant;
   onDelete?: () => void;
   onClick?: () => void;
-}
+};
 
 const NotificationItem = ({
   message,
@@ -17,22 +17,20 @@ const NotificationItem = ({
 }: NotificationItemProps) => {
   return (
     <div
-      className="w-full py-3.5 pr-3 pl-4 rounded-2xl bg-[#F0F0F0] cursor-pointer"
+      className="w-full cursor-pointer rounded-2xl bg-[#F0F0F0] py-3.5 pr-3 pl-4"
       onClick={onClick}
     >
       <div className="flex items-center gap-4">
         {/* 배지 + 메시지 */}
-        <div className="flex flex-col gap-2.5 flex-1 min-w-0">
+        <div className="flex min-w-0 flex-1 flex-col gap-2.5">
           <NotificationBadge variant={badgeVariant} />
-          <p className="text-base font-normal leading-6 text-[#1C2024]">
-            {message}
-          </p>
+          <p className="text-base leading-6 font-normal text-[#1C2024]">{message}</p>
         </div>
 
         {/* 삭제 버튼 */}
         <button
           type="button"
-          className="shrink-0 flex items-center justify-center size-6 cursor-pointer hover:opacity-60 transition-opacity"
+          className="flex size-6 shrink-0 cursor-pointer items-center justify-center transition-opacity hover:opacity-60"
           onClick={(e) => {
             e.stopPropagation();
             onDelete?.();

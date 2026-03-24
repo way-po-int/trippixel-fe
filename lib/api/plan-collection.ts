@@ -11,12 +11,12 @@
  */
 
 import {
-  DeletePlanCollectionParams,
-  GetPlanCollectionParams,
-  GetPlanCollectionsResponse,
-  PostPlanCollectionsParams,
-  PostPlanCollectionsRequest,
-  PostPlanCollectionsResponse,
+  type DeletePlanCollectionParams,
+  type GetPlanCollectionParams,
+  type GetPlanCollectionsResponse,
+  type PostPlanCollectionsParams,
+  type PostPlanCollectionsRequest,
+  type PostPlanCollectionsResponse,
 } from "@/types/plan-collection";
 import { apiClient } from "./client";
 
@@ -26,12 +26,8 @@ import { apiClient } from "./client";
  * @param planId - 조회할 플랜 ID
  * @returns 연결된 컬렉션 목록
  */
-export const getPlanCollections = async (
-  planId: GetPlanCollectionParams["planId"],
-) => {
-  const res = await apiClient.get<GetPlanCollectionsResponse>(
-    `/plans/${planId}/collections`,
-  );
+export const getPlanCollections = async (planId: GetPlanCollectionParams["planId"]) => {
+  const res = await apiClient.get<GetPlanCollectionsResponse>(`/plans/${planId}/collections`);
   return res.data;
 };
 

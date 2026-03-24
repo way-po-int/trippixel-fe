@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
 import {
@@ -16,10 +12,7 @@ import {
 import type { BlockOpinion } from "@/lib/opinion-bottom-sheet";
 import { blockDetailQueryKey } from "@/lib/hooks/use-block-detail";
 
-const dedupeMembers = (
-  opinions: BlockOpinion[],
-  type: "POSITIVE" | "NEGATIVE",
-) => {
+const dedupeMembers = (opinions: BlockOpinion[], type: "POSITIVE" | "NEGATIVE") => {
   const unique = new Map<string, BlockOpinion["added_by"]>();
 
   for (const opinion of opinions) {
@@ -33,22 +26,12 @@ const dedupeMembers = (
   return Array.from(unique.values());
 };
 
-const patchBlockDetailOpinionDerivedFields = (
-  detail: BlockDetail,
-): BlockDetail => {
-  const positiveCount = detail.opinions.filter(
-    (opinion) => opinion.type === "POSITIVE",
-  ).length;
-  const neutralCount = detail.opinions.filter(
-    (opinion) => opinion.type === "NEUTRAL",
-  ).length;
-  const negativeCount = detail.opinions.filter(
-    (opinion) => opinion.type === "NEGATIVE",
-  ).length;
+const patchBlockDetailOpinionDerivedFields = (detail: BlockDetail): BlockDetail => {
+  const positiveCount = detail.opinions.filter((opinion) => opinion.type === "POSITIVE").length;
+  const neutralCount = detail.opinions.filter((opinion) => opinion.type === "NEUTRAL").length;
+  const negativeCount = detail.opinions.filter((opinion) => opinion.type === "NEGATIVE").length;
   const myOpinionItem = detail.myOpinionId
-    ? detail.opinions.find(
-        (opinion) => opinion.opinion_Id === detail.myOpinionId,
-      )
+    ? detail.opinions.find((opinion) => opinion.opinion_Id === detail.myOpinionId)
     : undefined;
 
   return {
@@ -87,9 +70,7 @@ type UseCreateBlockOpinionOptions = {
   >;
 };
 
-export const useCreateBlockOpinion = (
-  options: UseCreateBlockOpinionOptions,
-) => {
+export const useCreateBlockOpinion = (options: UseCreateBlockOpinionOptions) => {
   const queryClient = useQueryClient();
   const { planId, blockId, mutationOptions } = options;
 
@@ -104,20 +85,17 @@ export const useCreateBlockOpinion = (
     ...mutationOptions,
     onSuccess: (data, variables, onMutateResult, context) => {
       if (planId && blockId) {
-        queryClient.setQueryData<BlockDetail>(
-          blockDetailQueryKey(planId, blockId),
-          (old) => {
-            if (!old) return old;
+        queryClient.setQueryData<BlockDetail>(blockDetailQueryKey(planId, blockId), (old) => {
+          if (!old) return old;
 
-            const next = {
-              ...old,
-              opinions: [...old.opinions, data],
-              myOpinionId: data.opinion_Id,
-            };
+          const next = {
+            ...old,
+            opinions: [...old.opinions, data],
+            myOpinionId: data.opinion_Id,
+          };
 
-            return patchBlockDetailOpinionDerivedFields(next);
-          },
-        );
+          return patchBlockDetailOpinionDerivedFields(next);
+        });
 
         queryClient.invalidateQueries({
           queryKey: ["block-list-infinite", planId],
@@ -129,9 +107,7 @@ export const useCreateBlockOpinion = (
   });
 };
 
-export const useUpdateBlockOpinion = (
-  options: UseUpdateBlockOpinionOptions,
-) => {
+export const useUpdateBlockOpinion = (options: UseUpdateBlockOpinionOptions) => {
   const queryClient = useQueryClient();
   const { planId, blockId, mutationOptions } = options;
 
@@ -141,31 +117,23 @@ export const useUpdateBlockOpinion = (
         throw new Error("planId and blockId are required");
       }
 
-      return updateBlockOpinion(
-        planId,
-        blockId,
-        variables.opinionId,
-        variables.payload,
-      );
+      return updateBlockOpinion(planId, blockId, variables.opinionId, variables.payload);
     },
     ...mutationOptions,
     onSuccess: (data, variables, onMutateResult, context) => {
       if (planId && blockId) {
-        queryClient.setQueryData<BlockDetail>(
-          blockDetailQueryKey(planId, blockId),
-          (old) => {
-            if (!old) return old;
+        queryClient.setQueryData<BlockDetail>(blockDetailQueryKey(planId, blockId), (old) => {
+          if (!old) return old;
 
-            const next = {
-              ...old,
-              opinions: old.opinions.map((opinion) =>
-                opinion.opinion_Id === variables.opinionId ? data : opinion,
-              ),
-            };
+          const next = {
+            ...old,
+            opinions: old.opinions.map((opinion) =>
+              opinion.opinion_Id === variables.opinionId ? data : opinion,
+            ),
+          };
 
-            return patchBlockDetailOpinionDerivedFields(next);
-          },
-        );
+          return patchBlockDetailOpinionDerivedFields(next);
+        });
 
         queryClient.invalidateQueries({
           queryKey: ["block-list-infinite", planId],
@@ -190,9 +158,7 @@ type UseDeleteBlockOpinionOptions = {
   >;
 };
 
-export const useDeleteBlockOpinion = (
-  options: UseDeleteBlockOpinionOptions,
-) => {
+export const useDeleteBlockOpinion = (options: UseDeleteBlockOpinionOptions) => {
   const queryClient = useQueryClient();
   const { planId, blockId, mutationOptions } = options;
 
@@ -207,21 +173,16 @@ export const useDeleteBlockOpinion = (
     ...mutationOptions,
     onSuccess: (data, variables, onMutateResult, context) => {
       if (planId && blockId) {
-        queryClient.setQueryData<BlockDetail>(
-          blockDetailQueryKey(planId, blockId),
-          (old) => {
-            if (!old) return old;
+        queryClient.setQueryData<BlockDetail>(blockDetailQueryKey(planId, blockId), (old) => {
+          if (!old) return old;
 
-            const next = {
-              ...old,
-              opinions: old.opinions.filter(
-                (opinion) => opinion.opinion_Id !== variables.opinionId,
-              ),
-            };
+          const next = {
+            ...old,
+            opinions: old.opinions.filter((opinion) => opinion.opinion_Id !== variables.opinionId),
+          };
 
-            return patchBlockDetailOpinionDerivedFields(next);
-          },
-        );
+          return patchBlockDetailOpinionDerivedFields(next);
+        });
 
         queryClient.invalidateQueries({
           queryKey: ["block-list-infinite", planId],

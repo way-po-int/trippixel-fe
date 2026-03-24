@@ -1,24 +1,24 @@
 export type MemberRole = "OWNER" | "MEMBER";
 
-interface BaseMember {
+type BaseMember = {
   nickname?: string;
   picture?: string;
   role?: MemberRole;
-}
+};
 
-export interface CollectionMember extends BaseMember {
+export type CollectionMember = {
   collection_member_id: string;
-}
+} & BaseMember;
 
-export interface PlanMember extends BaseMember {
+export type PlanMember = {
   plan_member_id: string;
-}
+} & BaseMember;
 
-export interface MembersResponse<T> {
+export type MembersResponse<T> = {
   is_authenticated: boolean;
   me: T | null;
   members: T[];
-}
+};
 
 export type CollectionMembersResponse = MembersResponse<CollectionMember>;
 export type PlanMembersResponse = MembersResponse<PlanMember>;

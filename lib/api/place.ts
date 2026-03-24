@@ -3,9 +3,7 @@ import { resolveMiddleCategory } from "@/lib/place-category";
 import type { PlaceSearchItem } from "@/types/place";
 export type { PlaceSearchItem } from "@/types/place";
 
-export const searchPlaces = async (
-  query: string,
-): Promise<PlaceSearchItem[]> => {
+export const searchPlaces = async (query: string): Promise<PlaceSearchItem[]> => {
   const { data } = await apiClient.get<PlaceSearchItem[]>("/places/search", {
     params: { query },
   });
@@ -167,9 +165,7 @@ export const normalizePlaceDetail = (data: PlaceDetailApiResponse): PlaceDetail 
   };
 };
 
-const normalizePickPassResponse = (
-  data: PickPassApiResponse,
-): PickPassResponse => {
+const normalizePickPassResponse = (data: PickPassApiResponse): PickPassResponse => {
   return {
     pickCount: data.picked.count,
     passCount: data.passed.count,
@@ -179,10 +175,7 @@ const normalizePickPassResponse = (
   };
 };
 
-export const getPlaceDetail = async (
-  collectionId: string,
-  collectionPlaceId: string,
-) => {
+export const getPlaceDetail = async (collectionId: string, collectionPlaceId: string) => {
   const { data } = await apiClient.get<PlaceDetailApiResponse>(
     `/collections/${collectionId}/places/${collectionPlaceId}`,
   );

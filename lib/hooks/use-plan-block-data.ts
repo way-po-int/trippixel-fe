@@ -9,7 +9,7 @@ type DayNavItem = {
   label: string;
 };
 
-interface UsePlanBlockDataProps {
+type UsePlanBlockDataProps = {
   planId: string;
   /** usePlan/usePlanBlockList 활성 여부 */
   enabled?: boolean;
@@ -23,7 +23,7 @@ interface UsePlanBlockDataProps {
    * - empty <-> non-empty 변화 시 자동 open/close
    */
   syncOpenState?: boolean;
-}
+};
 
 export const usePlanBlockData = ({
   planId,

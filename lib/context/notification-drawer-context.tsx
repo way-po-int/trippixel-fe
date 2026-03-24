@@ -2,24 +2,19 @@
 
 import { createContext, useContext, useState } from "react";
 
-interface NotificationDrawerContextValue {
+type NotificationDrawerContextValue = {
   isOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
-}
+};
 
-const NotificationDrawerContext =
-  createContext<NotificationDrawerContextValue>({
-    isOpen: false,
-    openDrawer: () => {},
-    closeDrawer: () => {},
-  });
+const NotificationDrawerContext = createContext<NotificationDrawerContextValue>({
+  isOpen: false,
+  openDrawer: () => {},
+  closeDrawer: () => {},
+});
 
-export function NotificationDrawerProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function NotificationDrawerProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -35,5 +30,4 @@ export function NotificationDrawerProvider({
   );
 }
 
-export const useNotificationDrawer = () =>
-  useContext(NotificationDrawerContext);
+export const useNotificationDrawer = () => useContext(NotificationDrawerContext);

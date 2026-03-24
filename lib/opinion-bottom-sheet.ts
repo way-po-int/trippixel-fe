@@ -274,20 +274,17 @@ export const getTagText = (
   state: OpinionState,
   tagId: string,
 ): string => {
-  const reason = OPINION_REASON_MAP[categoryKey][state].find(
-    (r) => String(r.id) === tagId,
-  );
+  const reason = OPINION_REASON_MAP[categoryKey][state].find((r) => String(r.id) === tagId);
   return reason?.text ?? tagId;
 };
 
-export const OPINION_BOTTOM_SHEET_VARIANTS = OPINION_CATEGORIES.flatMap(
-  (category) =>
-    OPINION_STATES.map((state) => ({
-      categoryKey: category.key,
-      categoryLabel: category.label,
-      majorCategoryId: category.majorCategoryId,
-      state,
-      stateLabel: OPINION_STATE_LABEL[state],
-      reasons: OPINION_REASON_MAP[category.key][state],
-    })),
+export const OPINION_BOTTOM_SHEET_VARIANTS = OPINION_CATEGORIES.flatMap((category) =>
+  OPINION_STATES.map((state) => ({
+    categoryKey: category.key,
+    categoryLabel: category.label,
+    majorCategoryId: category.majorCategoryId,
+    state,
+    stateLabel: OPINION_STATE_LABEL[state],
+    reasons: OPINION_REASON_MAP[category.key][state],
+  })),
 );

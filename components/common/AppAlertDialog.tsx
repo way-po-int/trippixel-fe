@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-interface AppAlertDialogProps {
+type AppAlertDialogProps = {
   /** controlled open (선택) */
   open?: boolean;
   /** controlled open change (선택) */
@@ -36,7 +36,7 @@ interface AppAlertDialogProps {
   actionClassName?: string;
   /** 확인 버튼 비활성화 여부 */
   actionDisabled?: boolean;
-}
+};
 
 const AppAlertDialog = ({
   open,
@@ -55,14 +55,12 @@ const AppAlertDialog = ({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
-      <AlertDialogContent className="px-0 pb-0 gap-0">
+      <AlertDialogContent className="gap-0 px-0 pb-0">
         {/* 헤더 */}
-        <AlertDialogHeader className="px-6 pt-2 pb-4 place-items-start text-left">
-          <AlertDialogTitle className="typography-display-lg-bold">
-            {title}
-          </AlertDialogTitle>
+        <AlertDialogHeader className="place-items-start px-6 pt-2 pb-4 text-left">
+          <AlertDialogTitle className="typography-display-lg-bold">{title}</AlertDialogTitle>
           {description && (
-            <AlertDialogDescription className="typography-action-sm-reg text-[#71717a] whitespace-pre-line">
+            <AlertDialogDescription className="typography-action-sm-reg whitespace-pre-line text-[#71717a]">
               {description}
             </AlertDialogDescription>
           )}
@@ -76,7 +74,7 @@ const AppAlertDialog = ({
           <AlertDialogPrimitive.Cancel
             onClick={onCancel}
             className={cn(
-              "flex-1 h-[44px] rounded-2xl border border-[#e2e2e2] bg-background typography-action-sm-bold",
+              "bg-background typography-action-sm-bold h-[44px] flex-1 rounded-2xl border border-[#e2e2e2]",
             )}
           >
             {cancelLabel}
@@ -85,8 +83,8 @@ const AppAlertDialog = ({
             disabled={actionDisabled}
             onClick={onAction}
             className={cn(
-              "flex-1 h-[44px] rounded-2xl bg-[#ef4444] hover:bg-[#ef4444]/90 text-white typography-action-sm-bold",
-              "disabled:bg-[#e5e5e5] disabled:cursor-not-allowed",
+              "typography-action-sm-bold h-[44px] flex-1 rounded-2xl bg-[#ef4444] text-white hover:bg-[#ef4444]/90",
+              "disabled:cursor-not-allowed disabled:bg-[#e5e5e5]",
               actionClassName,
             )}
           >

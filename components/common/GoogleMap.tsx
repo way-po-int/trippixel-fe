@@ -49,10 +49,7 @@ type GoogleOverlayInstance = {
 
 type GoogleMapsApi = {
   maps: {
-    Map: new (
-      mapDiv: HTMLElement,
-      opts: Record<string, unknown>,
-    ) => GoogleMapInstance;
+    Map: new (mapDiv: HTMLElement, opts: Record<string, unknown>) => GoogleMapInstance;
     Marker: new (opts: {
       map: GoogleMapInstance;
       position: LatLngLiteral;
@@ -95,6 +92,7 @@ type GoogleMapProps = {
 };
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     google?: GoogleMapsApi;
     __googleMapsApiPromise?: Promise<void>;
@@ -113,9 +111,7 @@ const MAX_ZOOM = 21;
 
 function loadGoogleMapsApi(apiKey: string): Promise<void> {
   if (typeof window === "undefined") {
-    return Promise.reject(
-      new Error("Google Maps API can only be loaded in the browser."),
-    );
+    return Promise.reject(new Error("Google Maps API can only be loaded in the browser."));
   }
 
   if (window.google?.maps) {
@@ -146,11 +142,7 @@ function loadGoogleMapsApi(apiKey: string): Promise<void> {
       }
 
       window.__googleMapsApiPromise = undefined;
-      reject(
-        new Error(
-          "Google Maps API callback fired, but maps namespace is unavailable.",
-        ),
-      );
+      reject(new Error("Google Maps API callback fired, but maps namespace is unavailable."));
     };
 
     if (existingScript) {
@@ -198,10 +190,7 @@ async function createMapInstance(
 
   if (maps.importLibrary) {
     const mapsLibrary = (await maps.importLibrary("maps")) as {
-      Map?: new (
-        mapDiv: HTMLElement,
-        opts: Record<string, unknown>,
-      ) => GoogleMapInstance;
+      Map?: new (mapDiv: HTMLElement, opts: Record<string, unknown>) => GoogleMapInstance;
     };
 
     if (mapsLibrary?.Map) {
@@ -223,17 +212,11 @@ function buildMarkerIcon(markerIcon: MarkerIconOption): GoogleMarkerIcon {
   };
 
   if (window.google?.maps?.Size) {
-    icon.scaledSize = new window.google.maps.Size(
-      FIXED_MARKER_WIDTH,
-      FIXED_MARKER_HEIGHT,
-    );
+    icon.scaledSize = new window.google.maps.Size(FIXED_MARKER_WIDTH, FIXED_MARKER_HEIGHT);
   }
 
   if (window.google?.maps?.Point) {
-    icon.anchor = new window.google.maps.Point(
-      FIXED_MARKER_ANCHOR_X,
-      FIXED_MARKER_ANCHOR_Y,
-    );
+    icon.anchor = new window.google.maps.Point(FIXED_MARKER_ANCHOR_X, FIXED_MARKER_ANCHOR_Y);
   }
 
   return icon;
@@ -320,9 +303,7 @@ export default function GoogleMap({
         }
 
         setErrorMessage(
-          error instanceof Error
-            ? error.message
-            : "Google Maps 로딩 중 오류가 발생했습니다.",
+          error instanceof Error ? error.message : "Google Maps 로딩 중 오류가 발생했습니다.",
         );
         setIsLoading(false);
       });
@@ -362,8 +343,7 @@ export default function GoogleMap({
         this.pos = pos;
         this.el = el;
         this.container = document.createElement("div");
-        this.container.style.cssText =
-          "position:absolute;transform:translate(-50%,-100%)";
+        this.container.style.cssText = "position:absolute;transform:translate(-50%,-100%)";
       }
 
       onAdd() {
@@ -430,9 +410,7 @@ export default function GoogleMap({
     };
 
     const bounds = new maps.LatLngBounds();
-    fitPositions.forEach(({ lat, lng }) =>
-      bounds.extend(new maps.LatLng(lat, lng)),
-    );
+    fitPositions.forEach(({ lat, lng }) => bounds.extend(new maps.LatLng(lat, lng)));
     mapRef.current.fitBounds(bounds, 40);
   }, [isMapReady, fitPositions]);
 
@@ -492,27 +470,25 @@ export default function GoogleMap({
   return (
     <div
       className={cn(
-        "relative w-full aspect-335/228 overflow-hidden rounded-xl border border-[#E2E2E2]",
+        "relative aspect-335/228 w-full overflow-hidden rounded-xl border border-[#E2E2E2]",
         className,
       )}
     >
       <div ref={mapContainerRef} className="h-full w-full" />
 
       {showZoomControls && !isMissingApiKey && !errorMessage && !isLoading && (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 items-center">
+        <div className="absolute top-1/2 right-4 flex -translate-y-1/2 flex-col items-center gap-2">
           <button
             type="button"
             onClick={handleZoomIn}
             disabled={!isMapReady}
             className={cn(
-              "h-10 w-10 rounded-full bg-white shadow-sm flex items-center justify-center",
-              "disabled:opacity-50 disabled:cursor-not-allowed",
+              "flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm",
+              "disabled:cursor-not-allowed disabled:opacity-50",
             )}
             aria-label="Zoom in"
           >
-            <span className="text-2xl leading-none text-muted-foreground">
-              +
-            </span>
+            <span className="text-muted-foreground text-2xl leading-none">+</span>
           </button>
 
           <button
@@ -520,34 +496,31 @@ export default function GoogleMap({
             onClick={handleZoomOut}
             disabled={!isMapReady}
             className={cn(
-              "h-10 w-10 rounded-full bg-white shadow-sm flex items-center justify-center",
-              "disabled:opacity-50 disabled:cursor-not-allowed",
+              "flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm",
+              "disabled:cursor-not-allowed disabled:opacity-50",
             )}
             aria-label="Zoom out"
           >
-            <span className="text-2xl leading-none text-muted-foreground">
-              -
-            </span>
+            <span className="text-muted-foreground text-2xl leading-none">-</span>
           </button>
         </div>
       )}
 
       {isLoading && !errorMessage && !isMissingApiKey && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/70 typography-body-sm-md text-neutral-600">
+        <div className="typography-body-sm-md absolute inset-0 flex items-center justify-center bg-white/70 text-neutral-600">
           지도를 불러오는 중...
         </div>
       )}
 
       {errorMessage && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/90 p-4 text-center typography-body-sm-md text-red-600">
+        <div className="typography-body-sm-md absolute inset-0 flex items-center justify-center bg-white/90 p-4 text-center text-red-600">
           {errorMessage}
         </div>
       )}
 
       {isMissingApiKey && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/90 p-4 text-center typography-body-sm-md text-red-600">
-          Google Maps API 키가 없습니다. NEXT_PUBLIC_GOOGLE_MAPS_API_KEY를
-          설정해주세요.
+        <div className="typography-body-sm-md absolute inset-0 flex items-center justify-center bg-white/90 p-4 text-center text-red-600">
+          Google Maps API 키가 없습니다. NEXT_PUBLIC_GOOGLE_MAPS_API_KEY를 설정해주세요.
         </div>
       )}
     </div>

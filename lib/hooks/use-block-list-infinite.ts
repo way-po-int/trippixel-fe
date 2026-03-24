@@ -6,11 +6,7 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import {
-  getBlockList,
-  type BlockListResponse,
-  type GetBlockListParams,
-} from "@/lib/api/block";
+import { getBlockList, type BlockListResponse, type GetBlockListParams } from "@/lib/api/block";
 
 export const blockListInfiniteBaseQueryKey = (planId: string, day: number) =>
   ["block-list-infinite", planId, day] as const;
@@ -18,11 +14,7 @@ export const blockListInfiniteBaseQueryKey = (planId: string, day: number) =>
 export const blockListInfiniteQueryKey = (
   planId: string,
   params: Pick<GetBlockListParams, "day" | "size">,
-) =>
-  [
-    ...blockListInfiniteBaseQueryKey(planId, params.day),
-    params.size ?? 10,
-  ] as const;
+) => [...blockListInfiniteBaseQueryKey(planId, params.day), params.size ?? 10] as const;
 
 type UseBlockListInfiniteOptions = {
   planId?: string;
@@ -36,12 +28,7 @@ type UseBlockListInfiniteOptions = {
       ReturnType<typeof blockListInfiniteQueryKey>,
       number
     >,
-    | "queryKey"
-    | "queryFn"
-    | "enabled"
-    | "initialPageParam"
-    | "getNextPageParam"
-    | "initialData"
+    "queryKey" | "queryFn" | "enabled" | "initialPageParam" | "getNextPageParam" | "initialData"
   > & {
     initialData?: BlockListResponse;
   };
@@ -69,11 +56,9 @@ export const useBlockListInfinite = ({
     enabled: canFetch,
     initialPageParam: 0,
 
-    queryFn: ({ pageParam }) =>
-      getBlockList(planId!, { day, page: pageParam, size }),
+    queryFn: ({ pageParam }) => getBlockList(planId!, { day, page: pageParam, size }),
 
-    getNextPageParam: (lastPage) =>
-      lastPage.hasNext ? lastPage.page + 1 : undefined,
+    getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.page + 1 : undefined),
 
     staleTime: 30_000,
 

@@ -7,17 +7,13 @@ import type { ProblemDetail } from "@/types/problem-detail";
 
 type Variables = { planId: string; timeBlockId: string; blockId: string };
 
-type Options = Omit<
-  UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>,
-  "mutationFn"
->;
+type Options = Omit<UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>, "mutationFn">;
 
 export const useSelectCandidate = (options?: Options) => {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<ProblemDetail>, Variables>({
-    mutationFn: ({ planId, timeBlockId, blockId }) =>
-      selectCandidate(planId, timeBlockId, blockId),
+    mutationFn: ({ planId, timeBlockId, blockId }) => selectCandidate(planId, timeBlockId, blockId),
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({

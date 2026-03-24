@@ -1,32 +1,20 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { ProblemDetail } from "@/types/problem-detail";
-import { CreatePlanRequest, PlanResponse } from "@/types/plan";
+import { type ProblemDetail } from "@/types/problem-detail";
+import { type CreatePlanRequest, type PlanResponse } from "@/types/plan";
 import { createPlan } from "@/lib/api/plan";
 
 type Options = Omit<
-  UseMutationOptions<
-    PlanResponse,
-    AxiosError<ProblemDetail>,
-    CreatePlanRequest
-  >,
+  UseMutationOptions<PlanResponse, AxiosError<ProblemDetail>, CreatePlanRequest>,
   "mutationFn"
 >;
 
 export const useCreatePlan = (options?: Options) => {
   const queryClient = useQueryClient();
 
-  return useMutation<
-    PlanResponse,
-    AxiosError<ProblemDetail>,
-    CreatePlanRequest
-  >({
+  return useMutation<PlanResponse, AxiosError<ProblemDetail>, CreatePlanRequest>({
     mutationFn: createPlan,
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {

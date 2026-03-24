@@ -1,41 +1,33 @@
 "use client";
 
-import { PlaceType } from "@/components/card/PlaceTypeIcon";
+import { type PlaceType } from "@/components/card/PlaceTypeIcon";
 import TimeBlock from "./TimeBlock";
-import {
-  EditCandidateItem,
-  ViewCandidateItem,
-} from "@/components/card/CandidateGroup";
-import { BlockListResponse, BlockOpinionType } from "@/lib/api/block";
+import { type EditCandidateItem, type ViewCandidateItem } from "@/components/card/CandidateGroup";
+import { type BlockListResponse, type BlockOpinionType } from "@/lib/api/block";
 import { useBlockListInfinite } from "@/lib/hooks/use-block-list-infinite";
 import { useIntersectionObserver } from "@/lib/hooks/use-intersection-observer";
-import { ReactionType } from "@/components/card/PlaceReactionItem";
+import { type ReactionType } from "@/components/card/PlaceReactionItem";
 import ViewTimeBlock from "./ViewTimeBlock";
 
-const toPlaceType = (
-  blockType: "PLACE" | "FREE",
-  categoryName?: string,
-): PlaceType => {
+const toPlaceType = (blockType: "PLACE" | "FREE", categoryName?: string): PlaceType => {
   if (blockType === "FREE") return "자유시간";
   return (categoryName ?? "기타") as PlaceType;
 };
 
-const toReactionType = (
-  t: BlockOpinionType | null,
-): ReactionType | undefined => {
+const toReactionType = (t: BlockOpinionType | null): ReactionType | undefined => {
   if (!t) return undefined;
   if (t === "POSITIVE") return "good";
   if (t === "NEUTRAL") return "normal";
   return "bad";
 };
 
-interface DayTimeBlocksProps {
+type DayTimeBlocksProps = {
   planId: string;
   day: number;
   data?: BlockListResponse;
   enabled?: boolean;
   isEdit?: boolean;
-}
+};
 
 const DayTimeBlocks = ({
   planId,
@@ -44,21 +36,15 @@ const DayTimeBlocks = ({
   enabled = true,
   isEdit = false,
 }: DayTimeBlocksProps) => {
-  const {
-    data,
-    isLoading,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useBlockListInfinite({
-    planId,
-    params: { day, size: 10 },
-    enabled,
-    queryOptions: {
-      initialData: prefetched,
-    },
-  });
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useBlockListInfinite({
+      planId,
+      params: { day, size: 10 },
+      enabled,
+      queryOptions: {
+        initialData: prefetched,
+      },
+    });
 
   // 모든 페이지 contents 합치기
   const blocks = data?.pages.flatMap((p) => p.contents ?? []) ?? [];
@@ -75,14 +61,10 @@ const DayTimeBlocks = ({
   });
 
   if (blocks.length === 0 && isLoading) {
-    return <div className="px-5 py-4 flex items-center">로딩중...</div>;
+    return <div className="flex items-center px-5 py-4">로딩중...</div>;
   }
   if (isError) {
-    return (
-      <div className="px-5 py-4 text-destructive flex items-center">
-        불러오기 실패
-      </div>
-    );
+    return <div className="text-destructive flex items-center px-5 py-4">불러오기 실패</div>;
   }
 
   return (
@@ -99,37 +81,30 @@ const DayTimeBlocks = ({
             ? `${block.candidateCount}개의 후보지`
             : (single?.address ?? "");
 
-        const placeName =
-          block.type === "FREE" ? "자유시간" : (single?.placeName ?? "");
+        const placeName = block.type === "FREE" ? "자유시간" : (single?.placeName ?? "");
 
-        const candidatesEdit: EditCandidateItem[] = block.candidates.map(
-          (c) => ({
-            id: c.blockId,
-            blockId: c.blockId,
-            placeType: toPlaceType(block.type, c.category),
-            placeName: c.placeName,
-          }),
-        );
+        const candidatesEdit: EditCandidateItem[] = block.candidates.map((c) => ({
+          id: c.blockId,
+          blockId: c.blockId,
+          placeType: toPlaceType(block.type, c.category),
+          placeName: c.placeName,
+        }));
 
-        const candidatesView: ViewCandidateItem[] = block.candidates.map(
-          (c) => ({
-            id: c.blockId,
-            placeType: toPlaceType(block.type, c.category),
-            placeName: c.placeName,
-            writerNickname: c.addedBy?.nickname ?? "",
-            writerProfileImageUrl: c.addedBy?.picture ?? "",
-            memo: c.memo || "메모가 없습니다.",
-            reactions: {
-              good: c.opinionSummary?.positive ?? 0,
-              normal: c.opinionSummary?.neutral ?? 0,
-              bad: c.opinionSummary?.negative ?? 0,
-            },
-            activeReaction: toReactionType(
-              c.opinionSummary?.myOpinionType ?? null,
-            ),
-            opinionCount: c.opinionSummary?.totalCount ?? 0,
-          }),
-        );
+        const candidatesView: ViewCandidateItem[] = block.candidates.map((c) => ({
+          id: c.blockId,
+          placeType: toPlaceType(block.type, c.category),
+          placeName: c.placeName,
+          writerNickname: c.addedBy?.nickname ?? "",
+          writerProfileImageUrl: c.addedBy?.picture ?? "",
+          memo: c.memo || "메모가 없습니다.",
+          reactions: {
+            good: c.opinionSummary?.positive ?? 0,
+            normal: c.opinionSummary?.neutral ?? 0,
+            bad: c.opinionSummary?.negative ?? 0,
+          },
+          activeReaction: toReactionType(c.opinionSummary?.myOpinionType ?? null),
+          opinionCount: c.opinionSummary?.totalCount ?? 0,
+        }));
 
         return isEdit ? (
           <TimeBlock
@@ -184,9 +159,7 @@ const DayTimeBlocks = ({
                 normal: single?.opinionSummary?.neutral ?? 0,
                 bad: single?.opinionSummary?.negative ?? 0,
               },
-              activeReaction: toReactionType(
-                single?.opinionSummary?.myOpinionType ?? null,
-              ),
+              activeReaction: toReactionType(single?.opinionSummary?.myOpinionType ?? null),
             }}
             candidates={candidatesView}
           />
@@ -194,15 +167,11 @@ const DayTimeBlocks = ({
       })}
 
       {/* sentinel(바닥 감지) */}
-      {hasNextPage && (
-        <div ref={sentinelRef} className="h-px w-full" aria-hidden="true" />
-      )}
+      {hasNextPage && <div ref={sentinelRef} className="h-px w-full" aria-hidden="true" />}
 
       {/* 다음 페이지 로딩 표시 */}
       {isFetchingNextPage && (
-        <div className="pt-3 text-sm text-muted-foreground">
-          더 불러오는 중...
-        </div>
+        <div className="text-muted-foreground pt-3 text-sm">더 불러오는 중...</div>
       )}
     </div>
   );

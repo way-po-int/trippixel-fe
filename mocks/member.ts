@@ -1,7 +1,4 @@
-import type {
-  CollectionMembersResponse,
-  PlanMembersResponse,
-} from "@/types/member";
+import type { CollectionMembersResponse, PlanMembersResponse } from "@/types/member";
 
 export const mockCollectionMembersResponse: CollectionMembersResponse = {
   is_authenticated: true,

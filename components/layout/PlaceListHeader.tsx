@@ -18,7 +18,7 @@ type PlaceListHeaderValue = {
   place?: string;
 };
 
-interface PlaceListHeaderProps {
+type PlaceListHeaderProps = {
   members: Member[];
   value: PlaceListHeaderValue;
   onChange: (next: Partial<PlaceListHeaderValue>) => void;
@@ -28,7 +28,7 @@ interface PlaceListHeaderProps {
   meRole?: MemberRole;
   collectionId?: string;
   className?: string;
-}
+};
 
 const PlaceListHeader = ({
   members,
@@ -51,9 +51,7 @@ const PlaceListHeader = ({
 
       return (
         <span className="flex min-w-0">
-          <span className="min-w-0 truncate typography-body-sm-sb">
-            {member.name}
-          </span>
+          <span className="typography-body-sm-sb min-w-0 truncate">{member.name}</span>
           <p className="shrink-0">의 장소</p>
         </span>
       );
@@ -65,16 +63,16 @@ const PlaceListHeader = ({
   };
 
   return (
-    <div className={cn("w-full h-[60px] pt-4 pl-5 pr-2.5", className)}>
-      <div className="w-full h-11 flex items-center gap-2">
+    <div className={cn("h-[60px] w-full pt-4 pr-2.5 pl-5", className)}>
+      <div className="flex h-11 w-full items-center gap-2">
         <div className="relative h-11 flex-1">
           {/* 드롭다운 메뉴 */}
           <div
             className={cn(
               "absolute inset-0 transition-all duration-200 ease-out",
               isSearchMode
-                ? "opacity-0 -translate-x-3 pointer-events-none"
-                : "opacity-100 translate-x-0 pointer-events-auto",
+                ? "pointer-events-none -translate-x-3 opacity-0"
+                : "pointer-events-auto translate-x-0 opacity-100",
             )}
           >
             <Dropdown label={getSortLabel()}>
@@ -100,15 +98,11 @@ const PlaceListHeader = ({
                 return (
                   <DropdownItem
                     key={member.id}
-                    onClick={() =>
-                      onChange({ sort: "LATEST", addedBy: member.id })
-                    }
+                    onClick={() => onChange({ sort: "LATEST", addedBy: member.id })}
                     isActive={isActive}
                     className="flex items-center gap-0"
                   >
-                    <span className="min-w-0 truncate typography-body-sm-sb">
-                      {member.name}
-                    </span>
+                    <span className="typography-body-sm-sb min-w-0 truncate">{member.name}</span>
                     <p className="shrink-0">의 장소</p>
                   </DropdownItem>
                 );
@@ -121,8 +115,8 @@ const PlaceListHeader = ({
             className={cn(
               "absolute inset-0 transition-all duration-200 ease-out",
               isSearchMode
-                ? "opacity-100 translate-x-0 pointer-events-auto"
-                : "opacity-0 translate-x-4 pointer-events-none",
+                ? "pointer-events-auto translate-x-0 opacity-100"
+                : "pointer-events-none translate-x-4 opacity-0",
             )}
           >
             <div className="relative h-14">
@@ -130,7 +124,7 @@ const PlaceListHeader = ({
                 value={place}
                 onChange={(e) => onChange({ place: e.target.value })}
                 placeholder="컬렉션의 장소를 검색하세요"
-                className="bg-white rounded-[12px] border-[1px] border-border"
+                className="border-border rounded-[12px] border-[1px] bg-white"
               />
             </div>
           </div>

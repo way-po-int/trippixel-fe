@@ -15,11 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import GoogleMap from "@/components/common/GoogleMap";
 import { Calendar, MapPin, MessageCircle, Sparkles, SquareArrowOutUpRight } from "lucide-react";
 import { useParams } from "next/navigation";
-import type {
-  BlockOpinion,
-  OpinionCategoryKey,
-  OpinionState,
-} from "@/lib/opinion-bottom-sheet";
+import type { BlockOpinion, OpinionCategoryKey, OpinionState } from "@/lib/opinion-bottom-sheet";
 import {
   useCreateBlockOpinion,
   useDeleteBlockOpinion,
@@ -68,17 +64,15 @@ const BlockDetailPage = () => {
   const [deletingOpinion, setDeletingOpinion] = useState<BlockOpinion | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editCurrentState, setEditCurrentState] = useState<OpinionState>("POSITIVE");
-  const [editReasonIdsByState, setEditReasonIdsByState] = useState<Record<OpinionState, number[]>>(
-    EMPTY_REASON_IDS_BY_STATE,
-  );
+  const [editReasonIdsByState, setEditReasonIdsByState] =
+    useState<Record<OpinionState, number[]>>(EMPTY_REASON_IDS_BY_STATE);
   const [editCustomTextByState, setEditCustomTextByState] = useState<Record<OpinionState, string>>(
     EMPTY_CUSTOM_TEXT_BY_STATE,
   );
   const [isAddingOpinion, setIsAddingOpinion] = useState(false);
   const [addCurrentState, setAddCurrentState] = useState<OpinionState>("POSITIVE");
-  const [addReasonIdsByState, setAddReasonIdsByState] = useState<Record<OpinionState, number[]>>(
-    EMPTY_REASON_IDS_BY_STATE,
-  );
+  const [addReasonIdsByState, setAddReasonIdsByState] =
+    useState<Record<OpinionState, number[]>>(EMPTY_REASON_IDS_BY_STATE);
   const [addCustomTextByState, setAddCustomTextByState] = useState<Record<OpinionState, string>>(
     EMPTY_CUSTOM_TEXT_BY_STATE,
   );
@@ -122,11 +116,10 @@ const BlockDetailPage = () => {
     ? editCurrentState !== editingOpinion.type ||
       editEffectiveCustomText !== (editingOpinion.comment ?? "") ||
       JSON.stringify(
-        [...editCurrentReasonIds.filter((id) => id !== CUSTOM_INPUT_REASON_ID)].sort((a, b) => a - b),
-      ) !==
-        JSON.stringify(
-          [...editingOpinion.tag_ids.map(Number)].sort((a, b) => a - b),
-        )
+        [...editCurrentReasonIds.filter((id) => id !== CUSTOM_INPUT_REASON_ID)].sort(
+          (a, b) => a - b,
+        ),
+      ) !== JSON.stringify([...editingOpinion.tag_ids.map(Number)].sort((a, b) => a - b))
     : false;
   const dayText = `${blockDetail?.day ?? 0}일차`;
   const dateText = (() => {
@@ -202,9 +195,7 @@ const BlockDetailPage = () => {
     if (!editingOpinion || updateBlockOpinionMutation.isPending || !hasChanged) return;
 
     const hasCustomInput = editCurrentReasonIds.includes(CUSTOM_INPUT_REASON_ID);
-    const tagIds = editCurrentReasonIds
-      .filter((id) => id !== CUSTOM_INPUT_REASON_ID)
-      .map(String);
+    const tagIds = editCurrentReasonIds.filter((id) => id !== CUSTOM_INPUT_REASON_ID).map(String);
 
     updateBlockOpinionMutation.mutate(
       {
@@ -225,43 +216,27 @@ const BlockDetailPage = () => {
 
   return (
     <div className="relative min-h-screen min-w-0 overflow-x-clip pb-[calc(72px+env(safe-area-inset-bottom)+16px)]">
-      <Header
-        showBackButton
-        leftBtnBgVariant="glass"
-        className="fixed top-0 inset-x-0 z-50"
-      />
-      <div className="fixed top-0 left-0 right-0 w-full aspect-5/3 bg-muted z-0">
+      <Header showBackButton leftBtnBgVariant="glass" className="fixed inset-x-0 top-0 z-50" />
+      <div className="bg-muted fixed top-0 right-0 left-0 z-0 aspect-5/3 w-full">
         {coverImageUrl && (
-          <Image
-            src={coverImageUrl}
-            alt={placeName}
-            fill
-            className="object-cover"
-            priority
-          />
+          <Image src={coverImageUrl} alt={placeName} fill className="object-cover" priority />
         )}
       </div>
 
       <div className="relative pt-[calc(60%-17px)]">
-        <div className="flex flex-col gap-16 pt-7 px-5 rounded-t-2xl bg-background min-w-0">
-          <div className="flex flex-col w-full min-w-0">
-            <h2 className="flex justify-between items-center w-full h-8 py-0.5 px-1">
-              <span className="typography-title-lg-sb text-foreground">
-                {placeName}
-              </span>
-              <span className="typography-body-sm-bold text-muted-foreground">
-                {category}
-              </span>
+        <div className="bg-background flex min-w-0 flex-col gap-16 rounded-t-2xl px-5 pt-7">
+          <div className="flex w-full min-w-0 flex-col">
+            <h2 className="flex h-8 w-full items-center justify-between px-1 py-0.5">
+              <span className="typography-title-lg-sb text-foreground">{placeName}</span>
+              <span className="typography-body-sm-bold text-muted-foreground">{category}</span>
             </h2>
-            <div className="flex-1 flex flex-col w-full gap-5 pt-4">
-              <div className="flex flex-col gap-1 w-full">
+            <div className="flex w-full flex-1 flex-col gap-5 pt-4">
+              <div className="flex w-full flex-col gap-1">
                 <hr className="border-border" />
-                <div className="flex justify-between items-center w-full h-11">
+                <div className="flex h-11 w-full items-center justify-between">
                   <div className="flex items-center gap-2.25">
                     <MapPin className="size-6 text-[#0EA5E9]" />
-                    <span className="typography-body-sm-md text-foreground">
-                      {address}
-                    </span>
+                    <span className="typography-body-sm-md text-foreground">{address}</span>
                   </div>
                   <HeaderBtn
                     bgVariant="ghost"
@@ -272,19 +247,19 @@ const BlockDetailPage = () => {
                 </div>
                 <hr className="border-border" />
               </div>
-              <div className="flex flex-col gap-1 w-full">
-                <div className="w-full h-9.5 flex flex-col gap-3.5">
-                  <div className="w-full h-6 flex items-center justify-between">
-                    <div className="h-6 flex items-center gap-1.75">
+              <div className="flex w-full flex-col gap-1">
+                <div className="flex h-9.5 w-full flex-col gap-3.5">
+                  <div className="flex h-6 w-full items-center justify-between">
+                    <div className="flex h-6 items-center gap-1.75">
                       <Calendar className="size-6 text-[#0EA5E9]" />
-                      <span className="typography-body-sm-sb text-black align-middle">
+                      <span className="typography-body-sm-sb align-middle text-black">
                         {dayText}
                       </span>
                       <span className="typography-body-sm-reg text-muted-foreground align-middle">
                         {dateText}
                       </span>
                     </div>
-                    <div className="h-6 flex items-center gap-1.75">
+                    <div className="flex h-6 items-center gap-1.75">
                       <span className="typography-body-sm-reg text-muted-foreground align-middle">
                         {timeText}
                       </span>
@@ -293,16 +268,14 @@ const BlockDetailPage = () => {
                 </div>
                 <hr className="border-border" />
               </div>
-              <div className="flex flex-col gap-0 w-full">
+              <div className="flex w-full flex-col gap-0">
                 <Label
                   isEditing={isEditingMemo}
                   onEdit={handleEditMemo}
                   onSave={handleSaveMemo}
-                  className="w-full h-9"
+                  className="h-9 w-full"
                 >
-                  <span className="typography-label-sm-sb text-foreground align-middle">
-                    메모
-                  </span>
+                  <span className="typography-label-sm-sb text-foreground align-middle">메모</span>
                 </Label>
                 <div className="w-full">
                   {isEditingMemo ? (
@@ -316,74 +289,73 @@ const BlockDetailPage = () => {
                     />
                   ) : (
                     <div className="flex items-start gap-2.5 py-2.5">
-                      <p className="w-full whitespace-pre-wrap wrap-break-word align-middle typography-body-base text-foreground">
+                      <p className="typography-body-base text-foreground w-full align-middle wrap-break-word whitespace-pre-wrap">
                         {memo}
                       </p>
                     </div>
                   )}
                 </div>
               </div>
-              <div className="w-full h-57 rounded-xl overflow-hidden">
+              <div className="h-57 w-full overflow-hidden rounded-xl">
                 {latitude !== undefined && longitude !== undefined ? (
                   <GoogleMap
                     center={{ lat: latitude, lng: longitude }}
                     zoom={15}
                     markerPosition={{ lat: latitude, lng: longitude }}
-                    className="w-full h-full"
+                    className="h-full w-full"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-muted typography-body-sm-reg text-muted-foreground">
+                  <div className="bg-muted typography-body-sm-reg text-muted-foreground flex h-full w-full items-center justify-center">
                     지도를 불러오는 중...
                   </div>
                 )}
               </div>
               <AISummarySection
                 isLoading={isLoading}
-                headerIcon={<Sparkles className="size-6 text-foreground" />}
+                headerIcon={<Sparkles className="text-foreground size-6" />}
                 title="AI 요약"
                 summary={aiSummary}
                 sourceTitle={sourceTitle}
                 sourceUrl={sourceUrl}
                 onOpenLink={openInNewTab}
               />
-              <div className="w-full flex flex-col gap-4">
-                <div className="w-full h-6 flex items-center justify-between">
-                  <div className="w-full h-6 flex items-center">
-                    <span className="typography-label-base-sb text-black align-middle">
+              <div className="flex w-full flex-col gap-4">
+                <div className="flex h-6 w-full items-center justify-between">
+                  <div className="flex h-6 w-full items-center">
+                    <span className="typography-label-base-sb align-middle text-black">
                       팀원들의 의견
                     </span>
                   </div>
                 </div>
                 {!myOpinionId && (
-                  <div className="sticky top-0 z-40 -mx-5 px-5 bg-background py-2">
+                  <div className="bg-background sticky top-0 z-40 -mx-5 px-5 py-2">
                     <button
                       type="button"
                       onClick={() => setIsAddingOpinion(true)}
-                      className="flex items-center justify-between w-full h-11 rounded-xl border border-[#E2E2E2] bg-transparent px-4 cursor-pointer"
+                      className="flex h-11 w-full cursor-pointer items-center justify-between rounded-xl border border-[#E2E2E2] bg-transparent px-4"
                     >
-                      <span className="typography-body-base text-[#757575]">의견을 남기시겠어요?</span>
+                      <span className="typography-body-base text-[#757575]">
+                        의견을 남기시겠어요?
+                      </span>
                       <MessageCircle className="size-5 shrink-0 text-[#757575]" strokeWidth={2} />
                     </button>
                   </div>
                 )}
-                <div className="w-full flex flex-col gap-6">
+                <div className="flex w-full flex-col gap-6">
                   {opinions.length === 0 ? (
-                    <div className="flex h-20 items-center justify-center rounded-xl bg-card typography-body-sm-reg text-muted-foreground">
+                    <div className="bg-card typography-body-sm-reg text-muted-foreground flex h-20 items-center justify-center rounded-xl">
                       아직 등록된 의견이 없어요.
                     </div>
                   ) : (
                     opinions.map((opinion) => (
-                      <div
-                        key={opinion.opinion_Id}
-                        className="flex w-full flex-col gap-2.25"
-                      >
-                          <OpinionProfile
-                            nickname={opinion.added_by.nickname}
-                            picture={opinion.added_by.picture}
-                            isOwn={myOpinionId === opinion.opinion_Id}
-                            onEdit={() => handleOpenOpinionEditor(opinion)}
-                            onDelete={() => handleOpenDeleteConfirm(opinion)}
-                          />
+                      <div key={opinion.opinion_Id} className="flex w-full flex-col gap-2.25">
+                        <OpinionProfile
+                          nickname={opinion.added_by.nickname}
+                          picture={opinion.added_by.picture}
+                          isOwn={myOpinionId === opinion.opinion_Id}
+                          onEdit={() => handleOpenOpinionEditor(opinion)}
+                          onDelete={() => handleOpenDeleteConfirm(opinion)}
+                        />
                         <OpinionCard
                           opinion={opinion}
                           categoryKey={opinionCategoryKey}
@@ -396,7 +368,7 @@ const BlockDetailPage = () => {
               </div>
             </div>
             {isError && (
-              <p className="px-1 typography-caption-xs-reg text-destructive">
+              <p className="typography-caption-xs-reg text-destructive px-1">
                 블록 정보를 불러오지 못했습니다.
               </p>
             )}
@@ -521,7 +493,7 @@ const BlockDetailPage = () => {
         }}
       />
 
-      <NavigationBar className="fixed bottom-0 left-0 right-0 z-50" />
+      <NavigationBar className="fixed right-0 bottom-0 left-0 z-50" />
     </div>
   );
 };

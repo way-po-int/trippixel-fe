@@ -1,4 +1,4 @@
-import { PlaceResponse } from "./collection";
+import { type PlaceResponse } from "./collection";
 
 /**
  * 컬렉션 생성 요청
@@ -107,12 +107,7 @@ export type GetCollectionPlacesParams = {
   added_by?: string;
 };
 
-export type {
-  PlaceCategoryLevel,
-  PlaceCategory,
-  PlacePoint,
-  PlaceResponse,
-} from "@/types/place";
+export type { PlaceCategoryLevel, PlaceCategory, PlacePoint, PlaceResponse } from "@/types/place";
 
 export type CollectionMemberResponse = {
   collection_member_id: string;

@@ -30,14 +30,14 @@ const LoginContent = () => {
   }, [searchParams, router]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white px-5">
-      <div className="flex-1 flex items-center justify-center">
+    <div className="flex min-h-screen flex-col bg-white px-5">
+      <div className="flex flex-1 items-center justify-center">
         <h1 className="text-2xl font-extrabold">TripPixel</h1>
       </div>
 
       <div className="flex flex-col gap-3 pb-[75px]">
         <Button
-          className="w-full rounded-xl bg-[#FEE500] text-black hover:bg-[#FEE500]/90 relative"
+          className="relative w-full rounded-xl bg-[#FEE500] text-black hover:bg-[#FEE500]/90"
           disabled={isPending}
           onClick={() => login("kakao")}
         >
@@ -45,7 +45,7 @@ const LoginContent = () => {
           <span className="typography-action-base-reg">카카오로 시작하기</span>
         </Button>
         <Button
-          className="w-full rounded-xl bg-[#03A94D] text-white hover:bg-[#03A94D]/90 relative"
+          className="relative w-full rounded-xl bg-[#03A94D] text-white hover:bg-[#03A94D]/90"
           disabled={isPending}
           onClick={() => login("naver")}
         >
@@ -53,7 +53,7 @@ const LoginContent = () => {
           <span className="typography-action-base-reg">네이버로 시작하기</span>
         </Button>
         <Button
-          className="w-full rounded-xl bg-[#F2F2F2] text-black hover:bg-[#F2F2F2]/90 relative"
+          className="relative w-full rounded-xl bg-[#F2F2F2] text-black hover:bg-[#F2F2F2]/90"
           disabled={isPending}
           onClick={() => login("google")}
         >

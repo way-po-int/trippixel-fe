@@ -1,18 +1,18 @@
 import PlaceTypeIcon, { type PlaceType } from "@/components/card/PlaceTypeIcon";
 
-export interface ExpenseItem {
+export type ExpenseItem = {
   name: string;
   cost: number;
-}
+};
 
-interface BudgetPlaceCardProps {
+type BudgetPlaceCardProps = {
   placeName?: string;
   items: ExpenseItem[];
   placeType?: PlaceType;
   selected?: boolean;
   onClick?: () => void;
   className?: string;
-}
+};
 
 const BudgetPlaceCard = ({
   placeName,
@@ -25,14 +25,12 @@ const BudgetPlaceCard = ({
   return (
     <article
       onClick={onClick}
-      className={`w-full overflow-hidden rounded-2xl border bg-background shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] ${selected ? "border-[#0EA5E9]" : "border-border"} ${onClick ? "cursor-pointer" : ""} ${className ?? ""}`}
+      className={`bg-background w-full overflow-hidden rounded-2xl border shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] ${selected ? "border-[#0EA5E9]" : "border-border"} ${onClick ? "cursor-pointer" : ""} ${className ?? ""}`}
     >
       {placeName && placeType && (
         <header className="flex items-start justify-between px-4 pt-3.5 pb-3">
           <div className="flex min-w-0 items-center gap-2 pr-1.5">
-            <h3 className="typography-display-lg-bold truncate text-[#020618]">
-              {placeName}
-            </h3>
+            <h3 className="typography-display-lg-bold truncate text-[#020618]">{placeName}</h3>
           </div>
           <div className="shrink-0">
             <PlaceTypeIcon type={placeType} />
@@ -48,11 +46,9 @@ const BudgetPlaceCard = ({
         ) : (
           items.map((item, idx) => (
             <div key={idx} className="flex w-full items-center justify-between pr-1">
-              <span className="typography-body-sm-reg text-muted-foreground">
-                {item.name}
-              </span>
-              <div className="flex h-6 items-center justify-end gap-0.5 text-foreground">
-                <span className="typography-body-base h-6 whitespace-nowrap leading-6">
+              <span className="typography-body-sm-reg text-muted-foreground">{item.name}</span>
+              <div className="text-foreground flex h-6 items-center justify-end gap-0.5">
+                <span className="typography-body-base h-6 leading-6 whitespace-nowrap">
                   {item.cost.toLocaleString("ko-KR")}
                 </span>
                 <span className="typography-body-sm-reg h-6 leading-6">원</span>

@@ -12,10 +12,10 @@ import { useUpdateMe } from "@/lib/hooks/use-update-me";
 import { useAgreeTerms } from "@/lib/hooks/use-agree-terms";
 import { toast } from "sonner";
 
-interface OnboardClientProps {
+type OnboardClientProps = {
   serviceTermsUrl: string;
   privacyPolicyUrl: string;
-}
+};
 
 const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps) => {
   const router = useRouter();
@@ -31,9 +31,7 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
   const [nickname, setNickname] = useState("");
 
   // step 3
-  const [selectedCard, setSelectedCard] = useState<
-    "collection" | "plan" | null
-  >(null);
+  const [selectedCard, setSelectedCard] = useState<"collection" | "plan" | null>(null);
 
   const { mutate: agreeTerms, isPending: isAgreeTermsPending } = useAgreeTerms({
     onSuccess: () => {
@@ -44,10 +42,7 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
         setStep(2);
         return;
       }
-      toast.error(
-        err.response?.data?.detail ??
-          "약관 동의에 실패했어요. 다시 시도해 주세요.",
-      );
+      toast.error(err.response?.data?.detail ?? "약관 동의에 실패했어요. 다시 시도해 주세요.");
     },
   });
 
@@ -100,22 +95,18 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
   };
 
   const isNextDisabled =
-    step === 1
-      ? !serviceChecked || !privacyChecked
-      : step === 2
-        ? !nickname.trim()
-        : false;
+    step === 1 ? !serviceChecked || !privacyChecked : step === 2 ? !nickname.trim() : false;
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex min-h-screen flex-col bg-white">
       <Header
         showBackButton
         leftBtnBgVariant="ghost"
         onBack={handleBack}
-        className="fixed top-0 z-10 inset-x-0"
+        className="fixed inset-x-0 top-0 z-10"
       />
 
-      <main className="flex-1 mt-22 px-5 flex flex-col gap-20">
+      <main className="mt-22 flex flex-1 flex-col gap-20 px-5">
         {step === 1 && (
           <>
             <div>
@@ -123,22 +114,15 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
                 Tripixel에 오신 것을 <br />
                 환영합니다!
               </h2>
-              <p className="mt-5 text-(--muted-foreground) typography-action-base-reg">
+              <p className="typography-action-base-reg mt-5 text-(--muted-foreground)">
                 Tripixel을 이용하기 위해
                 <br />
                 약관 동의가 필요해요
               </p>
             </div>
-            <div className="border-t border-[#e2e2e2] pt-6 flex flex-col gap-4">
-              <label
-                htmlFor="all"
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <CheckBox
-                  id="all"
-                  checked={allChecked}
-                  onCheckedChange={handleAllChange}
-                />
+            <div className="flex flex-col gap-4 border-t border-[#e2e2e2] pt-6">
+              <label htmlFor="all" className="flex cursor-pointer items-center gap-2">
+                <CheckBox id="all" checked={allChecked} onCheckedChange={handleAllChange} />
                 <span className="typography-label-base-sb">약관 전체 동의</span>
               </label>
               <div className="flex items-center gap-2">
@@ -149,16 +133,15 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
                 />
                 <button
                   type="button"
-                  className="flex flex-1 items-center justify-between cursor-pointer"
+                  className="flex flex-1 cursor-pointer items-center justify-between"
                   onClick={() => {
                     window.open(serviceTermsUrl, "_blank");
                   }}
                 >
                   <span className="typography-label-base-reg">
-                    이용약관 동의{" "}
-                    <span className="text-muted-foreground">(필수)</span>
+                    이용약관 동의 <span className="text-muted-foreground">(필수)</span>
                   </span>
-                  <ChevronRight className="size-6 text-muted-foreground" />
+                  <ChevronRight className="text-muted-foreground size-6" />
                 </button>
               </div>
               <div className="flex items-center gap-2">
@@ -169,16 +152,15 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
                 />
                 <button
                   type="button"
-                  className="flex flex-1 items-center justify-between cursor-pointer"
+                  className="flex flex-1 cursor-pointer items-center justify-between"
                   onClick={() => {
                     window.open(privacyPolicyUrl, "_blank");
                   }}
                 >
                   <span className="typography-label-base-reg">
-                    개인정보 수집 및 이용 동의{" "}
-                    <span className="text-muted-foreground">(필수)</span>
+                    개인정보 수집 및 이용 동의 <span className="text-muted-foreground">(필수)</span>
                   </span>
-                  <ChevronRight className="size-6 text-muted-foreground" />
+                  <ChevronRight className="text-muted-foreground size-6" />
                 </button>
               </div>
             </div>
@@ -189,7 +171,7 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
           <div className="flex flex-col gap-10">
             <div>
               <h2 className="typography-display-2xl">닉네임을 입력해주세요</h2>
-              <p className="mt-5 text-(--muted-foreground) typography-action-base-reg">
+              <p className="typography-action-base-reg mt-5 text-(--muted-foreground)">
                 Tripixel에서 여행을 계획하며 활동할
                 <br />
                 닉네임을 입력해주세요
@@ -216,7 +198,7 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
                 <br />
                 여행을 시작해볼까요?
               </h2>
-              <p className="mt-5 text-(--muted-foreground) typography-action-base-reg">
+              <p className="typography-action-base-reg mt-5 text-(--muted-foreground)">
                 Tripixel에서 본격적으로 여행을
                 <br />
                 시작할 수 있어요.
@@ -225,16 +207,10 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
             <div className="flex gap-3">
               <button
                 type="button"
-                className={`flex flex-1 flex-col items-center gap-2 rounded-2xl border-2 px-3 py-5 justify-center transition-colors cursor-pointer bg-white ${
-                  selectedCard === "collection"
-                    ? "border-sky-500"
-                    : "border-[#e2e2e2]"
+                className={`flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 bg-white px-3 py-5 transition-colors ${
+                  selectedCard === "collection" ? "border-sky-500" : "border-[#e2e2e2]"
                 }`}
-                onClick={() =>
-                  setSelectedCard(
-                    selectedCard === "collection" ? null : "collection",
-                  )
-                }
+                onClick={() => setSelectedCard(selectedCard === "collection" ? null : "collection")}
               >
                 <span className="typography-label-base-sb">보관함</span>
                 <span className="typography-body-sm-reg text-muted-foreground">
@@ -245,14 +221,10 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
               </button>
               <button
                 type="button"
-                className={`flex flex-1 flex-col items-center gap-2 rounded-2xl border-2 px-3 py-5 text-center transition-colors cursor-pointer bg-white ${
-                  selectedCard === "plan"
-                    ? "border-sky-500"
-                    : "border-[#e2e2e2]"
+                className={`flex flex-1 cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 bg-white px-3 py-5 text-center transition-colors ${
+                  selectedCard === "plan" ? "border-sky-500" : "border-[#e2e2e2]"
                 }`}
-                onClick={() =>
-                  setSelectedCard(selectedCard === "plan" ? null : "plan")
-                }
+                onClick={() => setSelectedCard(selectedCard === "plan" ? null : "plan")}
               >
                 <span className="typography-label-base-sb">여행 계획</span>
                 <span className="typography-body-sm-reg text-muted-foreground">
@@ -266,7 +238,7 @@ const OnboardClient = ({ serviceTermsUrl, privacyPolicyUrl }: OnboardClientProps
         )}
       </main>
 
-      <div className="fixed bottom-0 inset-x-0 px-5 pb-9">
+      <div className="fixed inset-x-0 bottom-0 px-5 pb-9">
         <Button
           className="w-full"
           disabled={isNextDisabled || isPending || isAgreeTermsPending}

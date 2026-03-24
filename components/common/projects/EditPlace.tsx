@@ -1,16 +1,14 @@
 "use client";
 
-import CandidateGroup, {
-  EditCandidateItem,
-} from "@/components/card/CandidateGroup";
-import { PlaceType } from "@/components/card/PlaceTypeIcon";
+import CandidateGroup, { type EditCandidateItem } from "@/components/card/CandidateGroup";
+import { type PlaceType } from "@/components/card/PlaceTypeIcon";
 import PlanPlaceCard from "@/components/card/PlanPlaceCard";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { useDeleteCandidate } from "@/lib/hooks/use-delete-candidate";
 import { useDeleteTimeBlock } from "@/lib/hooks/use-delete-time-block";
 import { cn } from "@/lib/utils/utils";
-import { ProblemDetail } from "@/types/problem-detail";
-import { AxiosError } from "axios";
+import { type ProblemDetail } from "@/types/problem-detail";
+import { type AxiosError } from "axios";
 import { Pencil, Trash2, Vote } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,7 +24,7 @@ type SingleCandidateCard = {
   memo?: string;
 };
 
-interface EditPlaceProps {
+type EditPlaceProps = {
   planId: string;
   timeBlockId: string;
   day: number;
@@ -41,7 +39,7 @@ interface EditPlaceProps {
   onEditClick?: (blockId: string) => void;
   isLast?: boolean;
   className?: string;
-}
+};
 
 const EditPlace = ({
   planId,
@@ -70,37 +68,33 @@ const EditPlace = ({
   const onApiError = (err: unknown, fallback: string) => {
     const axiosErr = err as AxiosError<ProblemDetail>;
     const message =
-      axiosErr.response?.data?.errors?.[0]?.reason ??
-      axiosErr.response?.data?.detail ??
-      fallback;
+      axiosErr.response?.data?.errors?.[0]?.reason ?? axiosErr.response?.data?.detail ?? fallback;
     toast.error(message);
   };
 
   // blockStatus === PENDING일 때 후보지 삭제
-  const { mutate: deleteCandidate, isPending: isDeletingCandidate } =
-    useDeleteCandidate({
-      mutationOptions: {
-        onSuccess: () => {
-          setSheetOpen(false);
-          setTargetBlockId(null);
-          toast("후보지를 삭제했어요.");
-        },
-        onError: (e) => onApiError(e, "후보지 삭제에 실패했어요."),
+  const { mutate: deleteCandidate, isPending: isDeletingCandidate } = useDeleteCandidate({
+    mutationOptions: {
+      onSuccess: () => {
+        setSheetOpen(false);
+        setTargetBlockId(null);
+        toast("후보지를 삭제했어요.");
       },
-    });
+      onError: (e) => onApiError(e, "후보지 삭제에 실패했어요."),
+    },
+  });
 
   // 그 외에는 타임블록 삭제
-  const { mutate: deleteTimeBlock, isPending: isDeletingTimeBlock } =
-    useDeleteTimeBlock({
-      mutationOptions: {
-        onSuccess: () => {
-          setSheetOpen(false);
-          setTargetBlockId(null);
-          toast("일정을 삭제했어요.");
-        },
-        onError: (e) => onApiError(e, "블록 삭제에 실패했어요."),
+  const { mutate: deleteTimeBlock, isPending: isDeletingTimeBlock } = useDeleteTimeBlock({
+    mutationOptions: {
+      onSuccess: () => {
+        setSheetOpen(false);
+        setTargetBlockId(null);
+        toast("일정을 삭제했어요.");
       },
-    });
+      onError: (e) => onApiError(e, "블록 삭제에 실패했어요."),
+    },
+  });
 
   const isDeleting = isDeletingCandidate || isDeletingTimeBlock;
 
@@ -142,8 +136,7 @@ const EditPlace = ({
           },
         ]
       : []),
-    ...(blockType === "PLACE" &&
-    (blockStatus === "DIRECT" || blockStatus === "FIXED")
+    ...(blockType === "PLACE" && (blockStatus === "DIRECT" || blockStatus === "FIXED")
       ? [
           {
             id: "add-candidate",
@@ -151,9 +144,7 @@ const EditPlace = ({
             icon: <Vote />,
             onSelect: () => {
               if (!timeBlockId) return;
-              router.push(
-                `/projects/${planId}/candidate-select/${timeBlockId}`,
-              );
+              router.push(`/projects/${planId}/candidate-select/${timeBlockId}`);
             },
           },
         ]
@@ -169,12 +160,12 @@ const EditPlace = ({
   return (
     <div
       className={cn(
-        "flex items-center ml-0.75 border-l",
+        "ml-0.75 flex items-center border-l",
         isLast ? "border-transparent" : "border-[#D9D9D9]",
         className,
       )}
     >
-      <div className="pl-6 pt-2 pb-4 flex-1 min-w-0">
+      <div className="min-w-0 flex-1 pt-2 pb-4 pl-6">
         {blockStatus === "FIXED" ? (
           // 후보지 확정 상태 전용 카드
           <PlanPlaceCard
@@ -193,11 +184,7 @@ const EditPlace = ({
           />
         ) : isMultiCandidate ? (
           // 후보 2개 이상이면 CandidateGroup
-          <CandidateGroup
-            mode="edit"
-            candidates={candidates}
-            onCandidateMenuClick={openSheetFor}
-          />
+          <CandidateGroup mode="edit" candidates={candidates} onCandidateMenuClick={openSheetFor} />
         ) : (
           // 후보 1개, 혹은 자유시간이면 PlanPlaceCard
           <PlanPlaceCard

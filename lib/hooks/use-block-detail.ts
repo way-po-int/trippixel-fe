@@ -22,10 +22,7 @@ type UseBlockDetailOptions = {
   planId?: string;
   blockId?: string;
   enabled?: boolean;
-  queryOptions?: Omit<
-    UseQueryOptions<BlockDetail, AxiosError>,
-    "queryKey" | "queryFn" | "enabled"
-  >;
+  queryOptions?: Omit<UseQueryOptions<BlockDetail, AxiosError>, "queryKey" | "queryFn" | "enabled">;
 };
 
 export const useBlockDetail = (options: UseBlockDetailOptions) => {
@@ -66,10 +63,7 @@ export const useUpdateBlock = (options: UseUpdateBlockOptions) => {
     onSuccess: (data, variables, onMutateResult, context) => {
       // detail 캐시 갱신
       if (planId && blockId) {
-        queryClient.setQueryData<BlockDetail>(
-          blockDetailQueryKey(planId, blockId),
-          data,
-        );
+        queryClient.setQueryData<BlockDetail>(blockDetailQueryKey(planId, blockId), data);
       }
       // 목록 invalidate (oldDay, newDay)
       if (planId && oldDay) {

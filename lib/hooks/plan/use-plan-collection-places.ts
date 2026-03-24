@@ -54,8 +54,7 @@ export const usePlanCollectionPlaces = (
         size,
       }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.has_next ? lastPage.page + 1 : undefined,
+    getNextPageParam: (lastPage) => (lastPage.has_next ? lastPage.page + 1 : undefined),
     enabled: !!planId && !!collectionId,
     ...options,
   });

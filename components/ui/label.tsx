@@ -27,7 +27,7 @@ function Label({
       <label
         data-slot="label"
         className={cn(
-          "inline-flex items-center gap-2 typography-label-base-bold text-foreground",
+          "typography-label-base-bold text-foreground inline-flex items-center gap-2",
           labelClassName,
         )}
         {...props}
@@ -37,25 +37,13 @@ function Label({
       </label>
 
       {isEditing && onSave && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="S"
-          onClick={onSave}
-          className="cursor-pointer"
-        >
+        <Button type="button" variant="ghost" size="S" onClick={onSave} className="cursor-pointer">
           <Check className="size-4.5" />
         </Button>
       )}
 
       {!isEditing && onEdit && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="S"
-          onClick={onEdit}
-          className="cursor-pointer"
-        >
+        <Button type="button" variant="ghost" size="S" onClick={onEdit} className="cursor-pointer">
           <Pencil className="size-4.5" />
         </Button>
       )}
