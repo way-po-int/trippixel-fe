@@ -22,26 +22,26 @@ export type NotificationEventType =
   | "SYSTEM_ANNOUNCEMENT"
   | "SYSTEM_MAINTENANCE";
 
-export interface NotificationResponse {
+export type NotificationResponse = {
   notification_id: string;
   category: NotificationCategory;
   event_type: NotificationEventType;
   message: string;
   link_url: string;
   send_at: string;
-}
+};
 
-export interface NotificationListResponse {
+export type NotificationListResponse = {
   contents: NotificationResponse[];
   has_next: boolean;
   page: number;
   size: number;
-}
+};
 
-export interface GetNotificationsParams {
+export type GetNotificationsParams = {
   page?: number;
   size?: number;
-}
+};
 
 /**
  * SYSTEM 카테고리만 "공지" 배지, 나머지는 "알림" 배지
