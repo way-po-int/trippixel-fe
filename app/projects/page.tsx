@@ -36,8 +36,7 @@ const ProjectPage = () => {
     return data?.pages.flatMap((p) => p.contents) ?? [];
   }, [data]);
 
-  const errorMessage =
-    error?.response?.data?.detail ?? "여행 계획을 불러오지 못했어요.";
+  const errorMessage = error?.response?.data?.detail ?? "여행 계획을 불러오지 못했어요.";
 
   const isEmpty = !isLoading && !isError && plans.length === 0;
 
@@ -67,9 +66,7 @@ const ProjectPage = () => {
       closeDeleteDialog();
     },
     onError: (err) => {
-      toast.error(
-        err.response?.data?.detail ?? err?.message ?? "삭제에 실패했어요.",
-      );
+      toast.error(err.response?.data?.detail ?? err?.message ?? "삭제에 실패했어요.");
     },
   });
 
@@ -80,17 +77,17 @@ const ProjectPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="bg-background flex min-h-screen flex-col">
       {/* 헤더(알림) */}
       <Header
         showNotificationButton
         rightBtnBgVariant="glass"
-        className="fixed top-0 z-10 inset-x-0"
+        className="fixed inset-x-0 top-0 z-10"
       />
 
       <main
         className={cn(
-          "flex flex-col flex-1 mt-15 px-5 pt-5 pb-36",
+          "mt-15 flex flex-1 flex-col px-5 pt-5 pb-36",
           isEmpty && "items-center justify-center gap-12",
         )}
       >
@@ -104,17 +101,15 @@ const ProjectPage = () => {
 
         {/* 로딩 */}
         {isLoading && (
-          <div className="flex flex-1 items-center justify-center typography-display-lg-reg text-muted-foreground">
+          <div className="typography-display-lg-reg text-muted-foreground flex flex-1 items-center justify-center">
             여행 계획을 불러오는 중...
           </div>
         )}
 
         {/* 에러 */}
         {isError && (
-          <div className="flex flex-col flex-1 gap-3 items-center justify-center typography-display-lg-reg">
-            <p className="typography-body-base text-destructive">
-              {errorMessage}
-            </p>
+          <div className="typography-display-lg-reg flex flex-1 flex-col items-center justify-center gap-3">
+            <p className="typography-body-base text-destructive">{errorMessage}</p>
             <Button onClick={() => refetch()}>다시 시도</Button>
           </div>
         )}
@@ -126,10 +121,8 @@ const ProjectPage = () => {
               <div className="pt-2.75">
                 <ProjectEmptyIllust />
               </div>
-              <div className="flex flex-col gap-2 text-foreground text-center">
-                <h2 className="typography-display-lg-bold">
-                  아직 여행 계획이 없어요
-                </h2>
+              <div className="text-foreground flex flex-col gap-2 text-center">
+                <h2 className="typography-display-lg-bold">아직 여행 계획이 없어요</h2>
                 <p>
                   어디로 떠나고 싶으신가요? <br />
                   우리만의 여행계획을 시작해보세요!
@@ -154,9 +147,7 @@ const ProjectPage = () => {
                         dateRange={formatDateRange(p.start_date, p.end_date)}
                         imageSrc={p.thumbnail}
                         onClick={() => router.push(`/projects/${p.plan_id}`)}
-                        onEdit={() =>
-                          router.push(`/projects/${p.plan_id}/edit`)
-                        }
+                        onEdit={() => router.push(`/projects/${p.plan_id}/edit`)}
                         onDelete={() => openDeleteDialog(p.plan_id)}
                       />
                     </div>
@@ -171,7 +162,7 @@ const ProjectPage = () => {
 
       {/* 하단 고정 버튼 */}
       {!isLoading && !isError && !isEmpty && (
-        <div className="fixed bottom-14 px-4 pb-9 w-full bg-gradient-bottom-fade z-50">
+        <div className="bg-gradient-bottom-fade fixed bottom-14 z-50 w-full px-4 pb-9">
           <Button onClick={handleProjectCreate} className="w-full">
             <Plus className="text-foreground opacity-40" /> 여행 계획 추가하기
           </Button>
@@ -179,7 +170,7 @@ const ProjectPage = () => {
       )}
 
       {/* 네비게이션 바 */}
-      <NavigationBar className="fixed bottom-0 z-50 inset-x-0" />
+      <NavigationBar className="fixed inset-x-0 bottom-0 z-50" />
 
       {/* 삭제 확인 다이얼로그 */}
       <AppAlertDialog

@@ -17,14 +17,14 @@ const SOCIAL_PROVIDER_ICON: Record<SocialProvider, string> = {
   NAVER: "/icons/naver.svg",
 };
 
-interface MypageClientProps {
+type MypageClientProps = {
   guidUrl: string;
   vocUrl: string;
-}
+};
 
 const MypageClient = ({ guidUrl, vocUrl }: MypageClientProps) => {
   const router = useRouter();
-  const { data: me, isLoading } = useMe();
+  const { data: me } = useMe();
   const { mutate: logoutMutate, isPending: isLogoutPending } = useLogout({
     onSuccess: () => {
       localStorage.removeItem("accessToken");
@@ -38,39 +38,33 @@ const MypageClient = ({ guidUrl, vocUrl }: MypageClientProps) => {
   const picture = me?.picture ?? "";
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Header showNotificationButton rightBtnBgVariant="ghost" />
-      <div className="pl-5 pr-8.5 pb-7 flex flex-row gap-3.5 items-center">
+      <div className="flex flex-row items-center gap-3.5 pr-8.5 pb-7 pl-5">
         <ProfileImage src={picture} alt={nickname} size="md" />
         <div className="flex flex-col gap-1">
           <p className="typography-headline-sm-bold">{nickname}</p>
           <p className="typography-body-sm-reg text-neutral-500">{email}</p>
-          <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-row items-center gap-2">
             <Image
               src={SOCIAL_PROVIDER_ICON[provider as SocialProvider]}
               alt={provider}
               width={24}
               height={24}
             />
-            <p className="typography-body-sm-reg text-neutral-500">
-              {provider} 계정 연동됨
-            </p>
+            <p className="typography-body-sm-reg text-neutral-500">{provider} 계정 연동됨</p>
           </div>
         </div>
       </div>
-      <div className="flex-1 w-full rounded-t-3xl bg-[#f0f0f0] flex flex-col gap-2.5 pt-6 px-5 pb-24 justify-between">
+      <div className="flex w-full flex-1 flex-col justify-between gap-2.5 rounded-t-3xl bg-[#f0f0f0] px-5 pt-6 pb-24">
         <div className="flex flex-col gap-9">
           <div className="flex flex-col gap-1">
-            <p className="typography-action-sm-bold text-[#a3a3a3]">
-              나의 계정
-            </p>
+            <p className="typography-action-sm-bold text-[#a3a3a3]">나의 계정</p>
             <MypageBtn href="/my/edit">회원 정보 수정</MypageBtn>
           </div>
           <div className="flex flex-col gap-1">
             <p className="typography-action-sm-bold text-[#a3a3a3]">도움말</p>
-            <MypageBtn onClick={() => window.open(guidUrl, "_blank")}>
-              약관 및 정책
-            </MypageBtn>
+            <MypageBtn onClick={() => window.open(guidUrl, "_blank")}>약관 및 정책</MypageBtn>
             <MypageBtn onClick={() => window.open(vocUrl, "_blank")}>
               소중한 의견 들려주기
             </MypageBtn>
@@ -111,16 +105,11 @@ const MypageBtn = ({
   return (
     <Button
       variant="ghost"
-      className="flex flex-row justify-between w-full p-0 pr-5"
+      className="flex w-full flex-row justify-between p-0 pr-5"
       onClick={handleClick}
     >
       <div className="typography-body-base">{children}</div>
-      <ChevronRight
-        size={20}
-        strokeWidth={2}
-        color="#01012e"
-        className="opacity-13"
-      />
+      <ChevronRight size={20} strokeWidth={2} color="#01012e" className="opacity-13" />
     </Button>
   );
 };

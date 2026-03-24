@@ -12,38 +12,32 @@ const onboardingOptions = [
   {
     id: "place",
     title: "가고 싶은 곳을 차곡차곡",
-    description:
-      "각자 마음에 드는 장소를 눈치 보지 말고 편하게 바구니에 담아보세요.",
-    icon: <MapPin className="size-7.5 text-primary" strokeWidth={2.5} />,
+    description: "각자 마음에 드는 장소를 눈치 보지 말고 편하게 바구니에 담아보세요.",
+    icon: <MapPin className="text-primary size-7.5" strokeWidth={2.5} />,
   },
   {
     id: "schedule",
     title: "쉬고 싶은 영상 속 그곳을 찾아주는 AI",
-    description:
-      "유튜브에서 본 멋진 곳, 링크만 넣으면 AI가 영상 속 장소들을 알아서 찾아줘요.",
+    description: "유튜브에서 본 멋진 곳, 링크만 넣으면 AI가 영상 속 장소들을 알아서 찾아줘요.",
     icon: <AiIcon className="size-7.5" />,
   },
   {
     id: "route",
     title: "나란히 비교하며 마음을 모아",
-    description:
-        "후보지들을 함께 비교하고 조금씩 양보하며, 모두가 만족할 정답을 찾아요.",
-    icon: <Vote className="size-7.5 text-primary" strokeWidth={2.5} />,
+    description: "후보지들을 함께 비교하고 조금씩 양보하며, 모두가 만족할 정답을 찾아요.",
+    icon: <Vote className="text-primary size-7.5" strokeWidth={2.5} />,
   },
   {
     id: "budget",
     title: "아쉬움 없이 다 함께",
-    description:
-      "기분 좋게 합의된 장소들만 일정표에 담아요. 다툴 일 없는 즐거운 계획이 완성돼요.",
-    icon: <UsersRound className="size-7.5 text-primary" strokeWidth={2.5} />,
+    description: "기분 좋게 합의된 장소들만 일정표에 담아요. 다툴 일 없는 즐거운 계획이 완성돼요.",
+    icon: <UsersRound className="text-primary size-7.5" strokeWidth={2.5} />,
   },
 ] as const;
 
 const OnboardingPage = () => {
   const router = useRouter();
-  const [selectedOption, setSelectedOption] = useState<string>(
-    onboardingOptions[0].id,
-  );
+  const [selectedOption, setSelectedOption] = useState<string>(onboardingOptions[0].id);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -54,7 +48,7 @@ const OnboardingPage = () => {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       <Header className="fixed inset-x-0 top-0 z-10" />
 
       <main className="mt-15 flex min-h-[calc(100vh-60px)] px-5 pt-6 pb-26.25">
@@ -71,7 +65,7 @@ const OnboardingPage = () => {
                 우리의 여행을 미리 맞춰봐요!
               </h2>
 
-              <div className="flex flex-col gap-3 typography-body-base text-muted-foreground">
+              <div className="typography-body-base text-muted-foreground flex flex-col gap-3">
                 <p>
                   가고 싶은 곳도,
                   <span className="inline"> 쉬고 싶은 시간도 다를 수 있어요.</span>
@@ -96,7 +90,7 @@ const OnboardingPage = () => {
                   onClick={() => setSelectedOption(option.id)}
                   className={cn(
                     "flex h-24.75 w-full items-center gap-4 rounded-2xl bg-[#F0F0F0] px-4 py-3.5 text-left",
-                    "focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none",
+                    "focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px]",
                   )}
                   aria-pressed={isSelected}
                 >
@@ -105,14 +99,13 @@ const OnboardingPage = () => {
                   </div>
 
                   <div className="flex min-w-0 flex-1 flex-col gap-1.75">
-                    <p className="truncate typography-body-base font-semibold text-[#1C2024]">
+                    <p className="typography-body-base truncate font-semibold text-[#1C2024]">
                       {option.title}
                     </p>
-                    <p className="line-clamp-2 typography-body-sm-reg text-[#737373]">
+                    <p className="typography-body-sm-reg line-clamp-2 text-[#737373]">
                       {option.description}
                     </p>
                   </div>
-
                 </button>
               );
             })}

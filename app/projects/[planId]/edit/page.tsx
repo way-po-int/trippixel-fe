@@ -12,8 +12,8 @@ import { useProjectForm } from "@/lib/hooks/project/use-project-form";
 import { fromApiDateRange, toApiDateRange } from "@/lib/utils/date";
 import type { DateRange } from "react-day-picker";
 import type { UpdatePlanRequest, UpdateType } from "@/types/plan";
-import { ProblemDetail } from "@/types/problem-detail";
-import { AxiosError } from "axios";
+import { type ProblemDetail } from "@/types/problem-detail";
+import { type AxiosError } from "axios";
 
 const getPlanUpdateDialogContent = (updateType: UpdateType) => {
   switch (updateType) {
@@ -27,15 +27,13 @@ const getPlanUpdateDialogContent = (updateType: UpdateType) => {
     case "INCREASE":
       return {
         title: "여행 일자를 수정하시겠습니까?",
-        description:
-          "기존 계획은 유지되며, 추가된 일정은 기존 일정의 뒤에 자동으로 추가됩니다.",
+        description: "기존 계획은 유지되며, 추가된 일정은 기존 일정의 뒤에 자동으로 추가됩니다.",
         actionClassName: "bg-primary hover:bg-primary/90",
       };
     case "DECREASE":
       return {
         title: "여행 일자를 축소하시겠습니까?",
-        description:
-          "여행 일차가 줄어들면, 마지막 일차에 포함된 계획 블록이 삭제됩니다.",
+        description: "여행 일차가 줄어들면, 마지막 일차에 포함된 계획 블록이 삭제됩니다.",
         actionClassName: "",
       };
     default:
@@ -62,7 +60,7 @@ const ProjectEditPage = () => {
   // 로딩/에러 처리
   if (isLoading)
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">
+      <div className="bg-background text-muted-foreground flex min-h-screen items-center justify-center">
         불러오는 중...
       </div>
     );
@@ -75,7 +73,7 @@ const ProjectEditPage = () => {
       "여행 계획을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";
 
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center text-destructive">
+      <div className="bg-background text-destructive flex min-h-screen items-center justify-center">
         {message}
       </div>
     );
@@ -101,20 +99,13 @@ type ProjectEditFormProps = {
   onDone: () => void;
 };
 
-const ProjectEditForm = ({
-  planId,
-  initialTitle,
-  initialRange,
-  onDone,
-}: ProjectEditFormProps) => {
+const ProjectEditForm = ({ planId, initialTitle, initialRange, onDone }: ProjectEditFormProps) => {
   // 초기 여행 이름/날짜 주입
   const form = useProjectForm({ initialTitle, initialRange });
 
   // confirm 플로우 state
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [pendingBody, setPendingBody] = useState<UpdatePlanRequest | null>(
-    null,
-  );
+  const [pendingBody, setPendingBody] = useState<UpdatePlanRequest | null>(null);
 
   // 1차 응답에서 내려오는 update_type / affected_days 저장
   const [pendingUpdateType, setPendingUpdateType] = useState<UpdateType>(null);
@@ -190,14 +181,14 @@ const ProjectEditForm = ({
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background gap-2.5 pt-20">
+    <div className="bg-background flex min-h-screen flex-col gap-2.5 pt-20">
       {/* 헤더(뒤로가기 + 타이틀) */}
       <Header
         variant="center"
         title="여행계획 수정"
         showBackButton
         leftBtnBgVariant="ghost"
-        className="fixed top-0 inset-x-0"
+        className="fixed inset-x-0 top-0"
       />
 
       <form
@@ -206,9 +197,9 @@ const ProjectEditForm = ({
           e.preventDefault();
           handleUpdate();
         }}
-        className="px-5 pt-7 pb-3.5 flex flex-col flex-1"
+        className="flex flex-1 flex-col px-5 pt-7 pb-3.5"
       >
-        <main className="flex-1 flex flex-col gap-10 border-b border-border">
+        <main className="border-border flex flex-1 flex-col gap-10 border-b">
           <ProjectForm
             title={form.title}
             titleErrorMessage={form.titleErrorMessage}
@@ -229,7 +220,7 @@ const ProjectEditForm = ({
       </form>
 
       {/* 하단 버튼 */}
-      <footer className="w-full h-22.75 px-5 pt-4 pb-5">
+      <footer className="h-22.75 w-full px-5 pt-4 pb-5">
         <Button
           variant="default"
           type="submit"

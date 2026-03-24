@@ -35,11 +35,7 @@ const toCursorPosition = (digitIndex: number) => {
   return digitIndex + 1;
 };
 
-const replaceTimeDigit = (
-  value: string,
-  digitIndex: number,
-  nextDigit: string,
-) => {
+const replaceTimeDigit = (value: string, digitIndex: number, nextDigit: string) => {
   const chars = value.split("");
   const valueIndex = digitIndex >= 2 ? digitIndex + 1 : digitIndex;
   chars[valueIndex] = nextDigit;
@@ -74,22 +70,17 @@ const normalizeMemo = (value: string) =>
 const AddPlanPage = () => {
   const params = useParams<{ planId: string | string[] }>();
   const router = useRouter();
-  const planId = Array.isArray(params.planId)
-    ? params.planId[0]
-    : params.planId;
-  const { data: planCollectionsData, isLoading: isPlanCollectionsLoading } =
-    usePlanCollections(planId ?? "", {
+  const planId = Array.isArray(params.planId) ? params.planId[0] : params.planId;
+  const { data: planCollectionsData, isLoading: isPlanCollectionsLoading } = usePlanCollections(
+    planId ?? "",
+    {
       staleTime: 60_000,
-    });
-  const planCollections = useMemo(
-    () => planCollectionsData ?? [],
-    [planCollectionsData],
+    },
   );
+  const planCollections = useMemo(() => planCollectionsData ?? [], [planCollectionsData]);
   const isPlanCollectionsReady = !isPlanCollectionsLoading;
-  const isPlanCollectionsEmpty =
-    isPlanCollectionsReady && planCollections.length === 0;
-  const hasPlanCollections =
-    isPlanCollectionsReady && planCollections.length > 0;
+  const isPlanCollectionsEmpty = isPlanCollectionsReady && planCollections.length === 0;
+  const hasPlanCollections = isPlanCollectionsReady && planCollections.length > 0;
 
   const dayItems = useMemo(
     () =>
@@ -99,19 +90,13 @@ const AddPlanPage = () => {
       })),
     [planCollections],
   );
-  const [selectedCollectionId, setSelectedCollectionId] = useState<
-    string | null
-  >(null);
-  const [activeTab, setActiveTab] = useState<"saved" | "search" | "free">(
-    "saved",
-  );
+  const [selectedCollectionId, setSelectedCollectionId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"saved" | "search" | "free">("saved");
   const [selectedPlaceByCollection, setSelectedPlaceByCollection] = useState<
     Record<string, string | null>
   >({});
   const [query, setQuery] = useState("");
-  const [selectedSearchPlaceId, setSelectedSearchPlaceId] = useState<
-    string | null
-  >(null);
+  const [selectedSearchPlaceId, setSelectedSearchPlaceId] = useState<string | null>(null);
   const [freeDay, setFreeDay] = useState("");
   const [freeStartTime, setFreeStartTime] = useState(DEFAULT_TIME);
   const [freeEndTime, setFreeEndTime] = useState(DEFAULT_TIME);
@@ -119,15 +104,11 @@ const AddPlanPage = () => {
   const [freeSubmitError, setFreeSubmitError] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const selectedDay =
-    selectedCollectionId &&
-    dayItems.some((item) => item.value === selectedCollectionId)
+    selectedCollectionId && dayItems.some((item) => item.value === selectedCollectionId)
       ? selectedCollectionId
       : (dayItems[0]?.value ?? "");
   const selectedPlaceId = selectedPlaceByCollection[selectedDay] ?? null;
-  const freeDayNumber = useMemo(
-    () => Number(freeDay.replace(/[^\d]/g, "")),
-    [freeDay],
-  );
+  const freeDayNumber = useMemo(() => Number(freeDay.replace(/[^\d]/g, "")), [freeDay]);
   const normalizedFreeMemo = useMemo(() => normalizeMemo(freeMemo), [freeMemo]);
   const isFreeStartTimeValid = isValidTime(freeStartTime);
   const isFreeEndTimeValid = isValidTime(freeEndTime);
@@ -154,10 +135,7 @@ const AddPlanPage = () => {
     return () => window.clearTimeout(timer);
   }, [query]);
 
-  const handlePlaceSelected = (
-    collectionPlaceId: string,
-    selected: boolean,
-  ) => {
+  const handlePlaceSelected = (collectionPlaceId: string, selected: boolean) => {
     if (!selectedDay) return;
 
     setSelectedPlaceByCollection((prev) => {
@@ -192,26 +170,25 @@ const AddPlanPage = () => {
   } = usePlaceSearch(searchableQuery, 400, {
     staleTime: 60_000,
   });
-  const { mutate: createBlock, isPending: isCreatingBlock } =
-    useCreatePlanBlock({
-      onSuccess: () => {
-        setFreeSubmitError("");
-        setActiveTab("saved");
-        setSelectedCollectionId(null);
-        setFreeDay("");
-        setFreeStartTime(DEFAULT_TIME);
-        setFreeEndTime(DEFAULT_TIME);
-        setFreeMemo("");
-        router.push(`/projects/${planId}/plan-edit`);
-      },
-      onError: (err) => {
-        const message =
-          err.response?.data?.errors?.[0]?.reason ??
-          err.response?.data?.detail ??
-          "자유 시간 추가에 실패했어요. 잠시 후 다시 시도해 주세요.";
-        setFreeSubmitError(message);
-      },
-    });
+  const { mutate: createBlock, isPending: isCreatingBlock } = useCreatePlanBlock({
+    onSuccess: () => {
+      setFreeSubmitError("");
+      setActiveTab("saved");
+      setSelectedCollectionId(null);
+      setFreeDay("");
+      setFreeStartTime(DEFAULT_TIME);
+      setFreeEndTime(DEFAULT_TIME);
+      setFreeMemo("");
+      router.push(`/projects/${planId}/plan-edit`);
+    },
+    onError: (err) => {
+      const message =
+        err.response?.data?.errors?.[0]?.reason ??
+        err.response?.data?.detail ??
+        "자유 시간 추가에 실패했어요. 잠시 후 다시 시도해 주세요.";
+      setFreeSubmitError(message);
+    },
+  });
   const handleIntersect = useCallback(() => {
     if (!hasNextPage || isFetchingNextPage) return;
     fetchNextPage();
@@ -230,17 +207,10 @@ const AddPlanPage = () => {
 
   const handleOpenPlaceAddFromSearch = () => {
     if (!planId || !selectedSearchPlaceId) return;
-    const selectedPlace = searchedPlaces.find(
-      (place) => place.place_id === selectedSearchPlaceId,
-    );
+    const selectedPlace = searchedPlaces.find((place) => place.place_id === selectedSearchPlaceId);
     if (!selectedPlace) return;
-    window.sessionStorage.setItem(
-      "project:selected-search-place",
-      JSON.stringify(selectedPlace),
-    );
-    router.push(
-      `/projects/${planId}/place-add?collectionId=${selectedDay}&source=search`,
-    );
+    window.sessionStorage.setItem("project:selected-search-place", JSON.stringify(selectedPlace));
+    router.push(`/projects/${planId}/place-add?collectionId=${selectedDay}&source=search`);
   };
 
   //   const handleOpenManualAdd = () => {
@@ -320,21 +290,19 @@ const AddPlanPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="bg-background flex min-h-screen flex-col">
       <Header
         variant="center"
         title="일정 추가"
         showBackButton
         rightBtnBgVariant="glass"
-        className="fixed inset-x-0 top-0 z-10 bg-background"
+        className="bg-background fixed inset-x-0 top-0 z-10"
       />
 
       <main className="flex flex-1 flex-col pt-16 pb-24">
         <Tabs
           value={activeTab}
-          onValueChange={(value) =>
-            setActiveTab(value as "saved" | "search" | "free")
-          }
+          onValueChange={(value) => setActiveTab(value as "saved" | "search" | "free")}
           className="flex flex-1 flex-col"
         >
           <TabsList style="underline" fullWidth className="w-full px-5">
@@ -351,11 +319,11 @@ const AddPlanPage = () => {
 
           <TabsContent value="saved" className="flex flex-1 flex-col">
             {isPlanCollectionsLoading ? (
-              <div className="flex flex-1 w-full items-center justify-center px-5 typography-body-sm-md text-muted-foreground">
+              <div className="typography-body-sm-md text-muted-foreground flex w-full flex-1 items-center justify-center px-5">
                 보관함을 불러오는 중...
               </div>
             ) : isPlanCollectionsEmpty ? (
-              <div className="flex flex-1 w-full flex-col items-center justify-center px-5">
+              <div className="flex w-full flex-1 flex-col items-center justify-center px-5">
                 <div className="flex w-full flex-col items-center gap-5">
                   <div className="flex w-full flex-col items-center gap-5">
                     <CollectionEmptyIllust />
@@ -369,9 +337,7 @@ const AddPlanPage = () => {
                     </div>
                   </div>
                   <Button
-                    onClick={() =>
-                      router.push(`/projects/${planId}/collection-manage`)
-                    }
+                    onClick={() => router.push(`/projects/${planId}/collection-manage`)}
                     size="M"
                     className="typography-action-sm-bold"
                   >
@@ -380,7 +346,7 @@ const AddPlanPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-1 w-full flex-col items-center px-5">
+              <div className="flex w-full flex-1 flex-col items-center px-5">
                 {dayItems.length > 0 && (
                   <DayNav
                     items={dayItems}
@@ -392,7 +358,7 @@ const AddPlanPage = () => {
                 )}
 
                 <div
-                  className={`flex flex-1 w-full flex-col gap-4 ${!isPlacesLoading && places.length === 0 ? "items-center justify-center" : "pt-5"}`}
+                  className={`flex w-full flex-1 flex-col gap-4 ${!isPlacesLoading && places.length === 0 ? "items-center justify-center" : "pt-5"}`}
                 >
                   {!isPlacesLoading && places.length === 0 ? (
                     <div className="flex w-full flex-col items-center gap-5">
@@ -415,14 +381,9 @@ const AddPlanPage = () => {
                       {places.map((item) => (
                         <PlanCardSelection
                           key={item.collection_place_id}
-                          isSelected={
-                            selectedPlaceId === item.collection_place_id
-                          }
+                          isSelected={selectedPlaceId === item.collection_place_id}
                           onSelected={(selected) =>
-                            handlePlaceSelected(
-                              item.collection_place_id,
-                              selected,
-                            )
+                            handlePlaceSelected(item.collection_place_id, selected)
                           }
                           title={item.place.name}
                           address={item.place.address}
@@ -438,7 +399,7 @@ const AddPlanPage = () => {
               </div>
             )}
           </TabsContent>
-          <TabsContent value="search" className="px-5 flex flex-col flex-1">
+          <TabsContent value="search" className="flex flex-1 flex-col px-5">
             <div className="flex flex-1 flex-col gap-4 py-5">
               <InputForm
                 value={query}
@@ -454,12 +415,12 @@ const AddPlanPage = () => {
                   <></>
                 ) : isSearchLoading || isSearchFetching ? (
                   /* 2) 로딩 중 */
-                  <div className="flex flex-1 items-center justify-center py-10 text-center typography-body-sm-md text-muted-foreground">
+                  <div className="typography-body-sm-md text-muted-foreground flex flex-1 items-center justify-center py-10 text-center">
                     검색 중...
                   </div>
                 ) : isSearchError ? (
                   /* 3) 에러 */
-                  <div className="flex flex-1 items-center justify-center py-10 text-center typography-body-sm-md text-destructive">
+                  <div className="typography-body-sm-md text-destructive flex flex-1 items-center justify-center py-10 text-center">
                     검색에 실패했어요. 잠시 후 다시 시도해 주세요.
                   </div>
                 ) : searchedPlaces.length === 0 ? (
@@ -468,10 +429,8 @@ const AddPlanPage = () => {
                     <div className="py-3">
                       <SearchPlaceEmptyIllust />
                     </div>
-                    <div className="flex flex-col items-center text-center gap-2">
-                      <span className="typography-display-lg-bold">
-                        검색 결과가 없습니다.
-                      </span>
+                    <div className="flex flex-col items-center gap-2 text-center">
+                      <span className="typography-display-lg-bold">검색 결과가 없습니다.</span>
                       <p className="typography-body-sm-reg">
                         검색어를 다시 한 번 확인하고
                         <br />
@@ -489,23 +448,14 @@ const AddPlanPage = () => {
                         type="button"
                         className={`w-full rounded-2xl px-5 py-4 text-left ${
                           isSelected
-                            ? "border-2 border-primary bg-muted"
-                            : "border-2 border-transparent bg-muted"
+                            ? "border-primary bg-muted border-2"
+                            : "bg-muted border-2 border-transparent"
                         }`}
-                        onClick={() =>
-                          setSelectedSearchPlaceId(
-                            isSelected ? null : place.place_id,
-                          )
-                        }
+                        onClick={() => setSelectedSearchPlaceId(isSelected ? null : place.place_id)}
                       >
-                        <p className="typography-action-base-bold text-foreground">
-                          {place.name}
-                        </p>
+                        <p className="typography-action-base-bold text-foreground">{place.name}</p>
                         <div className="mt-1 flex items-center gap-1">
-                          <MapPin
-                            className="size-4.5 shrink-0 text-[#737373]"
-                            strokeWidth={2}
-                          />
+                          <MapPin className="size-4.5 shrink-0 text-[#737373]" strokeWidth={2} />
                           <p className="typography-body-sm-reg text-muted-foreground">
                             {place.address}
                           </p>
@@ -531,9 +481,7 @@ const AddPlanPage = () => {
             <div className="flex flex-col gap-8 py-5">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="free-day" required>
-                  <span className="typography-label-sm-sb text-foreground">
-                    날짜
-                  </span>
+                  <span className="typography-label-sm-sb text-foreground">날짜</span>
                 </Label>
                 <InputForm
                   id="free-day"
@@ -546,9 +494,7 @@ const AddPlanPage = () => {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="free-start-time" required>
-                  <span className="typography-label-sm-sb text-foreground">
-                    시작 시간
-                  </span>
+                  <span className="typography-label-sm-sb text-foreground">시작 시간</span>
                 </Label>
                 <InputForm
                   id="free-start-time"
@@ -557,9 +503,7 @@ const AddPlanPage = () => {
                   inputMode="numeric"
                   maxLength={5}
                   value={freeStartTime}
-                  onKeyDown={(e) =>
-                    handleFreeTimeKeyDown(e, freeStartTime, setFreeStartTime)
-                  }
+                  onKeyDown={(e) => handleFreeTimeKeyDown(e, freeStartTime, setFreeStartTime)}
                   onFocus={(e) => setCaret(e.currentTarget, 0)}
                   onChange={() => {}}
                   error={!isFreeStartTimeValid || !isFreeStartNotAfterEnd}
@@ -568,9 +512,7 @@ const AddPlanPage = () => {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="free-end-time" required>
-                  <span className="typography-label-sm-sb text-foreground">
-                    종료 시간
-                  </span>
+                  <span className="typography-label-sm-sb text-foreground">종료 시간</span>
                 </Label>
                 <InputForm
                   id="free-end-time"
@@ -579,9 +521,7 @@ const AddPlanPage = () => {
                   inputMode="numeric"
                   maxLength={5}
                   value={freeEndTime}
-                  onKeyDown={(e) =>
-                    handleFreeTimeKeyDown(e, freeEndTime, setFreeEndTime)
-                  }
+                  onKeyDown={(e) => handleFreeTimeKeyDown(e, freeEndTime, setFreeEndTime)}
                   onFocus={(e) => setCaret(e.currentTarget, 0)}
                   onChange={() => {}}
                   error={!isFreeEndTimeValid || !isFreeStartNotAfterEnd}
@@ -590,9 +530,7 @@ const AddPlanPage = () => {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="free-memo">
-                  <span className="typography-label-sm-sb text-foreground">
-                    메모
-                  </span>
+                  <span className="typography-label-sm-sb text-foreground">메모</span>
                 </Label>
                 <Textarea
                   id="free-memo"
@@ -607,12 +545,12 @@ const AddPlanPage = () => {
                 />
                 {freeMemo.length > 0 && !isFreeMemoPolicyValid && (
                   <FieldDescription error>
-                    한글, 영문, 숫자, 이모지, 특수문자(!@#$%^&*()-_+=[]{} ,.?/)
-                    및 줄바꿈만 사용할 수 있습니다.
+                    한글, 영문, 숫자, 이모지, 특수문자(!@#$%^&*()-_+=[]{} ,.?/) 및 줄바꿈만 사용할
+                    수 있습니다.
                   </FieldDescription>
                 )}
                 {freeSubmitError && (
-                  <p className="px-1 typography-caption-xs-reg text-destructive">
+                  <p className="typography-caption-xs-reg text-destructive px-1">
                     {freeSubmitError}
                   </p>
                 )}
@@ -622,10 +560,10 @@ const AddPlanPage = () => {
         </Tabs>
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-50 h-22.75 border-t border-border bg-background">
+      <div className="border-border bg-background fixed inset-x-0 bottom-0 z-50 h-22.75 border-t">
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-12 inset-x-0 h-12 bg-gradient-bottom-fade"
+          className="bg-gradient-bottom-fade pointer-events-none absolute inset-x-0 -top-12 h-12"
         />
         <div className="px-5 pt-4">
           <Button
@@ -636,10 +574,9 @@ const AddPlanPage = () => {
                   ? handleOpenPlaceAddFromSearch
                   : handleAddFreeTimeToPlan
             }
-            className="h-11 w-full rounded-2xl bg-primary px-8 py-0 text-primary-foreground"
+            className="bg-primary text-primary-foreground h-11 w-full rounded-2xl px-8 py-0"
             disabled={
-              (activeTab === "saved" &&
-                (!hasPlanCollections || !selectedPlaceId)) ||
+              (activeTab === "saved" && (!hasPlanCollections || !selectedPlaceId)) ||
               (activeTab === "search" && !selectedSearchPlaceId) ||
               (activeTab === "free" && (!canSubmitFree || isCreatingBlock))
             }

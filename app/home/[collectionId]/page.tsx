@@ -10,9 +10,7 @@ import { useCollectionPlacePreference } from "@/lib/hooks/collection/use-collect
 import NavigationBar from "@/components/layout/NavigationBar";
 import PlaceEmptyIllust from "@/public/illust/place-empty.svg";
 import { Button } from "@/components/ui/button";
-import PlaceListHeader, {
-  type PlaceListHeaderValue,
-} from "@/components/layout/PlaceListHeader";
+import PlaceListHeader, { type PlaceListHeaderValue } from "@/components/layout/PlaceListHeader";
 import PlaceCard from "@/components/card/PlaceCard";
 import { PlusIcon } from "lucide-react";
 import { cn } from "@/lib/utils/utils";
@@ -68,7 +66,7 @@ const CollectionDetailPage = () => {
   }));
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header
         variant="center"
         showBackButton
@@ -76,30 +74,28 @@ const CollectionDetailPage = () => {
         showNotificationButton
         leftBtnBgVariant="ghost"
         rightBtnBgVariant="ghost"
-        className="fixed top-0 z-10 inset-x-0 bg-background"
+        className="bg-background fixed inset-x-0 top-0 z-10"
       />
       {isPlacesPending ? (
-        <main className="flex flex-col flex-1 items-center justify-center pb-18 pt-15">
+        <main className="flex flex-1 flex-col items-center justify-center pt-15 pb-18">
           <p className="typography-action-base-reg text-neutral-400">
             보관함을 불러오는 중이에요...
           </p>
         </main>
       ) : places.length === 0 ? (
-        <main className="flex flex-col flex-1 items-center justify-center pb-18 gap-5 mx-5 pt-15">
-          <div className="relative flex items-center justify-center w-40 h-40 rounded-full bg-[#f5f5f5]">
-            <PlaceEmptyIllust className="absolute w-54 h-48" />
+        <main className="mx-5 flex flex-1 flex-col items-center justify-center gap-5 pt-15 pb-18">
+          <div className="relative flex h-40 w-40 items-center justify-center rounded-full bg-[#f5f5f5]">
+            <PlaceEmptyIllust className="absolute h-48 w-54" />
           </div>
-          <div className="flex flex-col gap-2 items-center">
-            <h1 className="typography-display-lg-bold">
-              우리의 첫 번째 장소를 담아보세요
-            </h1>
+          <div className="flex flex-col items-center gap-2">
+            <h1 className="typography-display-lg-bold">우리의 첫 번째 장소를 담아보세요</h1>
             <p className="typography-action-sm-reg text-center">
               꿈꾸는 장소들을 하나 둘 모으다 보면, <br />
               이번 여행이 더 기다려질 거에요!
             </p>
           </div>
           <Button
-            className="mt-7 bg-sky-500 typography-action-base-bold w-full"
+            className="typography-action-base-bold mt-7 w-full bg-sky-500"
             onClick={() => router.push(`/home/${collectionId}/add-place`)}
           >
             장소 추가하기
@@ -117,11 +113,11 @@ const CollectionDetailPage = () => {
             meRole={membersData?.me?.role}
             collectionId={collectionId}
             className={cn(
-              "sticky top-[60px] z-9 bg-white transition-transform duration-300 ease-in-out bg-background",
+              "bg-background sticky top-[60px] z-9 bg-white transition-transform duration-300 ease-in-out",
               !isOptionsVisible && "-translate-y-full",
             )}
           />
-          <main className="flex flex-col gap-4 px-5 pb-40 pt-5">
+          <main className="flex flex-col gap-4 px-5 pt-5 pb-40">
             {places.map((item) => (
               <PlaceCard
                 key={item.collection_place_id}
@@ -146,16 +142,14 @@ const CollectionDetailPage = () => {
                   })
                 }
                 onClick={() =>
-                  router.push(
-                    `/collection/${collectionId}/place/${item.collection_place_id}`,
-                  )
+                  router.push(`/collection/${collectionId}/place/${item.collection_place_id}`)
                 }
               />
             ))}
           </main>
-          <div className="fixed bottom-[72px] inset-x-0 z-10 px-5 py-3">
+          <div className="fixed inset-x-0 bottom-[72px] z-10 px-5 py-3">
             <Button
-              className="w-full bg-sky-500 typography-action-base-bold"
+              className="typography-action-base-bold w-full bg-sky-500"
               onClick={() => router.push(`/home/${collectionId}/add-place`)}
               icon={<PlusIcon className="opacity-40" color="#000" />}
             >
@@ -164,7 +158,7 @@ const CollectionDetailPage = () => {
           </div>
         </div>
       )}
-      <NavigationBar className="fixed bottom-0 z-10 inset-x-0" />
+      <NavigationBar className="fixed inset-x-0 bottom-0 z-10" />
     </div>
   );
 };

@@ -15,12 +15,8 @@ const FreeDetailPage = () => {
     planId: string | string[];
     timeBlockId: string | string[];
   }>();
-  const planId = Array.isArray(params.planId)
-    ? params.planId[0]
-    : params.planId;
-  const blockId = Array.isArray(params.timeBlockId)
-    ? params.timeBlockId[0]
-    : params.timeBlockId;
+  const planId = Array.isArray(params.planId) ? params.planId[0] : params.planId;
+  const blockId = Array.isArray(params.timeBlockId) ? params.timeBlockId[0] : params.timeBlockId;
 
   const [isEditingMemo, setIsEditingMemo] = useState(false);
   const [memoDraft, setMemoDraft] = useState("");
@@ -74,65 +70,57 @@ const FreeDetailPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header
         variant="center"
         title="자유 시간"
         showBackButton
         leftBtnBgVariant="ghost"
-        className="fixed top-0 inset-x-0"
+        className="fixed inset-x-0 top-0"
       />
 
-      <main className="mt-20 flex flex-col flex-1 px-5 pb-3.5 gap-2.5 w-full">
+      <main className="mt-20 flex w-full flex-1 flex-col gap-2.5 px-5 pb-3.5">
         {isLoading ? (
-          <div className="fixed inset-0 flex items-center justify-center text-muted-foreground">
+          <div className="text-muted-foreground fixed inset-0 flex items-center justify-center">
             불러오는 중...
           </div>
         ) : isError ? (
-          <div className="fixed inset-0 flex items-center justify-center text-destructive">
+          <div className="text-destructive fixed inset-0 flex items-center justify-center">
             블록 정보를 불러오지 못했습니다.
           </div>
         ) : (
-          <div className="pt-4 flex flex-col flex-1 gap-7 border-b border-border">
+          <div className="border-border flex flex-1 flex-col gap-7 border-b pt-4">
             <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between pb-6 border-b border-border">
+              <div className="border-border flex items-center justify-between border-b pb-6">
                 <div className="flex items-center gap-1.75">
                   <Calendar className="text-primary" />
                   <span className="typography-body-sm-sb">{dayText}</span>
-                  <p className="typography-body-sm-reg text-muted-foreground">
-                    {dateText}
-                  </p>
+                  <p className="typography-body-sm-reg text-muted-foreground">{dateText}</p>
                 </div>
-                <p className="typography-body-sm-reg text-muted-foreground">
-                  {timeText}
-                </p>
+                <p className="typography-body-sm-reg text-muted-foreground">{timeText}</p>
               </div>
-              <div className="flex flex-col gap-0 w-full">
+              <div className="flex w-full flex-col gap-0">
                 <Label
                   isEditing={isEditingMemo}
                   onEdit={handleEditMemo}
                   onSave={handleSaveMemo}
-                  className="w-full h-9"
+                  className="h-9 w-full"
                 >
-                  <span className="typography-label-sm-sb text-foreground align-middle">
-                    메모
-                  </span>
+                  <span className="typography-label-sm-sb text-foreground align-middle">메모</span>
                 </Label>
                 <div className="w-full">
                   {isEditingMemo ? (
                     <Textarea
                       placeholder="메모를 입력해주세요"
                       value={memoDraft}
-                      onChange={(e) =>
-                        setMemoDraft(e.target.value.slice(0, MEMO_MAX_LENGTH))
-                      }
+                      onChange={(e) => setMemoDraft(e.target.value.slice(0, MEMO_MAX_LENGTH))}
                       maxLength={MEMO_MAX_LENGTH}
                       className="typography-body-base! text-foreground!"
                       disabled={updateBlockMutation.isPending}
                     />
                   ) : (
                     <div className="flex items-start gap-2.5 py-2.5">
-                      <p className="w-full whitespace-pre-wrap wrap-break-word align-middle typography-body-base text-foreground">
+                      <p className="typography-body-base text-foreground w-full align-middle wrap-break-word whitespace-pre-wrap">
                         {memo}
                       </p>
                     </div>

@@ -123,15 +123,13 @@ const CandidateManualAddPlacePage = () => {
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />
-          <FieldDescription>
-            장소와 관련된 콘텐츠 링크를 첨부할 수 있어요
-          </FieldDescription>
+          <FieldDescription>장소와 관련된 콘텐츠 링크를 첨부할 수 있어요</FieldDescription>
         </div>
       </div>
 
       <div className="fixed inset-x-0 bottom-0 bg-white px-5 py-4">
         <Button
-          className="w-full bg-primary typography-action-base-bold disabled:opacity-40"
+          className="bg-primary typography-action-base-bold w-full disabled:opacity-40"
           disabled={!name.trim() || !location.trim() || !tag.trim() || !memo.trim()}
           onClick={handleAddCandidate}
         >

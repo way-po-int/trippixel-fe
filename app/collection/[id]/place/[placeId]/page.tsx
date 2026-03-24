@@ -33,7 +33,11 @@ const PlaceDetailPage = () => {
   const [isVoteMemberSheetOpen, setIsVoteMemberSheetOpen] = useState(false);
   const [voteMemberSheetType, setVoteMemberSheetType] = useState<VoteMemberSheetType>("PICK");
 
-  const { data: placeDetail, isLoading, isError } = usePlaceDetail({
+  const {
+    data: placeDetail,
+    isLoading,
+    isError,
+  } = usePlaceDetail({
     collectionId,
     collectionPlaceId,
     enabled: Boolean(collectionId && collectionPlaceId),
@@ -114,11 +118,7 @@ const PlaceDetailPage = () => {
           id: member.collection_member_id,
           label: member.nickname ?? "이름 미상",
           icon: (
-            <ProfileImage
-              size="sm"
-              src={member.picture ?? ""}
-              alt={member.nickname ?? "멤버"}
-            />
+            <ProfileImage size="sm" src={member.picture ?? ""} alt={member.nickname ?? "멤버"} />
           ),
           disabled: true,
         }))
@@ -132,46 +132,30 @@ const PlaceDetailPage = () => {
 
   return (
     <div className="relative min-h-screen min-w-0 overflow-x-hidden pb-[calc(72px+env(safe-area-inset-bottom)+16px)]">
-     <Header
-        showBackButton
-        leftBtnBgVariant="glass"
-        className="fixed top-0 inset-x-0 z-50"
-      />
+      <Header showBackButton leftBtnBgVariant="glass" className="fixed inset-x-0 top-0 z-50" />
       {/* 이미지 영역 */}
-      <div className="fixed top-0 left-0 right-0 w-full aspect-5/3 bg-muted z-0">
+      <div className="bg-muted fixed top-0 right-0 left-0 z-0 aspect-5/3 w-full">
         {coverImageUrl && (
-          <Image
-            src={coverImageUrl}
-            alt={placeName}
-            fill
-            className="object-cover"
-            priority
-          />
+          <Image src={coverImageUrl} alt={placeName} fill className="object-cover" priority />
         )}
       </div>
 
       {/* 콘텐츠 영역 */}
       <div className="relative pt-[calc(60%-17px)]">
-        <div className="flex flex-col gap-16 pt-7 px-5 rounded-t-2xl bg-background min-w-0">
-          <div className="flex flex-col w-full min-w-0">
-            <h2 className="flex justify-between items-center w-full h-8 py-0.5 px-1">
-              <span className="typography-title-lg-sb text-foreground">
-                {placeName}
-              </span>
-              <span className="typography-body-sm-bold text-muted-foreground">
-                {category}
-              </span>
+        <div className="bg-background flex min-w-0 flex-col gap-16 rounded-t-2xl px-5 pt-7">
+          <div className="flex w-full min-w-0 flex-col">
+            <h2 className="flex h-8 w-full items-center justify-between px-1 py-0.5">
+              <span className="typography-title-lg-sb text-foreground">{placeName}</span>
+              <span className="typography-body-sm-bold text-muted-foreground">{category}</span>
             </h2>
-            <div className="flex-1 flex flex-col w-full gap-5 pt-4">
+            <div className="flex w-full flex-1 flex-col gap-5 pt-4">
               {/* 주소 영역 */}
-              <div className="flex flex-col gap-1 w-full">
+              <div className="flex w-full flex-col gap-1">
                 <hr className="border-border" />
-                <div className="flex justify-between items-center w-full h-11">
+                <div className="flex h-11 w-full items-center justify-between">
                   <div className="flex items-center gap-2.25">
-                    <MapPin className="size-6 text-muted-foreground" />
-                    <span className="typography-body-sm-md text-foreground">
-                      {address}
-                    </span>
+                    <MapPin className="text-muted-foreground size-6" />
+                    <span className="typography-body-sm-md text-foreground">{address}</span>
                   </div>
                   <HeaderBtn
                     bgVariant="ghost"
@@ -183,7 +167,7 @@ const PlaceDetailPage = () => {
                 <hr className="border-border" />
               </div>
               {/* 투표 버튼 영역 */}
-              <div className="flex gap-3 w-full pb-3.5">
+              <div className="flex w-full gap-3 pb-3.5">
                 <VoteBtn
                   type="pick"
                   count={pickCount}
@@ -200,12 +184,8 @@ const PlaceDetailPage = () => {
                 />
               </div>
               {/* 메모 영역 */}
-              <div className="flex flex-col gap-2 w-full">
-                <Label
-                  isEditing={isEditingMemo}
-                  onEdit={handleEditMemo}
-                  onSave={handleSaveMemo}
-                >
+              <div className="flex w-full flex-col gap-2">
+                <Label isEditing={isEditingMemo} onEdit={handleEditMemo} onSave={handleSaveMemo}>
                   메모
                 </Label>
                 <Textarea
@@ -217,23 +197,23 @@ const PlaceDetailPage = () => {
                 />
               </div>
               {/* 지도 영역 */}
-              <div className="w-full h-57 rounded-xl overflow-hidden">
+              <div className="h-57 w-full overflow-hidden rounded-xl">
                 {latitude !== undefined && longitude !== undefined ? (
                   <GoogleMap
                     center={{ lat: latitude, lng: longitude }}
                     zoom={15}
                     markerPosition={{ lat: latitude, lng: longitude }}
-                    className="w-full h-full"
+                    className="h-full w-full"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-muted typography-body-sm-reg text-muted-foreground">
+                  <div className="bg-muted typography-body-sm-reg text-muted-foreground flex h-full w-full items-center justify-center">
                     지도를 불러오는 중...
                   </div>
                 )}
               </div>
               <AISummarySection
                 isLoading={isLoading}
-                headerIcon={<Sparkles className="size-6 text-foreground" />}
+                headerIcon={<Sparkles className="text-foreground size-6" />}
                 title="AI 요약"
                 summary={aiSummary}
                 sourceTitle={sourceTitle}
@@ -242,7 +222,7 @@ const PlaceDetailPage = () => {
               />
             </div>
             {isError && (
-              <p className="px-1 typography-caption-xs-reg text-destructive">
+              <p className="typography-caption-xs-reg text-destructive px-1">
                 장소 정보를 불러오지 못했습니다.
               </p>
             )}
@@ -250,7 +230,7 @@ const PlaceDetailPage = () => {
         </div>
       </div>
 
-      <NavigationBar className="fixed bottom-0 left-0 right-0 z-50" />
+      <NavigationBar className="fixed right-0 bottom-0 left-0 z-50" />
       <BottomSheet
         open={isVoteMemberSheetOpen}
         onOpenChange={setIsVoteMemberSheetOpen}

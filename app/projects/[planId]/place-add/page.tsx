@@ -32,11 +32,7 @@ const toCursorPosition = (digitIndex: number) => {
   return digitIndex + 1;
 };
 
-const replaceTimeDigit = (
-  value: string,
-  digitIndex: number,
-  nextDigit: string,
-) => {
+const replaceTimeDigit = (value: string, digitIndex: number, nextDigit: string) => {
   const chars = value.split("");
   const valueIndex = digitIndex >= 2 ? digitIndex + 1 : digitIndex;
   chars[valueIndex] = nextDigit;
@@ -71,9 +67,7 @@ const normalizeMemo = (value: string) =>
 const ProjectPlaceAddPage = () => {
   const router = useRouter();
   const params = useParams<{ planId: string | string[] }>();
-  const planId = Array.isArray(params.planId)
-    ? params.planId[0]
-    : params.planId;
+  const planId = Array.isArray(params.planId) ? params.planId[0] : params.planId;
   const searchParams = useSearchParams();
   const collectionId = searchParams.get("collectionId") ?? "";
   const collectionPlaceId = searchParams.get("placeId") ?? "";
@@ -129,36 +123,25 @@ const ProjectPlaceAddPage = () => {
     planId,
     collectionId,
     collectionPlaceId,
-    enabled: Boolean(
-      !isSearchSource && planId && collectionId && collectionPlaceId,
-    ),
+    enabled: Boolean(!isSearchSource && planId && collectionId && collectionPlaceId),
   });
 
-  const placeName =
-    placeDetail?.name ?? searchPlace?.name ?? manualPlace?.name ?? "";
+  const placeName = placeDetail?.name ?? searchPlace?.name ?? manualPlace?.name ?? "";
   const category =
-    placeDetail?.category ??
-    searchPlace?.category?.level2?.name ??
-    manualPlace?.tag ??
-    "";
-  const address =
-    placeDetail?.address ?? searchPlace?.address ?? manualPlace?.address ?? "";
+    placeDetail?.category ?? searchPlace?.category?.level2?.name ?? manualPlace?.tag ?? "";
+  const address = placeDetail?.address ?? searchPlace?.address ?? manualPlace?.address ?? "";
   const aiSummary = placeDetail?.aiSummary ?? "";
   const sourceTitle = placeDetail?.sourceTitle ?? "";
   const sourceUrl = placeDetail?.sourceUrl;
   const externalUrl =
-    placeDetail?.externalUrl ??
-    searchPlace?.google_maps_uri ??
-    manualPlace?.google_maps_uri;
+    placeDetail?.externalUrl ?? searchPlace?.google_maps_uri ?? manualPlace?.google_maps_uri;
   const coverImageUrl = placeDetail?.photoUrls?.[0] ?? searchPlace?.photos?.[0];
   const dayNumber = useMemo(() => Number(day.replace(/[^\d]/g, "")), [day]);
   const normalizedMemo = useMemo(() => normalizeMemo(memo), [memo]);
   const isStartTimeValid = isValidTime(startTime);
   const isEndTimeValid = isValidTime(endTime);
   const isStartNotAfterEnd =
-    isStartTimeValid && isEndTimeValid
-      ? toMinutes(startTime) <= toMinutes(endTime)
-      : false;
+    isStartTimeValid && isEndTimeValid ? toMinutes(startTime) <= toMinutes(endTime) : false;
   const isMemoPolicyValid = MEMO_POLICY_REGEX.test(normalizedMemo);
   const canSubmit =
     !!planId &&
@@ -170,21 +153,20 @@ const ProjectPlaceAddPage = () => {
     isStartNotAfterEnd &&
     isMemoPolicyValid;
 
-  const { mutate: createBlock, isPending: isCreatingBlock } =
-    useCreatePlanBlock({
-      onSuccess: () => {
-        setSubmitError("");
-        router.push(`/projects/${planId}/plan-edit`);
-      },
-      onError: (err) => {
-        const message =
-          err.response?.data?.errors?.[0]?.reason ??
-          err.response?.data?.detail ??
-          "블록 추가에 실패했어요. 잠시 후 다시 시도해 주세요.";
+  const { mutate: createBlock, isPending: isCreatingBlock } = useCreatePlanBlock({
+    onSuccess: () => {
+      setSubmitError("");
+      router.push(`/projects/${planId}/plan-edit`);
+    },
+    onError: (err) => {
+      const message =
+        err.response?.data?.errors?.[0]?.reason ??
+        err.response?.data?.detail ??
+        "블록 추가에 실패했어요. 잠시 후 다시 시도해 주세요.";
 
-        setSubmitError(message);
-      },
-    });
+      setSubmitError(message);
+    },
+  });
   const { mutate: createBlockByPlace, isPending: isCreatingBlockByPlace } =
     useCreatePlanBlockByPlace({
       onSuccess: () => {
@@ -295,54 +277,36 @@ const ProjectPlaceAddPage = () => {
   };
 
   return (
-    <div className="relative min-h-screen min-w-0 overflow-x-hidden bg-background">
-      <Header
-        showBackButton
-        leftBtnBgVariant="glass"
-        className="fixed top-0 inset-x-0 z-50"
-      />
+    <div className="bg-background relative min-h-screen min-w-0 overflow-x-hidden">
+      <Header showBackButton leftBtnBgVariant="glass" className="fixed inset-x-0 top-0 z-50" />
 
-      <div className="fixed top-0 left-0 right-0 w-full aspect-5/3 bg-muted z-0">
+      <div className="bg-muted fixed top-0 right-0 left-0 z-0 aspect-5/3 w-full">
         {coverImageUrl && (
-          <Image
-            src={coverImageUrl}
-            alt={placeName}
-            fill
-            className="object-cover"
-            priority
-          />
+          <Image src={coverImageUrl} alt={placeName} fill className="object-cover" priority />
         )}
       </div>
 
       <div className="relative pt-[calc(60%-17px)]">
-        <div className="flex flex-col gap-8 pt-7 px-5 pb-30 rounded-t-2xl bg-background min-w-0">
-          <div className="flex flex-col w-full min-w-0">
-            <h2 className="flex justify-between items-center w-full h-8 py-0.5 px-1">
-              <span className="typography-title-lg-sb text-foreground">
-                {placeName}
-              </span>
-              <span className="typography-body-sm-bold text-muted-foreground">
-                {category}
-              </span>
+        <div className="bg-background flex min-w-0 flex-col gap-8 rounded-t-2xl px-5 pt-7 pb-30">
+          <div className="flex w-full min-w-0 flex-col">
+            <h2 className="flex h-8 w-full items-center justify-between px-1 py-0.5">
+              <span className="typography-title-lg-sb text-foreground">{placeName}</span>
+              <span className="typography-body-sm-bold text-muted-foreground">{category}</span>
             </h2>
 
             <div className="flex flex-col gap-5 pt-4">
-              <div className="flex flex-col gap-1 w-full">
+              <div className="flex w-full flex-col gap-1">
                 <hr className="border-border" />
-                <div className="flex justify-between items-center w-full h-11">
+                <div className="flex h-11 w-full items-center justify-between">
                   <div className="flex items-center gap-2.25">
-                    <MapPin className="size-6 text-muted-foreground" />
-                    <span className="typography-body-sm-md text-foreground">
-                      {address}
-                    </span>
+                    <MapPin className="text-muted-foreground size-6" />
+                    <span className="typography-body-sm-md text-foreground">{address}</span>
                   </div>
                   <HeaderBtn
                     bgVariant="ghost"
                     icon={SquareArrowOutUpRight}
                     label="외부 링크"
-                    onClick={
-                      externalUrl ? () => openInNewTab(externalUrl) : undefined
-                    }
+                    onClick={externalUrl ? () => openInNewTab(externalUrl) : undefined}
                   />
                 </div>
                 <hr className="border-border" />
@@ -351,9 +315,7 @@ const ProjectPlaceAddPage = () => {
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="day" required>
-                    <span className="typography-label-sm-sb text-foreground">
-                      날짜
-                    </span>
+                    <span className="typography-label-sm-sb text-foreground">날짜</span>
                   </Label>
                   <InputForm
                     id="day"
@@ -366,9 +328,7 @@ const ProjectPlaceAddPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="start-time" required>
-                    <span className="typography-label-sm-sb text-foreground">
-                      시작 시간
-                    </span>
+                    <span className="typography-label-sm-sb text-foreground">시작 시간</span>
                   </Label>
                   <InputForm
                     id="start-time"
@@ -377,9 +337,7 @@ const ProjectPlaceAddPage = () => {
                     inputMode="numeric"
                     maxLength={5}
                     value={startTime}
-                    onKeyDown={(e) =>
-                      handleTimeKeyDown(e, startTime, setStartTime)
-                    }
+                    onKeyDown={(e) => handleTimeKeyDown(e, startTime, setStartTime)}
                     onFocus={(e) => setCaret(e.currentTarget, 0)}
                     onChange={() => {}}
                     error={!isStartTimeValid || !isStartNotAfterEnd}
@@ -388,9 +346,7 @@ const ProjectPlaceAddPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="end-time" required>
-                    <span className="typography-label-sm-sb text-foreground">
-                      종료 시간
-                    </span>
+                    <span className="typography-label-sm-sb text-foreground">종료 시간</span>
                   </Label>
                   <InputForm
                     id="end-time"
@@ -408,9 +364,7 @@ const ProjectPlaceAddPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="memo">
-                    <span className="typography-label-sm-sb text-foreground">
-                      메모
-                    </span>
+                    <span className="typography-label-sm-sb text-foreground">메모</span>
                   </Label>
                   <Textarea
                     id="memo"
@@ -421,12 +375,12 @@ const ProjectPlaceAddPage = () => {
                       if (submitError) setSubmitError("");
                     }}
                     error={memo.length > 0 && !isMemoPolicyValid}
-                    className="min-w-0 bg-muted"
+                    className="bg-muted min-w-0"
                   />
                   {memo.length > 0 && !isMemoPolicyValid && (
                     <FieldDescription error>
-                      한글, 영문, 숫자, 이모지, 특수문자(!@#$%^&*()-_+=[]{}{" "}
-                      ,.?/) 및 줄바꿈만 사용할 수 있습니다.
+                      한글, 영문, 숫자, 이모지, 특수문자(!@#$%^&*()-_+=[]{} ,.?/) 및 줄바꿈만 사용할
+                      수 있습니다.
                     </FieldDescription>
                   )}
                 </div>
@@ -434,40 +388,35 @@ const ProjectPlaceAddPage = () => {
 
               <AISummarySection
                 isLoading={isLoading}
-                headerIcon={<Sparkles className="size-6 text-foreground" />}
+                headerIcon={<Sparkles className="text-foreground size-6" />}
                 title="AI 요약"
-                summary={
-                  aiSummary ||
-                  (isSearchSource ? "AI 요약 정보가 아직 없습니다." : "")
-                }
+                summary={aiSummary || (isSearchSource ? "AI 요약 정보가 아직 없습니다." : "")}
                 sourceTitle={sourceTitle}
                 sourceUrl={sourceUrl}
                 onOpenLink={openInNewTab}
               />
 
               {isError && (
-                <p className="px-1 typography-caption-xs-reg text-destructive">
+                <p className="typography-caption-xs-reg text-destructive px-1">
                   장소 정보를 불러오지 못했습니다.
                 </p>
               )}
               {submitError && (
-                <p className="px-1 typography-caption-xs-reg text-destructive">
-                  {submitError}
-                </p>
+                <p className="typography-caption-xs-reg text-destructive px-1">{submitError}</p>
               )}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-50 h-22.75 border-t border-border bg-background">
+      <div className="border-border bg-background fixed inset-x-0 bottom-0 z-50 h-22.75 border-t">
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-12 inset-x-0 h-12 bg-gradient-bottom-fade"
+          className="bg-gradient-bottom-fade pointer-events-none absolute inset-x-0 -top-12 h-12"
         />
         <div className="px-5 pt-4">
           <Button
-            className="h-11 w-full rounded-2xl bg-primary px-8 py-0 text-primary-foreground"
+            className="bg-primary text-primary-foreground h-11 w-full rounded-2xl px-8 py-0"
             onClick={handleComplete}
             disabled={!canSubmit || isCreatingBlock || isCreatingBlockByPlace}
           >

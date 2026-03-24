@@ -37,7 +37,7 @@ const DayExpenses = ({ planId, day }: { planId: string; day: number }) => {
           <ExpenseGroupItem group={group} />
           {idx < expenses.length - 1 && (
             <div className="flex justify-center">
-              <div className="w-px h-5 bg-border" />
+              <div className="bg-border h-5 w-px" />
             </div>
           )}
         </Fragment>
@@ -85,17 +85,13 @@ const PlanPage = () => {
     isAllDaysEmpty,
     isInitialLoading,
   } = usePlanBlockData({ planId });
-  const startDate = plan?.start_date ?? "";
   const dateRange =
-    plan?.start_date && plan?.end_date
-      ? `${plan.start_date} ~ ${plan.end_date}`
-      : undefined;
+    plan?.start_date && plan?.end_date ? `${plan.start_date} ~ ${plan.end_date}` : undefined;
   const { data: budgetData } = useBudget(planId);
   const expensesByDay = useQueries({
     queries: days.map((day) => ({
       queryKey: ["expenses", { planId, day }] as const,
-      queryFn: () =>
-        import("@/lib/api/budget").then((m) => m.getExpenses(planId, day)),
+      queryFn: () => import("@/lib/api/budget").then((m) => m.getExpenses(planId, day)),
       enabled: !!planId && days.length > 0,
     })),
   });
@@ -135,16 +131,14 @@ const PlanPage = () => {
   // 초기 데이터 로딩 상태
   if (isInitialLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="typography-body-body-reg text-muted-foreground">
-          일정을 불러오는 중...
-        </div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="typography-body-body-reg text-muted-foreground">일정을 불러오는 중...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       {/* 헤더 - sticky */}
       <div className="sticky top-0 z-20">
         {activeMode === "budget" ? (
@@ -156,7 +150,7 @@ const PlanPage = () => {
             isCalendarVisible={isCalendarVisible}
             onCalendar={() => setIsCalendarVisible((prev) => !prev)}
             showMenuButton
-            className="backdrop-blur-md bg-background/60"
+            className="bg-background/60 backdrop-blur-md"
           />
         ) : (
           <ProjectHeader
@@ -166,7 +160,7 @@ const PlanPage = () => {
             isCalendarVisible={isCalendarVisible}
             onCalendar={() => setIsCalendarVisible((prev) => !prev)}
             showMenuButton
-            className="backdrop-blur-md bg-background/60"
+            className="bg-background/60 backdrop-blur-md"
           />
         )}
       </div>
@@ -198,7 +192,7 @@ const PlanPage = () => {
             className={cn(
               "sticky z-10 overflow-hidden",
               isDayNavStuck
-                ? "border-t border-border backdrop-blur-xl bg-background/60"
+                ? "border-border bg-background/60 border-t backdrop-blur-xl"
                 : "bg-background",
             )}
             style={{
@@ -215,8 +209,7 @@ const PlanPage = () => {
                   const day = Number(value);
                   const idx = day - 1;
                   const q = dayQueries[idx];
-                  const isDayEmpty =
-                    !!q?.data && (q.data.contents?.length ?? 0) === 0;
+                  const isDayEmpty = !!q?.data && (q.data.contents?.length ?? 0) === 0;
 
                   // 접혀 있고 비어있지 않으면 펼침
                   if (!isDayEmpty) {
@@ -232,8 +225,7 @@ const PlanPage = () => {
                     // const mapHeight = shouldShowMap ? 180 : 0;
                     const mapHeight = 0;
                     const offset = 64 + mapHeight + 56; // header + map + DayNav(h-14)
-                    const top =
-                      el.getBoundingClientRect().top + window.scrollY - offset;
+                    const top = el.getBoundingClientRect().top + window.scrollY - offset;
                     window.scrollTo({ top, behavior: "smooth" });
                     // smooth scroll 종료 후 억제 해제 (약 600ms)
                     setTimeout(() => {
@@ -242,20 +234,18 @@ const PlanPage = () => {
                   };
 
                   // 펼침 애니메이션 후 DOM 확정 시점에 스크롤
-                  requestAnimationFrame(() =>
-                    requestAnimationFrame(scrollToDay),
-                  );
+                  requestAnimationFrame(() => requestAnimationFrame(scrollToDay));
                 }}
-                className="gap-2.25 py-3 h-14"
+                className="h-14 gap-2.25 py-3"
                 itemClassName="h-8 py-1.5"
               />
-              <div className="pointer-events-none absolute top-0 -right-1.25 w-14 h-14 bg-[linear-gradient(90deg,rgba(252,252,252,0)_0%,rgba(252,252,252,1)_100%)]" />
+              <div className="pointer-events-none absolute top-0 -right-1.25 h-14 w-14 bg-[linear-gradient(90deg,rgba(252,252,252,0)_0%,rgba(252,252,252,1)_100%)]" />
             </div>
           </div>
         </>
       )}
 
-      <main className="flex flex-col flex-1 pb-32">
+      <main className="flex flex-1 flex-col pb-32">
         {/* 예산 탭 */}
         {activeMode === "budget" && (
           <>
@@ -282,31 +272,21 @@ const PlanPage = () => {
         {/* 여행 일정 탭: 빈 상태 */}
         {activeMode === "planMode" && isAllDaysEmpty && <PlanEmptyState />}
 
-        {((activeMode === "budget" && !isEmpty) ||
-          (activeMode == "planMode" && !isAllDaysEmpty)) &&
+        {((activeMode === "budget" && !isEmpty) || (activeMode == "planMode" && !isAllDaysEmpty)) &&
           days.map((day, idx) => {
             const q = dayQueries[idx];
-            const isDayEmpty =
-              !!q?.data && (q.data.contents?.length ?? 0) === 0;
+            const isDayEmpty = !!q?.data && (q.data.contents?.length ?? 0) === 0;
             const isOpen = openByDay[day] ?? !isDayEmpty;
-            const dateText = q?.data
-              ? formatDayInfoText(q.data.date, q.data.dayOfWeek)
-              : "";
+            const dateText = q?.data ? formatDayInfoText(q.data.date, q.data.dayOfWeek) : "";
 
             return (
               <div key={day} id={`day-section-${day}`}>
-                <div
-                  id={`day-sentinel-${day}`}
-                  data-day={day}
-                  className="h-px"
-                />
+                <div id={`day-sentinel-${day}`} data-day={day} className="h-px" />
                 <DayHeader
                   day={day}
                   date={dateText}
                   open={isOpen}
-                  onOpenChange={(next) =>
-                    setOpenByDay((prev) => ({ ...prev, [day]: next }))
-                  }
+                  onOpenChange={(next) => setOpenByDay((prev) => ({ ...prev, [day]: next }))}
                   disabled={q?.data ? isDayEmpty : false}
                 >
                   {activeMode === "planMode" ? (

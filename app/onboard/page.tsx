@@ -7,12 +7,7 @@ const OnboardPage = () => {
   const serviceTermsUrl = env.urls.serviceTerms;
   const privacyPolicyUrl = env.urls.privacyPolicy;
 
-  return (
-    <OnboardClient
-      serviceTermsUrl={serviceTermsUrl}
-      privacyPolicyUrl={privacyPolicyUrl}
-    />
-  );
+  return <OnboardClient serviceTermsUrl={serviceTermsUrl} privacyPolicyUrl={privacyPolicyUrl} />;
 };
 
 export default OnboardPage;

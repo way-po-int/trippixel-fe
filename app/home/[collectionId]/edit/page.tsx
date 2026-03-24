@@ -15,10 +15,7 @@ const CollectionEditPage = () => {
   const router = useRouter();
   const params = useParams<{ collectionId: string }>();
 
-  const collectionId = useMemo(
-    () => params.collectionId,
-    [params.collectionId],
-  );
+  const collectionId = useMemo(() => params.collectionId, [params.collectionId]);
 
   // 컬렉션 조회
   const { data, isLoading, isError } = useCollection(collectionId);
@@ -65,7 +62,7 @@ const CollectionEditPage = () => {
         title="보관함 수정하기"
         showBackButton
         leftBtnBgVariant="ghost"
-        className="fixed top-0 z-10 inset-x-0"
+        className="fixed inset-x-0 top-0 z-10"
       />
 
       <form
@@ -73,7 +70,7 @@ const CollectionEditPage = () => {
           e.preventDefault();
           handleUpdate();
         }}
-        className="flex flex-col flex-1 justify-between px-5 py-18.75"
+        className="flex flex-1 flex-col justify-between px-5 py-18.75"
       >
         <div className="flex flex-col gap-2 pt-16">
           <Label>보관함 이름</Label>
@@ -83,9 +80,7 @@ const CollectionEditPage = () => {
               hideIcon
               defaultValue={initialTitle}
               error={!!errorMessage}
-              placeholder={
-                isLoading ? "불러오는 중..." : "예) 우리만의 제주도 맛집 투어"
-              }
+              placeholder={isLoading ? "불러오는 중..." : "예) 우리만의 제주도 맛집 투어"}
               disabled={isLoading || isError}
               onChange={(e) => {
                 setDraftTitle(e.target.value);
@@ -96,9 +91,7 @@ const CollectionEditPage = () => {
                 if (!v.ok) setErrorMessage(v.message);
               }}
             />
-            {errorMessage && (
-              <FieldDescription error>{errorMessage}</FieldDescription>
-            )}
+            {errorMessage && <FieldDescription error>{errorMessage}</FieldDescription>}
           </div>
         </div>
 
