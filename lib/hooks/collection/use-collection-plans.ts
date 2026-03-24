@@ -6,10 +6,7 @@ import type { CollectionPlansResponse } from "@/types/collection";
 import { getCollectionPlans } from "@/lib/api/collection";
 import type { ProblemDetail } from "@/types/problem-detail";
 
-type CollectionPlansQueryKey = readonly [
-  "collectionPlans",
-  { collectionId: string },
-];
+type CollectionPlansQueryKey = readonly ["collectionPlans", { collectionId: string }];
 
 type Options = Omit<
   UseQueryOptions<

@@ -1,8 +1,8 @@
 "use client";
 
 import { getPlanCollections } from "@/lib/api/plan";
-import { ProblemDetail } from "@/types/problem-detail";
-import { PlanCollectionResponse } from "@/types/plan";
+import { type ProblemDetail } from "@/types/problem-detail";
+import { type PlanCollectionResponse } from "@/types/plan";
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 

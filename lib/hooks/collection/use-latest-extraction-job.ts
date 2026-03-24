@@ -13,10 +13,7 @@ type Options = Omit<
   "queryKey" | "queryFn"
 >;
 
-export const useLatestExtractionJob = (
-  collectionId: string,
-  options?: Options,
-) => {
+export const useLatestExtractionJob = (collectionId: string, options?: Options) => {
   return useQuery<ExtractionJobResponse, AxiosError<ProblemDetail>>({
     queryKey: ["extractionJobLatest", collectionId],
     queryFn: () => getLatestExtractionJob(collectionId),

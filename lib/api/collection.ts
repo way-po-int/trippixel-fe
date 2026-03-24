@@ -19,27 +19,27 @@
  */
 
 import {
-  AddCollectionPlaceRequest,
-  AddCollectionPlaceResponse,
-  CollectionListResponse,
-  CollectionPlacesResponse,
-  CollectionResponse,
-  CreateCollectionRequest,
-  DeleteCollectionParams,
-  GetCollectionParams,
-  GetCollectionPlacesParams,
-  GetCollectionsParams,
-  PostCollectionPlacePreferenceParams,
-  UpdateCollectionParams,
-  UpdateCollectionRequest,
-  UpdateCollectionResponse,
+  type AddCollectionPlaceRequest,
+  type AddCollectionPlaceResponse,
+  type CollectionListResponse,
+  type CollectionPlacesResponse,
+  type CollectionResponse,
+  type CreateCollectionRequest,
+  type DeleteCollectionParams,
+  type GetCollectionParams,
+  type GetCollectionPlacesParams,
+  type GetCollectionsParams,
+  type PostCollectionPlacePreferenceParams,
+  type UpdateCollectionParams,
+  type UpdateCollectionRequest,
+  type UpdateCollectionResponse,
 } from "@/types/collection";
-import { InvitationResponse } from "@/types/invitation";
-import { CollectionMembersResponse } from "@/types/member";
-import { CollectionPlansResponse } from "@/types/collection";
+import { type InvitationResponse } from "@/types/invitation";
+import { type CollectionMembersResponse } from "@/types/member";
+import { type CollectionPlansResponse } from "@/types/collection";
 import {
-  CreateExtractionJobResponse,
-  ExtractionJobResponse,
+  type CreateExtractionJobResponse,
+  type ExtractionJobResponse,
 } from "@/types/extraction-job";
 import { apiClient } from "./client";
 
@@ -73,12 +73,8 @@ export const getCollections = async (params?: GetCollectionsParams) => {
  * @param collectionId - 조회할 컬렉션 ID
  * @returns 컬렉션 상세 정보
  */
-export const getCollection = async (
-  collectionId: GetCollectionParams["collectionId"],
-) => {
-  const res = await apiClient.get<CollectionResponse>(
-    `/collections/${collectionId}`,
-  );
+export const getCollection = async (collectionId: GetCollectionParams["collectionId"]) => {
+  const res = await apiClient.get<CollectionResponse>(`/collections/${collectionId}`);
   return res.data;
 };
 
@@ -93,10 +89,7 @@ export const updateCollection = async (
   collectionId: UpdateCollectionParams["collectionId"],
   body: UpdateCollectionRequest,
 ) => {
-  const res = await apiClient.put<UpdateCollectionResponse>(
-    `/collections/${collectionId}`,
-    body,
-  );
+  const res = await apiClient.put<UpdateCollectionResponse>(`/collections/${collectionId}`, body);
   return res.data;
 };
 
@@ -107,10 +100,7 @@ export const updateCollection = async (
  * @param body - place_id
  * @returns 추가된 컬렉션 장소 정보
  */
-export const addCollectionPlace = async (
-  collectionId: string,
-  body: AddCollectionPlaceRequest,
-) => {
+export const addCollectionPlace = async (collectionId: string, body: AddCollectionPlaceRequest) => {
   const res = await apiClient.post<AddCollectionPlaceResponse>(
     `/collections/${collectionId}/places`,
     body,
@@ -129,10 +119,9 @@ export const getCollectionPlaces = async (
   collectionId: GetCollectionPlacesParams["collectionId"],
   params?: Omit<GetCollectionPlacesParams, "collectionId">,
 ) => {
-  const res = await apiClient.get<CollectionPlacesResponse>(
-    `/collections/${collectionId}/places`,
-    { params },
-  );
+  const res = await apiClient.get<CollectionPlacesResponse>(`/collections/${collectionId}/places`, {
+    params,
+  });
   return res.data;
 };
 
@@ -174,9 +163,7 @@ export const postCollectionPlacePreference = async ({
  * @param collectionId - 삭제할 컬렉션 ID
  * @returns void (204 No Content)
  */
-export const deleteCollection = async (
-  collectionId: DeleteCollectionParams["collectionId"],
-) => {
+export const deleteCollection = async (collectionId: DeleteCollectionParams["collectionId"]) => {
   await apiClient.delete(`/collections/${collectionId}`);
 };
 
@@ -187,9 +174,7 @@ export const deleteCollection = async (
  * @returns 초대 링크 정보 (type, reference_id, url, ttl)
  */
 export const createCollectionInvitation = async (collectionId: string) => {
-  const res = await apiClient.post<InvitationResponse>(
-    `/collections/${collectionId}/invitations`,
-  );
+  const res = await apiClient.post<InvitationResponse>(`/collections/${collectionId}/invitations`);
   return res.data;
 };
 
@@ -200,10 +185,7 @@ export const createCollectionInvitation = async (collectionId: string) => {
  * @param url - 분석할 URL
  * @returns job_id, status
  */
-export const createExtractionJob = async (
-  collectionId: string,
-  url: string,
-) => {
+export const createExtractionJob = async (collectionId: string, url: string) => {
   const res = await apiClient.post<CreateExtractionJobResponse>(
     `/collections/${collectionId}/extraction-jobs`,
     { url },
@@ -230,13 +212,8 @@ export const getLatestExtractionJob = async (collectionId: string) => {
  * @param collectionId - 컬렉션 ID
  * @param jobId - 취소할 작업 ID
  */
-export const deleteExtractionJob = async (
-  collectionId: string,
-  jobId: string,
-) => {
-  await apiClient.delete(
-    `/collections/${collectionId}/extraction-jobs/${jobId}`,
-  );
+export const deleteExtractionJob = async (collectionId: string, jobId: string) => {
+  await apiClient.delete(`/collections/${collectionId}/extraction-jobs/${jobId}`);
 };
 
 /**
@@ -251,20 +228,19 @@ export const addExtractionJobPlaces = async (
   jobId: string,
   place_ids: string[],
 ) => {
-  await apiClient.post(
-    `/collections/${collectionId}/extraction-jobs/${jobId}/places`,
-    { place_ids },
-  );
+  await apiClient.post(`/collections/${collectionId}/extraction-jobs/${jobId}/places`, {
+    place_ids,
+  });
 };
 
 export const leaveCollection = async (collectionId: string): Promise<void> => {
   await apiClient.delete(`/collections/${collectionId}/members/me`);
 };
 
-export const getCollectionPlans = async (collectionId: string): Promise<CollectionPlansResponse> => {
-  const res = await apiClient.get<CollectionPlansResponse>(
-    `/collections/${collectionId}/plans`,
-  );
+export const getCollectionPlans = async (
+  collectionId: string,
+): Promise<CollectionPlansResponse> => {
+  const res = await apiClient.get<CollectionPlansResponse>(`/collections/${collectionId}/plans`);
   return res.data;
 };
 

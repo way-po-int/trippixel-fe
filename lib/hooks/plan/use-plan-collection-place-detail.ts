@@ -16,15 +16,10 @@ type UsePlanCollectionPlaceDetailOptions = {
   collectionId?: string;
   collectionPlaceId?: string;
   enabled?: boolean;
-  queryOptions?: Omit<
-    UseQueryOptions<PlaceDetail, AxiosError>,
-    "queryKey" | "queryFn" | "enabled"
-  >;
+  queryOptions?: Omit<UseQueryOptions<PlaceDetail, AxiosError>, "queryKey" | "queryFn" | "enabled">;
 };
 
-export const usePlanCollectionPlaceDetail = (
-  options: UsePlanCollectionPlaceDetailOptions,
-) => {
+export const usePlanCollectionPlaceDetail = (options: UsePlanCollectionPlaceDetailOptions) => {
   const { planId, collectionId, collectionPlaceId, enabled = true, queryOptions } = options;
   const canFetch = Boolean(planId && collectionId && collectionPlaceId && enabled);
 

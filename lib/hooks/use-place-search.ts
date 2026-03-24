@@ -19,11 +19,7 @@ type Options = Omit<
   "queryKey" | "queryFn" | "enabled"
 >;
 
-export const usePlaceSearch = (
-  query: string,
-  debounceMs: number = 400,
-  options?: Options,
-) => {
+export const usePlaceSearch = (query: string, debounceMs: number = 400, options?: Options) => {
   const debouncedQuery = useDebounce(query, debounceMs);
 
   return useQuery<

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import type { ProblemDetail } from "@/types/problem-detail";
 import type {
@@ -30,8 +26,7 @@ export const useDeletePlanCollection = (options?: Options) => {
     AxiosError<ProblemDetail>,
     DeletePlanCollectionParams
   >({
-    mutationFn: ({ planId, collectionId }) =>
-      deletePlanCollection({ planId, collectionId }),
+    mutationFn: ({ planId, collectionId }) => deletePlanCollection({ planId, collectionId }),
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({

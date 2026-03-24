@@ -7,10 +7,7 @@ import type { ProblemDetail } from "@/types/problem-detail";
 
 type Variables = { planId: string; memberId: string };
 
-type Options = Omit<
-  UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>,
-  "mutationFn"
->;
+type Options = Omit<UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>, "mutationFn">;
 
 export const useChangePlanOwner = (options?: Options) => {
   const queryClient = useQueryClient();

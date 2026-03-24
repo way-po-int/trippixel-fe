@@ -7,17 +7,13 @@ import type { ProblemDetail } from "@/types/problem-detail";
 
 type Variables = { collectionId: string; memberId: string };
 
-type Options = Omit<
-  UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>,
-  "mutationFn"
->;
+type Options = Omit<UseMutationOptions<void, AxiosError<ProblemDetail>, Variables>, "mutationFn">;
 
 export const useKickCollectionMember = (options?: Options) => {
   const queryClient = useQueryClient();
 
   return useMutation<void, AxiosError<ProblemDetail>, Variables>({
-    mutationFn: ({ collectionId, memberId }) =>
-      kickCollectionMember(collectionId, memberId),
+    mutationFn: ({ collectionId, memberId }) => kickCollectionMember(collectionId, memberId),
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import type { ProblemDetail } from "@/types/problem-detail";
 import type { BudgetResponse, UpdateBudgetRequest } from "@/types/budget";

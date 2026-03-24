@@ -1,8 +1,6 @@
 export type PickPassPreference = "PICK" | "PASS" | "NOTHING";
 
-export const normalizePickPassPreference = (
-  value: unknown,
-): PickPassPreference => {
+export const normalizePickPassPreference = (value: unknown): PickPassPreference => {
   if (typeof value !== "string") return "NOTHING";
 
   const normalized = value.trim().toUpperCase();

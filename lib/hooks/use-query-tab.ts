@@ -3,13 +3,13 @@
 import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-interface UseQueryTabOptions<T extends string> {
+type UseQueryTabOptions<T extends string> = {
   key?: string;
   defaultValue: T;
   allowedValues: readonly T[];
   removeWhenDefault?: boolean;
   scroll?: boolean;
-}
+};
 
 const useQueryTab = <T extends string>({
   key = "tab",
@@ -41,16 +41,7 @@ const useQueryTab = <T extends string>({
       const query = sp.toString();
       router.replace(query ? `${pathname}?${query}` : pathname, { scroll });
     },
-    [
-      tab,
-      searchParams,
-      removeWhenDefault,
-      defaultValue,
-      key,
-      router,
-      pathname,
-      scroll,
-    ],
+    [tab, searchParams, removeWhenDefault, defaultValue, key, router, pathname, scroll],
   );
 
   return { tab, setTab };

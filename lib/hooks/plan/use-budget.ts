@@ -9,22 +9,12 @@ import { getBudget } from "@/lib/api/budget";
 type BudgetQueryKey = readonly ["budget", { planId: string }];
 
 type Options = Omit<
-  UseQueryOptions<
-    BudgetResponse,
-    AxiosError<ProblemDetail>,
-    BudgetResponse,
-    BudgetQueryKey
-  >,
+  UseQueryOptions<BudgetResponse, AxiosError<ProblemDetail>, BudgetResponse, BudgetQueryKey>,
   "queryKey" | "queryFn"
 >;
 
 export const useBudget = (planId: GetBudgetParams["planId"], options?: Options) => {
-  return useQuery<
-    BudgetResponse,
-    AxiosError<ProblemDetail>,
-    BudgetResponse,
-    BudgetQueryKey
-  >({
+  return useQuery<BudgetResponse, AxiosError<ProblemDetail>, BudgetResponse, BudgetQueryKey>({
     queryKey: ["budget", { planId }] as const,
     queryFn: () => getBudget(planId),
     enabled: !!planId,

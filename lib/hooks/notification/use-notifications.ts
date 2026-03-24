@@ -6,12 +6,9 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import type {
-  NotificationListResponse,
-  GetNotificationsParams,
-} from "@/types/notification";
+import type { NotificationListResponse, GetNotificationsParams } from "@/types/notification";
 import { getNotifications } from "@/lib/api/notification";
-import { ProblemDetail } from "@/types/problem-detail";
+import { type ProblemDetail } from "@/types/problem-detail";
 
 type NotificationsQueryKey = readonly ["notifications", { size: number }];
 
@@ -40,11 +37,9 @@ export const useNotifications = (
     number
   >({
     queryKey: ["notifications", { size }] as const,
-    queryFn: ({ pageParam = 0 }) =>
-      getNotifications({ page: pageParam, size }),
+    queryFn: ({ pageParam = 0 }) => getNotifications({ page: pageParam, size }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.has_next ? lastPage.page + 1 : undefined,
+    getNextPageParam: (lastPage) => (lastPage.has_next ? lastPage.page + 1 : undefined),
     ...options,
   });
 };

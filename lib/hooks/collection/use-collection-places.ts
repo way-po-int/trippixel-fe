@@ -6,10 +6,7 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import type {
-  CollectionPlacesResponse,
-  GetCollectionPlacesParams,
-} from "@/types/collection";
+import type { CollectionPlacesResponse, GetCollectionPlacesParams } from "@/types/collection";
 import { getCollectionPlaces } from "@/lib/api/collection";
 import type { ProblemDetail } from "@/types/problem-detail";
 
@@ -54,8 +51,7 @@ export const useCollectionPlaces = (
     queryFn: ({ pageParam = 0 }) =>
       getCollectionPlaces(collectionId, { page: pageParam, size, sort, added_by }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.has_next ? lastPage.page + 1 : undefined,
+    getNextPageParam: (lastPage) => (lastPage.has_next ? lastPage.page + 1 : undefined),
     enabled: !!collectionId,
     ...options,
   });

@@ -14,29 +14,26 @@
  */
 
 import {
-  AddPlanBlockCandidatesRequest,
-  BlockResponse,
-  CandidatesResponse,
-  CreatePlanBlockByPlaceRequest,
-  CreatePlanBlockRequest,
-  CreatePlanRequest,
-  DeletePlanParams,
-  GetPlanParams,
-  GetPlansParams,
-  PlanCollectionResponse,
-  PlanListResponse,
-  PlanResponse,
-  UpdatePlanParams,
-  UpdatePlanRequest,
-  UpdatePlanResponse,
+  type AddPlanBlockCandidatesRequest,
+  type BlockResponse,
+  type CandidatesResponse,
+  type CreatePlanBlockByPlaceRequest,
+  type CreatePlanBlockRequest,
+  type CreatePlanRequest,
+  type DeletePlanParams,
+  type GetPlanParams,
+  type GetPlansParams,
+  type PlanCollectionResponse,
+  type PlanListResponse,
+  type PlanResponse,
+  type UpdatePlanParams,
+  type UpdatePlanRequest,
+  type UpdatePlanResponse,
 } from "@/types/plan";
-import { CollectionPlacesResponse } from "@/types/collection";
-import {
-  normalizePlaceDetail,
-  type PlaceDetailApiResponse,
-} from "@/lib/api/place";
-import { InvitationResponse } from "@/types/invitation";
-import { PlanMembersResponse } from "@/types/member";
+import { type CollectionPlacesResponse } from "@/types/collection";
+import { normalizePlaceDetail, type PlaceDetailApiResponse } from "@/lib/api/place";
+import { type InvitationResponse } from "@/types/invitation";
+import { type PlanMembersResponse } from "@/types/member";
 import { apiClient } from "./client";
 
 /**
@@ -91,18 +88,13 @@ export const deletePlan = async (planId: DeletePlanParams["planId"]) => {
  * @param body - 수정 요청 데이터
  * @returns 플랜 수정 응답(확인 필요 여부 + plan + affectedDays)
  */
-export const updatePlan = async (
-  planId: UpdatePlanParams["planId"],
-  body: UpdatePlanRequest,
-) => {
+export const updatePlan = async (planId: UpdatePlanParams["planId"], body: UpdatePlanRequest) => {
   const res = await apiClient.put<UpdatePlanResponse>(`/plans/${planId}`, body);
   return res.data;
 };
 
 export const getPlanCollections = async (planId: string) => {
-  const res = await apiClient.get<PlanCollectionResponse[]>(
-    `/plans/${planId}/collections`,
-  );
+  const res = await apiClient.get<PlanCollectionResponse[]>(`/plans/${planId}/collections`);
   return res.data;
 };
 
@@ -132,10 +124,7 @@ export const getPlanCollectionPlaceDetail = async (
   return normalizePlaceDetail(res.data);
 };
 
-export const createPlanBlock = async (
-  planId: string,
-  body: CreatePlanBlockRequest,
-) => {
+export const createPlanBlock = async (planId: string, body: CreatePlanBlockRequest) => {
   const res = await apiClient.post<BlockResponse>(`/plans/${planId}/blocks`, body);
   return res.data;
 };
@@ -144,10 +133,7 @@ export const createPlanBlockByPlace = async (
   planId: string,
   body: CreatePlanBlockByPlaceRequest,
 ) => {
-  const res = await apiClient.post<BlockResponse>(
-    `/plans/${planId}/blocks/by-place`,
-    body,
-  );
+  const res = await apiClient.post<BlockResponse>(`/plans/${planId}/blocks/by-place`, body);
   return res.data;
 };
 
@@ -170,9 +156,7 @@ export const addPlanBlockCandidates = async (
  * @returns 초대 링크 정보 (type, reference_id, url, ttl)
  */
 export const createPlanInvitation = async (planId: string) => {
-  const res = await apiClient.post<InvitationResponse>(
-    `/plans/${planId}/invitations`,
-  );
+  const res = await apiClient.post<InvitationResponse>(`/plans/${planId}/invitations`);
   return res.data;
 };
 
@@ -183,9 +167,7 @@ export const createPlanInvitation = async (planId: string) => {
  * @returns 멤버 목록 (is_authenticated, me, members)
  */
 export const getPlanMembers = async (planId: string) => {
-  const res = await apiClient.get<PlanMembersResponse>(
-    `/plans/${planId}/members`,
-  );
+  const res = await apiClient.get<PlanMembersResponse>(`/plans/${planId}/members`);
   return res.data;
 };
 
@@ -193,17 +175,11 @@ export const leavePlan = async (planId: string): Promise<void> => {
   await apiClient.delete(`/plans/${planId}/members/me`);
 };
 
-export const changePlanOwner = async (
-  planId: string,
-  plan_member_id: string,
-): Promise<void> => {
+export const changePlanOwner = async (planId: string, plan_member_id: string): Promise<void> => {
   await apiClient.patch(`/plans/${planId}/owner`, { plan_member_id });
 };
 
-export const kickPlanMember = async (
-  planId: string,
-  memberId: string,
-): Promise<void> => {
+export const kickPlanMember = async (planId: string, memberId: string): Promise<void> => {
   await apiClient.delete(`/plans/${planId}/members/${memberId}`);
 };
 
@@ -212,10 +188,7 @@ export const selectCandidate = async (
   timeBlockId: string,
   block_id: string,
 ): Promise<void> => {
-  await apiClient.patch(
-    `/plans/${planId}/blocks/${timeBlockId}/selection`,
-    { block_id },
-  );
+  await apiClient.patch(`/plans/${planId}/blocks/${timeBlockId}/selection`, { block_id });
 };
 
 export const getCandidates = async (

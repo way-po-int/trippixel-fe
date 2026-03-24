@@ -302,9 +302,7 @@ const normalizeBlockList = (data: BlockListApiResponse): BlockListResponse => {
       endTime: item.end_time,
       candidateCount: item.candidate_count ?? 0,
       candidates: (item.candidates ?? []).map(normalizeCandidate),
-      selectedBlock: item.selected_block
-        ? normalizeCandidate(item.selected_block)
-        : null,
+      selectedBlock: item.selected_block ? normalizeCandidate(item.selected_block) : null,
     })),
     hasNext: Boolean(data.has_next),
     size: data.size,
@@ -375,18 +373,12 @@ export const getBlockList = async (
   planId: string,
   params: GetBlockListParams,
 ): Promise<BlockListResponse> => {
-  const { data } = await apiClient.get<BlockListApiResponse>(
-    `/plans/${planId}/blocks`,
-    { params },
-  );
+  const { data } = await apiClient.get<BlockListApiResponse>(`/plans/${planId}/blocks`, { params });
 
   return normalizeBlockList(data);
 };
 
-export const getBlockDetail = async (
-  planId: string,
-  blockId: string,
-): Promise<BlockDetail> => {
+export const getBlockDetail = async (planId: string, blockId: string): Promise<BlockDetail> => {
   const { data } = await apiClient.get<BlockDetailApiResponse>(
     `/plans/${planId}/blocks/${blockId}`,
   );
@@ -451,15 +443,10 @@ export const deleteBlockOpinion = async (
   blockId: string,
   opinionId: string,
 ): Promise<void> => {
-  await apiClient.delete(
-    `/plans/${planId}/blocks/${blockId}/opinions/${opinionId}`,
-  );
+  await apiClient.delete(`/plans/${planId}/blocks/${blockId}/opinions/${opinionId}`);
 };
 
-export const deleteTimeBlock = async (
-  planId: string,
-  timeBlockId: string,
-): Promise<void> => {
+export const deleteTimeBlock = async (planId: string, timeBlockId: string): Promise<void> => {
   await apiClient.delete(`/plans/${planId}/blocks/${timeBlockId}`);
 };
 
@@ -468,7 +455,5 @@ export const deleteCandidate = async (
   timeBlockId: string,
   blockId: string,
 ): Promise<void> => {
-  await apiClient.delete(
-    `/plans/${planId}/blocks/${timeBlockId}/candidates/${blockId}`,
-  );
+  await apiClient.delete(`/plans/${planId}/blocks/${timeBlockId}/candidates/${blockId}`);
 };

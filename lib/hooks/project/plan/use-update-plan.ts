@@ -1,16 +1,8 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import type {
-  UpdatePlanParams,
-  UpdatePlanRequest,
-  UpdatePlanResponse,
-} from "@/types/plan";
+import type { UpdatePlanParams, UpdatePlanRequest, UpdatePlanResponse } from "@/types/plan";
 import { updatePlan } from "@/lib/api/plan";
 import type { ProblemDetail } from "@/types/problem-detail";
 
@@ -24,10 +16,8 @@ type Options = Omit<
   "mutationFn"
 >;
 
-const isQueryKeyPrefix = (
-  queryKey: readonly unknown[],
-  prefix: readonly unknown[],
-) => prefix.every((v, i) => queryKey[i] === v);
+const isQueryKeyPrefix = (queryKey: readonly unknown[], prefix: readonly unknown[]) =>
+  prefix.every((v, i) => queryKey[i] === v);
 
 export const useUpdatePlan = (options?: Options) => {
   const queryClient = useQueryClient();
@@ -38,15 +28,11 @@ export const useUpdatePlan = (options?: Options) => {
     onSuccess: (data, variables, onMutateResult, context) => {
       const isConfirmRequest = variables.body.confirm === true;
 
-      const shouldSkipCacheUpdate =
-        !isConfirmRequest && data.requires_confirmation === true;
+      const shouldSkipCacheUpdate = !isConfirmRequest && data.requires_confirmation === true;
 
       if (!shouldSkipCacheUpdate) {
         if (data.plan) {
-          queryClient.setQueryData(
-            ["plan", { planId: variables.planId }],
-            data.plan,
-          );
+          queryClient.setQueryData(["plan", { planId: variables.planId }], data.plan);
         }
 
         queryClient.invalidateQueries({ queryKey: ["plans"] });
@@ -55,8 +41,7 @@ export const useUpdatePlan = (options?: Options) => {
           predicate: (q) => {
             const key = q.queryKey;
             return (
-              Array.isArray(key) &&
-              isQueryKeyPrefix(key, ["block-list-infinite", variables.planId])
+              Array.isArray(key) && isQueryKeyPrefix(key, ["block-list-infinite", variables.planId])
             );
           },
         });

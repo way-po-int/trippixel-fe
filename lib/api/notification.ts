@@ -7,10 +7,7 @@
  * - 알림 전체 읽음 (PATCH | `/notifications`)
  */
 
-import {
-  GetNotificationsParams,
-  NotificationListResponse,
-} from "@/types/notification";
+import { type GetNotificationsParams, type NotificationListResponse } from "@/types/notification";
 import { apiClient } from "./client";
 
 /**

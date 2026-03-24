@@ -1,5 +1,5 @@
 import { format, parse, type Locale } from "date-fns";
-import { DateRange } from "react-day-picker";
+import { type DateRange } from "react-day-picker";
 
 /**
  * 오늘 날짜 (00:00:00 기준) 반환
@@ -47,10 +47,7 @@ export const toApiDateRange = (
 /**
  * start_date, end_date → DateRange 변환
  */
-export const fromApiDateRange = (
-  startDate: string,
-  endDate: string,
-): DateRange => {
+export const fromApiDateRange = (startDate: string, endDate: string): DateRange => {
   return {
     from: fromApiDate(startDate),
     to: fromApiDate(endDate),
@@ -169,10 +166,7 @@ export const formatDateToDotYY = (dateString: string): string => {
  * day_info(date, day_of_week) → "YY.MM.DD (요일)" 형태로 변환
  * 예: ("2026-02-25", "WEDNESDAY") → "2026.02.25 (수)"
  */
-export const formatDayInfoText = (
-  dateString: string,
-  dayOfWeek: string,
-): string => {
+export const formatDayInfoText = (dateString: string, dayOfWeek: string): string => {
   const dateText = formatDateToDotYY(dateString);
   const dayText = dayOfWeekToKo(dayOfWeek);
 
