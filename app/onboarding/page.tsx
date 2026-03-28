@@ -57,14 +57,16 @@ const OnboardingPage = () => {
         <section className="flex h-210 w-full flex-col gap-10 p-0">
           <div className="flex h-58 w-full flex-col gap-5">
             <div className="flex-1 flex items-center justify-center">
-              <Image
-                src="/logo.svg"
-                alt="TripPixel"
-                width={180}
-                height={44}
-                priority
-                className="h-11 w-auto"
-              />
+              <h1>
+                <Image
+                  src="/logo.svg"
+                  alt="TripPixel"
+                  width={180}
+                  height={44}
+                  priority
+                  className="h-11 w-auto"
+                />
+              </h1>
             </div>
 
             <div className="flex h-43 w-full flex-col gap-5 pt-2 text-center">
