@@ -1,6 +1,8 @@
 "use client";
 
 import Header from "@/components/layout/Header";
+import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/utils";
 import { Vote, MapPin, UsersRound } from "lucide-react";
@@ -54,9 +56,16 @@ const OnboardingPage = () => {
       <main className="mt-15 flex min-h-[calc(100vh-60px)] px-5 pt-6 pb-26.25">
         <section className="flex h-210 w-full flex-col gap-10 p-0">
           <div className="flex h-58 w-full flex-col gap-5">
-            <div className="flex h-10 w-full items-center justify-center">
-              <h1 className="font-[Urbanist] text-2xl leading-8 font-extrabold text-[#2D2D2D]">
-                TripPixel
+            <div className="flex-1 flex items-center justify-center">
+              <h1>
+                <Image
+                  src="/logo.svg"
+                  alt="TripPixel"
+                  width={180}
+                  height={44}
+                  priority
+                  className="h-11 w-auto"
+                />
               </h1>
             </div>
 
