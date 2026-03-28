@@ -395,7 +395,7 @@
 
 /* modifier: 기존 rounded-* 클래스와 조합
    squircle은 시각적으로 더 작아 보이므로 rounded-*와 함께 쓸 때
-   compound selector로 radius를 자동 보정(×1.6)함 */
+   compound selector로 radius를 자동 보정(×2)함 */
 @utility squircle {
   corner-shape: squircle;
 }
