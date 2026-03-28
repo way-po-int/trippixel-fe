@@ -382,3 +382,101 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ============================================================
+   Squircle — smooth corner utility
+   CSS corner-shape (Chrome 137+). 미지원 브라우저(Safari 등)는
+   border-radius 그대로 폴백됨.
+
+   사용법:
+     modifier  → rounded-3xl squircle   (기존 rounded-*와 조합)
+     preset    → squircle-lg            (border-radius 포함)
+   ============================================================ */
+
+/* modifier: 기존 rounded-* 클래스와 조합
+   squircle은 시각적으로 더 작아 보이므로 rounded-*와 함께 쓸 때
+   compound selector로 radius를 자동 보정(×2)함 */
+@utility squircle {
+  corner-shape: squircle;
+}
+
+@layer utilities {
+  .rounded-sm.squircle   { border-radius: calc(var(--radius-sm)  * 2); }
+  .rounded-md.squircle   { border-radius: calc(var(--radius-md)  * 2); }
+  .rounded-lg.squircle   { border-radius: calc(var(--radius-lg)  * 2); }
+  .rounded-xl.squircle   { border-radius: calc(var(--radius-xl)  * 2); }
+  .rounded-2xl.squircle  { border-radius: calc(var(--radius-2xl) * 2); }
+  .rounded-3xl.squircle  { border-radius: calc(var(--radius-3xl) * 2); }
+  .rounded-4xl.squircle  { border-radius: calc(var(--radius-4xl) * 2); }
+  .rounded-full.squircle { border-radius: 9999px; }
+}
+
+/* presets */
+@utility squircle-xs {
+  border-radius: 0.5rem;
+  corner-shape: squircle;
+}
+
+@utility squircle-sm {
+  border-radius: 0.75rem;
+  corner-shape: squircle;
+}
+
+@utility squircle-md {
+  border-radius: 1rem;
+  corner-shape: squircle;
+}
+
+@utility squircle-lg {
+  border-radius: 1.5rem;
+  corner-shape: squircle;
+}
+
+@utility squircle-xl {
+  border-radius: 2rem;
+  corner-shape: squircle;
+}
+
+@utility squircle-2xl {
+  border-radius: 2.5rem;
+  corner-shape: squircle;
+}
+
+@utility squircle-full {
+  border-radius: 9999px;
+  corner-shape: squircle;
+}
+
+/* ============================================================
+   CollectionCard stacked background decoration
+   ============================================================ */
+@layer components {
+  .collection-card-stacked::before,
+  .collection-card-stacked::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0.5rem;
+    border-radius: calc(var(--radius-3xl) * 2);
+    corner-shape: squircle;
+    z-index: -1;
+    transition: transform 0.3s ease;
+  }
+
+  .collection-card-stacked::before {
+    background-color: var(--input);
+    transform: translate(4px, 2px) rotate(4deg);
+  }
+
+  .collection-card-stacked::after {
+    background-color: var(--disabled);
+    transform: translate(-2px, 2px) rotate(-3deg);
+  }
+
+  .collection-card-stacked:hover::before,
+  .collection-card-stacked:hover::after {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}

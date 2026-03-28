@@ -25,26 +25,25 @@ const CollectionCard = ({
   className,
 }: CollectionCardProps) => {
   return (
-    <div className={cn("relative w-full max-w-83.75 pb-2", className)}>
-      <div className="absolute inset-x-0 top-0 bottom-2 rotate-2 rounded-3xl bg-neutral-300" />
-      <div className="absolute inset-x-0 top-0 bottom-2 -rotate-3 rounded-3xl bg-neutral-200" />
-
+    <div className={cn("relative isolate w-full max-w-83.75 pb-2 collection-card-stacked", className)}>
       {/* Main card */}
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-3xl border border-[#E2E2E2] bg-[#FAFAFA]",
+          "relative w-full overflow-hidden rounded-3xl squircle border border-border bg-background",
           "shadow-[0px_10px_15px_-3px_#0000001A,0px_4px_6px_-4px_#0000001A]",
           onClick && "cursor-pointer",
         )}
         onClick={onClick}
       >
         {/* Image Area */}
-        <div className="relative aspect-335/152 w-full bg-white">
-          {imageSrc && <Image src={imageSrc} alt={title} fill className="object-cover" />}
+        <div className="relative aspect-22/10 w-full bg-white">
+          {imageSrc && (
+            <Image src={imageSrc} alt={title} fill className="object-cover" />
+          )}
         </div>
 
         {/* Text Area */}
-        <div className="flex items-center justify-between pt-2.5 pr-4 pb-4 pl-5">
+        <div className="flex items-center justify-between pt-3.5 pr-4 pb-4 pl-5">
           <div className="flex flex-col gap-1">
             <span className="typography-display-lg-bold text-foreground">{title}</span>
             {memberCount && (
