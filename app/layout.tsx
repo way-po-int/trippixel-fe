@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { MazeSnippet } from "@/components/analytics/maze-snippet";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <Providers>{children}</Providers>
         <Toaster />
+        <MazeSnippet />
       </body>
     </html>
   );
