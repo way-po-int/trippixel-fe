@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <GoogleAnalytics measurementId={gaMeasurementId} />
+        {gaMeasurementId ? <GoogleAnalytics measurementId={gaMeasurementId} /> : null}
         <Providers>{children}</Providers>
         <Toaster />
         <MazeSnippet />

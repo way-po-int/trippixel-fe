@@ -12,7 +12,15 @@ const ENV_VARS = {
 
 // 빌드 시간 환경변수 검증
 if (typeof window === "undefined") {
-  const requiredEnvVars = Object.values(ENV_VARS);
+  const requiredEnvVars = [
+    ENV_VARS.SERVICE_TERMS_URL,
+    ENV_VARS.PRIVACY_POLICY_URL,
+    ENV_VARS.GUIDE_URL,
+    ENV_VARS.VOC_URL,
+    ENV_VARS.GOOGLE_MAPS_API_KEY,
+    ENV_VARS.API_BASE_URL,
+    ENV_VARS.IMAGE_DOMAINS,
+  ];
 
   const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 
@@ -38,6 +46,11 @@ const getRequiredEnv = (envVar: string, errorMessage: string): string => {
     throw new Error(errorMessage);
   }
   return value;
+};
+
+const getOptionalEnv = (envVar: string): string | undefined => {
+  const value = process.env[envVar];
+  return value || undefined;
 };
 
 // 에러 메시지 생성 헬퍼 함수
@@ -74,9 +87,6 @@ export const env = {
   },
 
   analytics: {
-    gaMeasurementId: getRequiredEnv(
-      ENV_VARS.GA_MEASUREMENT_ID,
-      createEnvError(ENV_VARS.GA_MEASUREMENT_ID),
-    ),
+    gaMeasurementId: getOptionalEnv(ENV_VARS.GA_MEASUREMENT_ID),
   },
 } as const;
