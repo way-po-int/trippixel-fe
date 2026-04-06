@@ -9,7 +9,6 @@ type GoogleAnalyticsProps = {
 };
 
 type GtagWindow = Window & {
-  dataLayer: unknown[];
   gtag?: (...args: unknown[]) => void;
 };
 
@@ -19,15 +18,15 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   const search = searchParams.toString();
 
   useEffect(() => {
-    const gtagWindow = window as GtagWindow;
+    const gtag = (window as GtagWindow).gtag;
 
-    if (typeof gtagWindow.gtag !== "function") {
+    if (typeof gtag !== "function") {
       return;
     }
 
     const pagePath = search ? `${pathname}?${search}` : pathname;
 
-    gtagWindow.gtag("config", measurementId, {
+    gtag("config", measurementId, {
       page_path: pagePath,
     });
   }, [measurementId, pathname, search]);
