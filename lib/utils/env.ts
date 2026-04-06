@@ -7,6 +7,7 @@ const ENV_VARS = {
   GOOGLE_MAPS_API_KEY: "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY",
   API_BASE_URL: "NEXT_PUBLIC_API_BASE_URL",
   IMAGE_DOMAINS: "NEXT_PUBLIC_IMAGE_DOMAINS",
+  GA_MEASUREMENT_ID: "NEXT_PUBLIC_GA_MEASUREMENT_ID",
 } as const;
 
 // 빌드 시간 환경변수 검증
@@ -70,5 +71,12 @@ export const env = {
   // 이미지 최적화
   images: {
     domains: getRequiredEnv(ENV_VARS.IMAGE_DOMAINS, createEnvError(ENV_VARS.IMAGE_DOMAINS)),
+  },
+
+  analytics: {
+    gaMeasurementId: getRequiredEnv(
+      ENV_VARS.GA_MEASUREMENT_ID,
+      createEnvError(ENV_VARS.GA_MEASUREMENT_ID),
+    ),
   },
 } as const;
