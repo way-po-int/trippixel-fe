@@ -7,11 +7,20 @@ const ENV_VARS = {
   GOOGLE_MAPS_API_KEY: "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY",
   API_BASE_URL: "NEXT_PUBLIC_API_BASE_URL",
   IMAGE_DOMAINS: "NEXT_PUBLIC_IMAGE_DOMAINS",
+  GA_MEASUREMENT_ID: "NEXT_PUBLIC_GA_MEASUREMENT_ID",
 } as const;
 
 // 빌드 시간 환경변수 검증
 if (typeof window === "undefined") {
-  const requiredEnvVars = Object.values(ENV_VARS);
+  const requiredEnvVars = [
+    ENV_VARS.SERVICE_TERMS_URL,
+    ENV_VARS.PRIVACY_POLICY_URL,
+    ENV_VARS.GUIDE_URL,
+    ENV_VARS.VOC_URL,
+    ENV_VARS.GOOGLE_MAPS_API_KEY,
+    ENV_VARS.API_BASE_URL,
+    ENV_VARS.IMAGE_DOMAINS,
+  ];
 
   const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 
@@ -37,6 +46,11 @@ const getRequiredEnv = (envVar: string, errorMessage: string): string => {
     throw new Error(errorMessage);
   }
   return value;
+};
+
+const getOptionalEnv = (envVar: string): string | undefined => {
+  const value = process.env[envVar];
+  return value || undefined;
 };
 
 // 에러 메시지 생성 헬퍼 함수
@@ -70,5 +84,9 @@ export const env = {
   // 이미지 최적화
   images: {
     domains: getRequiredEnv(ENV_VARS.IMAGE_DOMAINS, createEnvError(ENV_VARS.IMAGE_DOMAINS)),
+  },
+
+  analytics: {
+    gaMeasurementId: getOptionalEnv(ENV_VARS.GA_MEASUREMENT_ID),
   },
 } as const;
