@@ -1,4 +1,3 @@
-// 환경변수 이름 상수
 const ENV_VARS = {
   SERVICE_TERMS_URL: "NEXT_PUBLIC_SERVICE_TERMS_URL",
   PRIVACY_POLICY_URL: "NEXT_PUBLIC_PRIVACY_POLICY_URL",
@@ -9,74 +8,68 @@ const ENV_VARS = {
   IMAGE_DOMAINS: "NEXT_PUBLIC_IMAGE_DOMAINS",
 } as const;
 
-// 빌드 시간 환경변수 검증
-if (typeof window === "undefined") {
-  const requiredEnvVars = [
-    ENV_VARS.SERVICE_TERMS_URL,
-    ENV_VARS.PRIVACY_POLICY_URL,
-    ENV_VARS.GUIDE_URL,
-    ENV_VARS.VOC_URL,
-    ENV_VARS.GOOGLE_MAPS_API_KEY,
-    ENV_VARS.API_BASE_URL,
-    ENV_VARS.IMAGE_DOMAINS,
-  ];
+const DEFAULT_EXTERNAL_URL = "about:blank";
 
-  const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
+const createEnvError = (envVar: string) => `${envVar} 환경변수가 설정되지 않았습니다.`;
 
-  if (missingVars.length > 0) {
-    throw new Error(
-      `필요한 환경변수가 없습니다: ${missingVars.join(", ")}\n` +
-        ".env 파일을 확인하고 개발 서버를 재시작해주세요.",
-    );
+const warnMissingEnv = (envVar: string, fallback: string) => {
+  if (typeof window === "undefined") {
+    console.warn(`${envVar} not found. Falling back to ${fallback}.`);
   }
-}
-
-const getRequiredUrl = (envVar: string, errorMessage: string): string => {
-  const url = process.env[envVar];
-  if (!url) {
-    throw new Error(errorMessage);
-  }
-  return url;
 };
 
 const getRequiredEnv = (envVar: string, errorMessage: string): string => {
   const value = process.env[envVar];
+
   if (!value) {
     throw new Error(errorMessage);
   }
+
   return value;
 };
 
-// 에러 메시지 생성 헬퍼 함수
-const createEnvError = (envVar: string) => `${envVar} 환경변수가 설정되지 않았습니다.`;
+const getOptionalUrl = (envVar: string, fallback = DEFAULT_EXTERNAL_URL): string => {
+  const value = process.env[envVar];
 
-// 용도별로 그룹화된 환경변수
+  if (value) {
+    return value;
+  }
+
+  warnMissingEnv(envVar, fallback);
+  return fallback;
+};
+
 export const env = {
-  // 외부 서비스 URL들
   urls: {
-    serviceTerms: getRequiredUrl(
-      ENV_VARS.SERVICE_TERMS_URL,
-      createEnvError(ENV_VARS.SERVICE_TERMS_URL),
-    ),
-    privacyPolicy: getRequiredUrl(
-      ENV_VARS.PRIVACY_POLICY_URL,
-      createEnvError(ENV_VARS.PRIVACY_POLICY_URL),
-    ),
-    guide: getRequiredUrl(ENV_VARS.GUIDE_URL, createEnvError(ENV_VARS.GUIDE_URL)),
-    voc: getRequiredUrl(ENV_VARS.VOC_URL, createEnvError(ENV_VARS.VOC_URL)),
+    get serviceTerms() {
+      return getOptionalUrl(ENV_VARS.SERVICE_TERMS_URL);
+    },
+    get privacyPolicy() {
+      return getOptionalUrl(ENV_VARS.PRIVACY_POLICY_URL);
+    },
+    get guide() {
+      return getOptionalUrl(ENV_VARS.GUIDE_URL);
+    },
+    get voc() {
+      return getOptionalUrl(ENV_VARS.VOC_URL);
+    },
   },
 
-  // API 설정
   api: {
-    baseUrl: getRequiredUrl(ENV_VARS.API_BASE_URL, createEnvError(ENV_VARS.API_BASE_URL)),
-    googleMapsKey: getRequiredEnv(
-      ENV_VARS.GOOGLE_MAPS_API_KEY,
-      createEnvError(ENV_VARS.GOOGLE_MAPS_API_KEY),
-    ),
+    get baseUrl() {
+      return getRequiredEnv(ENV_VARS.API_BASE_URL, createEnvError(ENV_VARS.API_BASE_URL));
+    },
+    get googleMapsKey() {
+      return getRequiredEnv(
+        ENV_VARS.GOOGLE_MAPS_API_KEY,
+        createEnvError(ENV_VARS.GOOGLE_MAPS_API_KEY),
+      );
+    },
   },
 
-  // 이미지 최적화
   images: {
-    domains: getRequiredEnv(ENV_VARS.IMAGE_DOMAINS, createEnvError(ENV_VARS.IMAGE_DOMAINS)),
+    get domains() {
+      return getRequiredEnv(ENV_VARS.IMAGE_DOMAINS, createEnvError(ENV_VARS.IMAGE_DOMAINS));
+    },
   },
 } as const;

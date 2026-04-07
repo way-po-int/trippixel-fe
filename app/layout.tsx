@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Providers } from "./providers";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
         <Providers>{children}</Providers>
         <Toaster />
         <MazeSnippet />
