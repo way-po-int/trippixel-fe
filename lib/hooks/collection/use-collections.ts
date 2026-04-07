@@ -8,6 +8,8 @@ import {
 import type { AxiosError } from "axios";
 import type { CollectionListResponse, GetCollectionsParams } from "@/types/collection";
 import { getCollections } from "@/lib/api/collection";
+import { isLocalDevMockEnabled } from "@/lib/config/local-dev";
+import { createLocalDevCollections } from "@/lib/mock/local-dev-data";
 import { type ProblemDetail } from "@/types/problem-detail";
 
 type CollectionsQueryKey = readonly ["collections", { size: number }];
@@ -34,7 +36,10 @@ export const useCollections = (params?: Omit<GetCollectionsParams, "page">, opti
     number
   >({
     queryKey: ["collections", { size }] as const,
-    queryFn: ({ pageParam = 0 }) => getCollections({ page: pageParam, size }),
+    queryFn: ({ pageParam = 0 }) =>
+      isLocalDevMockEnabled
+        ? Promise.resolve({ ...createLocalDevCollections(size), page: pageParam })
+        : getCollections({ page: pageParam, size }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => (lastPage.has_next ? lastPage.page + 1 : undefined),
     ...options,
