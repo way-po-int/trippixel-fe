@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiClient } from "@/lib/api/client";
+import { apiClient, getApiBaseUrl } from "@/lib/api/client";
 
 export type LoginProvider = "GOOGLE" | "KAKAO" | "NAVER";
 
@@ -19,7 +19,7 @@ export type DevLoginResponse = {
 export type SocialLoginProvider = Lowercase<LoginProvider>;
 
 export async function socialLogin(provider: SocialLoginProvider) {
-  window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}oauth2/authorization/${provider}`;
+  window.location.href = `${getApiBaseUrl()}oauth2/authorization/${provider}`;
 }
 
 export async function devLogin(payload: DevLoginRequest) {
@@ -28,11 +28,9 @@ export async function devLogin(payload: DevLoginRequest) {
 }
 
 export async function reissue() {
-  const { data } = await axios.post<DevLoginResponse>(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}auth/reissue`,
-    null,
-    { withCredentials: true },
-  );
+  const { data } = await axios.post<DevLoginResponse>(`${getApiBaseUrl()}auth/reissue`, null, {
+    withCredentials: true,
+  });
   return data;
 }
 

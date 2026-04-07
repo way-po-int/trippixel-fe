@@ -1,13 +1,16 @@
 import axios from "axios";
 
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const getApiBaseUrl = (): string => {
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-if (!baseURL) {
-  console.warn("NEXT_PUBLIC_API_BASE_URL is not set");
-}
+  if (!baseURL) {
+    throw new Error("NEXT_PUBLIC_API_BASE_URL is not set");
+  }
+
+  return baseURL;
+};
 
 export const apiClient = axios.create({
-  baseURL,
   timeout: 10000,
   withCredentials: true,
   headers: {
@@ -16,6 +19,8 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
+  config.baseURL ??= getApiBaseUrl();
+
   if (typeof window !== "undefined") {
     const token = window.localStorage.getItem("accessToken");
 
@@ -63,7 +68,7 @@ apiClient.interceptors.response.use(
 
         try {
           const { data } = await axios.post<{ access_token: string }>(
-            `${baseURL}auth/reissue`,
+            `${getApiBaseUrl()}auth/reissue`,
             null,
             { withCredentials: true },
           );

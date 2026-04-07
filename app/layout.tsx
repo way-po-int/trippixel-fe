@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Providers } from "./providers";
 import "./globals.css";
-import { env } from "@/lib/utils/env";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { Toaster } from "@/components/ui/sonner";
 import { MazeSnippet } from "@/components/analytics/maze-snippet";
+import { publicAnalyticsConfig } from "@/lib/config/public-analytics";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,12 +17,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaMeasurementId = env.analytics.gaMeasurementId;
+  const gaMeasurementId = publicAnalyticsConfig.gaMeasurementId;
 
   return (
     <html lang="ko">
       <body>
-        {gaMeasurementId ? <GoogleAnalytics measurementId={gaMeasurementId} /> : null}
+        <Suspense fallback={null}>
+          {gaMeasurementId ? <GoogleAnalytics measurementId={gaMeasurementId} /> : null}
+        </Suspense>
         <Providers>{children}</Providers>
         <Toaster />
         <MazeSnippet />
