@@ -5,6 +5,7 @@ import "./globals.css";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { Toaster } from "@/components/ui/sonner";
 import { MazeSnippet } from "@/components/analytics/maze-snippet";
+import { publicAnalyticsConfig } from "@/lib/config/public-analytics";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +17,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaMeasurementId = publicAnalyticsConfig.gaMeasurementId;
+
   return (
     <html lang="ko">
       <body>
         <Suspense fallback={null}>
-          <GoogleAnalytics />
+          {gaMeasurementId ? <GoogleAnalytics measurementId={gaMeasurementId} /> : null}
         </Suspense>
         <Providers>{children}</Providers>
         <Toaster />
