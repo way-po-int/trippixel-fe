@@ -4,15 +4,13 @@ import { useEffect } from "react";
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 
-type GoogleAnalyticsProps = {
-  measurementId: string;
-};
+const GA_MEASUREMENT_ID = "G-GP9Z654EDD";
 
 type GtagWindow = Window & {
   gtag?: (...args: unknown[]) => void;
 };
 
-export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
+export function GoogleAnalytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const search = searchParams.toString();
@@ -26,15 +24,15 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
 
     const pagePath = search ? `${pathname}?${search}` : pathname;
 
-    gtag("config", measurementId, {
+    gtag("config", GA_MEASUREMENT_ID, {
       page_path: pagePath,
     });
-  }, [measurementId, pathname, search]);
+  }, [pathname, search]);
 
   return (
     <>
       <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -43,7 +41,7 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
           function gtag(){window.dataLayer.push(arguments);}
           window.gtag = gtag;
           gtag('js', new Date());
-          gtag('config', '${measurementId}', { send_page_view: false });
+          gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: false });
         `}
       </Script>
     </>

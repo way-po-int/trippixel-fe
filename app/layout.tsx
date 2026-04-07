@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "./globals.css";
-import { env } from "@/lib/utils/env";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { Toaster } from "@/components/ui/sonner";
 import { MazeSnippet } from "@/components/analytics/maze-snippet";
@@ -16,12 +15,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaMeasurementId = env.analytics.gaMeasurementId;
-
   return (
     <html lang="ko">
       <body>
-        {gaMeasurementId ? <GoogleAnalytics measurementId={gaMeasurementId} /> : null}
+        <GoogleAnalytics />
         <Providers>{children}</Providers>
         <Toaster />
         <MazeSnippet />
