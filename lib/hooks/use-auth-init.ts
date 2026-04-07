@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { reissue } from "@/lib/api/auth";
+import { isLocalDevMockEnabled } from "@/lib/config/local-dev";
 
 export const useAuthInit = () => {
   const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(
+    () =>
+      isLocalDevMockEnabled ||
+      (typeof window !== "undefined" && Boolean(window.localStorage.getItem("accessToken"))),
+  );
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      setIsReady(true);
+    if (isLocalDevMockEnabled || isReady) {
       return;
     }
 
@@ -23,7 +26,7 @@ export const useAuthInit = () => {
       .catch(() => {
         router.replace("/login");
       });
-  }, [router]);
+  }, [isReady, router]);
 
   return { isReady };
 };
