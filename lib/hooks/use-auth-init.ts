@@ -10,10 +10,6 @@ export const useAuthInit = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (token) {
-      setIsReady(true);
-      return;
-    }
 
     reissue()
       .then((data) => {
@@ -21,7 +17,11 @@ export const useAuthInit = () => {
         setIsReady(true);
       })
       .catch(() => {
-        router.replace("/login");
+        if (token) {
+          setIsReady(true);
+        } else {
+          router.replace("/login");
+        }
       });
   }, [router]);
 
