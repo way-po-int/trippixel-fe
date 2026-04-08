@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Suspense, useEffect } from "react";
+import { reissue } from "@/lib/api/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,15 @@ const LoginContent = () => {
       router.replace("/home");
       return;
     }
+
+    reissue()
+      .then((data) => {
+        localStorage.setItem("accessToken", data.access_token);
+        router.replace("/home");
+      })
+      .catch(() => {
+        // refreshToken 없거나 만료 → 로그인 버튼 노출 유지
+      });
   }, [searchParams, router]);
 
   return (
