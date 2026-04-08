@@ -55,15 +55,7 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       const code = error.response?.data?.code;
 
-      if (code === "MISSING_TOKEN" || code === "INVALID_TOKEN") {
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("accessToken");
-          window.location.href = "/login";
-        }
-        return Promise.reject(error);
-      }
-
-      if (!originalRequest._retry) {
+      if (code === "EXPIRED_TOKEN" && !originalRequest._retry) {
         originalRequest._retry = true;
 
         try {
@@ -79,11 +71,13 @@ apiClient.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
           return apiClient(originalRequest);
         } catch {
-          if (typeof window !== "undefined") {
-            localStorage.removeItem("accessToken");
-            window.location.href = "/login";
-          }
+          // reissue 실패 시 아래 로그아웃 처리로 fall-through
         }
+      }
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("accessToken");
+        window.location.href = "/login";
       }
     }
 
